@@ -1,0 +1,605 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>Spark之livy的安装使用 | 迎着朝阳的博客</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="dxysun">
+    
+
+    
+    <meta name="description" content="最近有一个需求要把spark的机器学习api封装成web api供外部调用，我刚开始的想法是用spring boot和spark结合，通过命令行提交spark任务。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Spark之livy的安装使用">
+<meta property="og:url" content="https://github.com/dxysun/2018/05/03/sparkForLivy/index.html">
+<meta property="og:site_name" content="迎着朝阳的博客">
+<meta property="og:description" content="最近有一个需求要把spark的机器学习api封装成web api供外部调用，我刚开始的想法是用spring boot和spark结合，通过命令行提交spark任务。">
+<meta property="og:locale">
+<meta property="og:image" content="http://qiniu.dxysun.com/18-5-3/15425013.jpg">
+<meta property="og:image" content="http://qiniu.dxysun.com/18-5-3/35650210.jpg">
+<meta property="og:image" content="http://qiniu.dxysun.com/18-5-3/37405007.jpg">
+<meta property="og:image" content="http://qiniu.dxysun.com/18-5-3/59963770.jpg">
+<meta property="article:published_time" content="2018-05-03T07:15:16.000Z">
+<meta property="article:modified_time" content="2019-01-16T15:34:04.000Z">
+<meta property="article:author" content="dxysun">
+<meta property="article:tag" content="spark">
+<meta property="article:tag" content="livy">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://qiniu.dxysun.com/18-5-3/15425013.jpg">
+
+    
+    <link rel="alternative" href="/atom.xml" title="迎着朝阳的博客" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    
+<link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/%02.css">
+<link rel="stylesheet" href="/.css">
+
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="迎着朝阳的博客" title="迎着朝阳的博客"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="迎着朝阳的博客">迎着朝阳的博客</a></h1>
+				<h2 class="blog-motto"></h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">主页</a></li>
+					
+						<li><a href="/archives">归档</a></li>
+					
+						<li><a href="/about">关于</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:github.com/dxysun">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/05/03/sparkForLivy/" title="Spark之livy的安装使用" itemprop="url">Spark之livy的安装使用</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="dxysun" target="_blank" itemprop="author">dxysun</a>
+		
+  <p class="article-time">
+    <time datetime="2018-05-03T07:15:16.000Z" itemprop="datePublished"> Published 2018-05-03</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#livy%E7%AE%80%E4%BB%8B"><span class="toc-number">1.</span> <span class="toc-text">livy简介</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#livy%E5%AE%89%E8%A3%85"><span class="toc-number">2.</span> <span class="toc-text">livy安装</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%8B%E8%BD%BDlivy"><span class="toc-number">2.1.</span> <span class="toc-text">下载livy</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%85%8D%E7%BD%AElivy"><span class="toc-number">2.2.</span> <span class="toc-text">配置livy</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%90%E8%A1%8Clivy"><span class="toc-number">2.3.</span> <span class="toc-text">运行livy</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#livy%E4%BD%BF%E7%94%A8%E6%95%99%E7%A8%8B"><span class="toc-number">3.</span> <span class="toc-text">livy使用教程</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%9B%E5%BB%BAsession"><span class="toc-number">3.1.</span> <span class="toc-text">创建session</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9F%A5%E8%AF%A2session%E7%9A%84%E8%BD%AC%E6%80%81"><span class="toc-number">3.2.</span> <span class="toc-text">查询session的转态</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%A0%E9%99%A4session"><span class="toc-number">3.3.</span> <span class="toc-text">删除session</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%90%91batches%E6%8F%90%E4%BA%A4jar%E5%8C%85"><span class="toc-number">3.4.</span> <span class="toc-text">向batches提交jar包</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8Bbatches%E6%89%A7%E8%A1%8C%E7%8A%B6%E6%80%81"><span class="toc-number">3.5.</span> <span class="toc-text">查看batches执行状态</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8Bbatches%E6%97%A5%E5%BF%97"><span class="toc-number">3.6.</span> <span class="toc-text">查看batches日志</span></a></li></ol></li></ol>
+		
+		</div>
+		
+		<p>最近有一个需求要把spark的机器学习api封装成web api供外部调用，我刚开始的想法是用spring boot和spark结合，通过命令行提交spark任务。</p>
+<a id="more"></a>
+<p>但是遇到了很大的问题，提交任务后，spark会执行到某个地方卡死，然后就一直在网上查找资料想办法解决，直到发现了还有livy这个工具，livy这个工具太吊了，完全满足我的需求。<br>与livy类似的工具还有spark job server和Zeppelin，livy已经完全满足了我的需求，后面两个工具有时间再研究吧。</p>
+<h1 id="livy简介"><a href="#livy简介" class="headerlink" title="livy简介"></a>livy简介</h1><p>Livy是一个提供rest接口和spark集群交互的服务。它可以提交spark job或者spark一段代码,同步或者异步的返回结果;也提供sparkcontext的管理,通过restfull接口或RPC客户端库。Livy也简化了与spark与应用服务的交互,这允许通过web/mobile与spark的使用交互。其他特点还包含:</p>
+<ol>
+<li>长时间运行的SparkContext,允许多个spark job和多个client使用。</li>
+<li>在多个spark job和客户端之间共享RDD和Dataframe </li>
+<li>多个sparkcontext可以简单的管理,并运行在集群中而不是Livy Server,以此获取更好的容错性和并行度。   </li>
+<li>作业可以通过重新编译的jar、片段代码、或Java/Scala的客户端API提交。</li>
+</ol>
+<p>Livy结合了spark job server和Zeppelin的优点,并解决了spark job server和Zeppelin的缺点。</p>
+<ol>
+<li>支持jar和snippet code</li>
+<li>支持SparkContext和Job的管理</li>
+<li>支持不同SparkContext运行在不同进程,同一个进程只能运行一个SparkContext</li>
+<li>支持Yarn cluster模式</li>
+<li>提供restful接口,暴露SparkConte<br><img src="http://qiniu.dxysun.com/18-5-3/15425013.jpg"></li>
+</ol>
+<h1 id="livy安装"><a href="#livy安装" class="headerlink" title="livy安装"></a>livy安装</h1><h2 id="下载livy"><a href="#下载livy" class="headerlink" title="下载livy"></a>下载livy</h2><p><a target="_blank" rel="noopener" href="https://livy.incubator.apache.org/download/">下载地址</a>，我只下载的是livy-0.5.0-incubating-bin.zip，大小为71M，不要下900多k那个，那个缺少jars包，下载之后将livy上传服务器上</p>
+<h2 id="配置livy"><a href="#配置livy" class="headerlink" title="配置livy"></a>配置livy</h2><p>安装livy之前需要先安装hadoop和spark，hadoop和spark的安装可以参考我之前的博客。另外livy要求spark只要是Spark 1.6以上，支持scala2.10和scala2.11。<br>配置环境变量</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim ~&#x2F;.bashrc</span><br></pre></td></tr></table></figure>
+<p>添加下面两个环境变量</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">export SPARK_HOME&#x3D;&#x2F;usr&#x2F;lib&#x2F;spark</span><br><span class="line">export HADOOP_CONF_DIR&#x3D;&#x2F;etc&#x2F;hadoop&#x2F;conf</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>保存退出之后，输入source ~/.bashrc使环境变量生效</p>
+</blockquote>
+<p>在livy.conf中可以进行一些配置,一般默认就好</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F;默认使用hiveContext</span><br><span class="line">livy.repl.enableHiveContext &#x3D; true</span><br><span class="line">&#x2F;&#x2F;开启用户代理</span><br><span class="line">livy.impersonation.enabled &#x3D; true</span><br><span class="line">&#x2F;&#x2F;设置session空闲过期时间</span><br><span class="line">livy.server.session.timeout &#x3D; 1h</span><br><span class="line">livy.server.session.factory &#x3D; yarn&#x2F;local本地模式或者yarn模式</span><br></pre></td></tr></table></figure>
+<h2 id="运行livy"><a href="#运行livy" class="headerlink" title="运行livy"></a>运行livy</h2><p>进入到livy的安装目录下，输入下面命令启动livy</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">.&#x2F;bin&#x2F;livy-server</span><br></pre></td></tr></table></figure>
+<p>出现如下界面表示启动成功<br><img src="http://qiniu.dxysun.com/18-5-3/35650210.jpg"></p>
+<h1 id="livy使用教程"><a href="#livy使用教程" class="headerlink" title="livy使用教程"></a>livy使用教程</h1><p><a target="_blank" rel="noopener" href="https://livy.incubator.apache.org/examples/">官网例子</a><br><a target="_blank" rel="noopener" href="https://livy.incubator.apache.org/docs/latest/rest-api.html#session">官网api说明</a><br>官网的例子已经介绍的很好了，但是它没有介绍怎样调用本地写好的jar包执行spark任务，我在下面会介绍的。<br>下面我介绍一下几个常用的api，使用python3的request库。<br>livy官网上说支持local和YARN cluster两种运行模式，在我的测试下，spark自带的集群运行模式Standalone也是支持的</p>
+<h2 id="创建session"><a href="#创建session" class="headerlink" title="创建session"></a>创建session</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">host &#x3D; &#39;http:&#x2F;&#x2F;10.4.20.181:8998&#39;</span><br><span class="line">headers &#x3D; &#123;&#39;Content-Type&#39;: &#39;application&#x2F;json&#39;&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>host是你的主机ip夹端口号，headers是请求头</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">def create_session():</span><br><span class="line">    data &#x3D; &#123;&#39;kind&#39;: &#39;spark&#39;&#125;</span><br><span class="line">    r &#x3D; requests.post(host + &#39;&#x2F;sessions&#39;, data&#x3D;json.dumps(data), headers&#x3D;headers)</span><br><span class="line">    print(r.json())</span><br></pre></td></tr></table></figure>
+<p>执行上面的函数后，输出如下<br><img src="http://qiniu.dxysun.com/18-5-3/37405007.jpg"></p>
+<p>在浏览器输入<a target="_blank" rel="noopener" href="http://10.4.20.181:8998/ui">http://10.4.20.181:8998/ui</a> 可以看到livy的ui界面，如下如所示<br><img src="http://qiniu.dxysun.com/18-5-3/59963770.jpg"></p>
+<blockquote>
+<p>可以看到session的id，运行状态，点击右边的session也可以查看日志</p>
+</blockquote>
+<h2 id="查询session的转态"><a href="#查询session的转态" class="headerlink" title="查询session的转态"></a>查询session的转态</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">def state_session(session_id):</span><br><span class="line">    session_url &#x3D; host + &quot;&#x2F;sessions&#x2F;&quot; + session_id + &quot;&#x2F;state&quot;</span><br><span class="line">    r &#x3D; requests.get(session_url, headers&#x3D;headers)</span><br><span class="line">    print(r.json())</span><br></pre></td></tr></table></figure>
+<h2 id="删除session"><a href="#删除session" class="headerlink" title="删除session"></a>删除session</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">def delete_session(session_id):</span><br><span class="line">    session_url &#x3D; host + &quot;&#x2F;sessions&#x2F;&quot; + session_id</span><br><span class="line">    r &#x3D; requests.delete(session_url, headers&#x3D;headers)</span><br><span class="line">    print(r.json())</span><br></pre></td></tr></table></figure>
+<h2 id="向batches提交jar包"><a href="#向batches提交jar包" class="headerlink" title="向batches提交jar包"></a>向batches提交jar包</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">def submit_jars(jar_name, class_name):</span><br><span class="line">    data &#x3D; &#123;&#39;file&#39;: jar_name,</span><br><span class="line">            &#39;className&#39;: class_name&#125;</span><br><span class="line">    r &#x3D; requests.post(host + &#39;&#x2F;batches&#39;, data&#x3D;json.dumps(data), headers&#x3D;headers)</span><br><span class="line">    print(r.json())</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>这里的file指的是hdfs上的路径，className是要运行的类名，官方api中还有许多其他参数，对我来说这两个参数就够用了，其他的我就不介绍了，感兴趣的参考官方api</p>
+</blockquote>
+<h2 id="查看batches执行状态"><a href="#查看batches执行状态" class="headerlink" title="查看batches执行状态"></a>查看batches执行状态</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">def batchs_state_session(batch_id):</span><br><span class="line">    session_url &#x3D; host + &quot;&#x2F;batches&#x2F;&quot; + batch_id + &quot;&#x2F;state&quot;</span><br><span class="line">    r &#x3D; requests.get(session_url, headers&#x3D;headers)</span><br><span class="line">    print(r.json())</span><br></pre></td></tr></table></figure>
+<h2 id="查看batches日志"><a href="#查看batches日志" class="headerlink" title="查看batches日志"></a>查看batches日志</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">def batchs_state_log(batch_id, start, size):</span><br><span class="line">    session_url &#x3D; host + &quot;&#x2F;batches&#x2F;&quot; + batch_id + &quot;&#x2F;log?from&#x3D;&quot;+start+&quot;&amp;size&#x3D;&quot;+size</span><br><span class="line">    r &#x3D; requests.get(session_url, headers&#x3D;headers)</span><br><span class="line">    print(r.json())</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>batch_id是batch的id，start是请求日志的开始位置，size是请求的日志大小</p>
+</blockquote>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/spark/">spark</a><a href="/tags/livy/">livy</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://github.com/dxysun/2018/05/03/sparkForLivy/" data-title="Spark之livy的安装使用 | 迎着朝阳的博客" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2018/05/04/sparkAndHadoopForError/" title="spark-shell在yarn模式下启动遇到的问题解决">
+  <strong>上一篇：</strong><br/>
+  <span>
+  spark-shell在yarn模式下启动遇到的问题解决</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/04/27/centosForNetwork/"  title="CentOS 7设置网络开机自动连接">
+ <strong>下一篇：</strong><br/> 
+ <span>CentOS 7设置网络开机自动连接
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#livy%E7%AE%80%E4%BB%8B"><span class="toc-number">1.</span> <span class="toc-text">livy简介</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#livy%E5%AE%89%E8%A3%85"><span class="toc-number">2.</span> <span class="toc-text">livy安装</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%8B%E8%BD%BDlivy"><span class="toc-number">2.1.</span> <span class="toc-text">下载livy</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%85%8D%E7%BD%AElivy"><span class="toc-number">2.2.</span> <span class="toc-text">配置livy</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%90%E8%A1%8Clivy"><span class="toc-number">2.3.</span> <span class="toc-text">运行livy</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#livy%E4%BD%BF%E7%94%A8%E6%95%99%E7%A8%8B"><span class="toc-number">3.</span> <span class="toc-text">livy使用教程</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%9B%E5%BB%BAsession"><span class="toc-number">3.1.</span> <span class="toc-text">创建session</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9F%A5%E8%AF%A2session%E7%9A%84%E8%BD%AC%E6%80%81"><span class="toc-number">3.2.</span> <span class="toc-text">查询session的转态</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%A0%E9%99%A4session"><span class="toc-number">3.3.</span> <span class="toc-text">删除session</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%90%91batches%E6%8F%90%E4%BA%A4jar%E5%8C%85"><span class="toc-number">3.4.</span> <span class="toc-text">向batches提交jar包</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8Bbatches%E6%89%A7%E8%A1%8C%E7%8A%B6%E6%80%81"><span class="toc-number">3.5.</span> <span class="toc-text">查看batches执行状态</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8Bbatches%E6%97%A5%E5%BF%97"><span class="toc-number">3.6.</span> <span class="toc-text">查看batches日志</span></a></li></ol></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+
+  
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">Categories</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/spring官方文档/" title="spring官方文档">spring官方文档<sup>8</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>54</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/linux/" title="linux">linux<sup>34</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/centos/" title="centos">centos<sup>19</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/springboot/" title="springboot">springboot<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/ubuntu/" title="ubuntu">ubuntu<sup>9</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/hadoop/" title="hadoop">hadoop<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/spring/" title="spring">spring<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/nginx/" title="nginx">nginx<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/spark/" title="spark">spark<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/mybatis/" title="mybatis">mybatis<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/mysql/" title="mysql">mysql<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/算法/" title="算法">算法<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/git/" title="git">git<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/maven/" title="maven">maven<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/hdfs/" title="hdfs">hdfs<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/dubbo/" title="dubbo">dubbo<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/kafka/" title="kafka">kafka<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Hbase/" title="Hbase">Hbase<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/sql/" title="sql">sql<sup>2</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="http://majorkevin.xyz/blog/" target="_blank" title="朋友的博客">朋友的博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+  <div class="weiboshow">
+  <p class="asidetitle">Weibo</p>
+    <iframe width="100%" height="119" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=119&fansRow=2&ptype=1&speed=0&skin=9&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=&verifier=&dpc=1"></iframe>
+</div>
+
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> Hello ,I&#39;m dxysun. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2020 
+		
+		<a href="/about" target="_blank" title="dxysun">dxysun</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?e6d1f421bbc9962127a50488f9ed37d1";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

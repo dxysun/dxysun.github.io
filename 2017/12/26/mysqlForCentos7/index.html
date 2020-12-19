@@ -1,0 +1,576 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>CentOS7 上安装 MySQL5.7 | 迎着朝阳的博客</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="dxysun">
+    
+
+    
+    <meta name="description" content="MySQL5.7在centos7上的安装步骤">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CentOS7 上安装 MySQL5.7">
+<meta property="og:url" content="https://github.com/dxysun/2017/12/26/mysqlForCentos7/index.html">
+<meta property="og:site_name" content="迎着朝阳的博客">
+<meta property="og:description" content="MySQL5.7在centos7上的安装步骤">
+<meta property="og:locale">
+<meta property="article:published_time" content="2017-12-26T13:47:32.000Z">
+<meta property="article:modified_time" content="2018-03-27T04:46:58.000Z">
+<meta property="article:author" content="dxysun">
+<meta property="article:tag" content="linux">
+<meta property="article:tag" content="centos">
+<meta property="article:tag" content="mysql">
+<meta name="twitter:card" content="summary">
+
+    
+    <link rel="alternative" href="/atom.xml" title="迎着朝阳的博客" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    
+<link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/%02.css">
+<link rel="stylesheet" href="/.css">
+
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="迎着朝阳的博客" title="迎着朝阳的博客"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="迎着朝阳的博客">迎着朝阳的博客</a></h1>
+				<h2 class="blog-motto"></h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">主页</a></li>
+					
+						<li><a href="/archives">归档</a></li>
+					
+						<li><a href="/about">关于</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:github.com/dxysun">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2017/12/26/mysqlForCentos7/" title="CentOS7 上安装 MySQL5.7" itemprop="url">CentOS7 上安装 MySQL5.7</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="dxysun" target="_blank" itemprop="author">dxysun</a>
+		
+  <p class="article-time">
+    <time datetime="2017-12-26T13:47:32.000Z" itemprop="datePublished"> Published 2017-12-26</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#MySQL5-7%E5%9C%A8centos7%E4%B8%8A%E7%9A%84%E5%AE%89%E8%A3%85%E6%AD%A5%E9%AA%A4"><span class="toc-number">1.</span> <span class="toc-text">MySQL5.7在centos7上的安装步骤</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8B%E7%B3%BB%E7%BB%9F%E4%B8%AD%E6%98%AF%E5%90%A6%E5%B7%B2%E5%AE%89%E8%A3%85-MySQL-%E6%9C%8D%E5%8A%A1"><span class="toc-number">1.1.</span> <span class="toc-text">查看系统中是否已安装 MySQL 服务</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%8B%E8%BD%BDMySQL%E7%9A%84repo%E6%BA%90"><span class="toc-number">1.2.</span> <span class="toc-text">下载MySQL的repo源</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E8%A3%85mysql57-community-release-el7-8-noarch-rpm"><span class="toc-number">1.3.</span> <span class="toc-text">安装mysql57-community-release-el7-8.noarch.rpm</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%87%8D%E5%90%AFmysql%E6%9C%8D%E5%8A%A1%E5%B9%B6%E5%BE%97%E5%88%B0%E9%9A%8F%E6%9C%BA%E5%AF%86%E7%A0%81"><span class="toc-number">1.4.</span> <span class="toc-text">重启mysql服务并得到随机密码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%99%BB%E5%BD%95%E5%88%B0-MySQL-%E6%9C%8D%E5%8A%A1%E7%AB%AF%E5%B9%B6%E6%9B%B4%E6%96%B0%E7%94%A8%E6%88%B7-root-%E7%9A%84%E5%AF%86%E7%A0%81"><span class="toc-number">1.5.</span> <span class="toc-text">登录到 MySQL 服务端并更新用户 root 的密码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AE%BE%E7%BD%AEMySQL%E8%BF%9C%E7%A8%8B%E8%AE%BF%E9%97%AE"><span class="toc-number">1.6.</span> <span class="toc-text">设置MySQL远程访问</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BC%80%E6%94%BE3306%E7%AB%AF%E5%8F%A3%E6%88%96%E8%80%85%E5%85%B3%E9%97%AD%E9%98%B2%E7%81%AB%E5%A2%99"><span class="toc-number">1.7.</span> <span class="toc-text">开放3306端口或者关闭防火墙</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BF%98%E8%AE%B0%E5%AF%86%E7%A0%81%E6%97%B6%EF%BC%8C%E5%8F%AF%E7%94%A8%E5%A6%82%E4%B8%8B%E6%96%B9%E6%B3%95%E9%87%8D%E7%BD%AE"><span class="toc-number">1.8.</span> <span class="toc-text">忘记密码时，可用如下方法重置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#MySQL%E7%9B%B8%E5%85%B3%E6%93%8D%E4%BD%9C"><span class="toc-number">1.9.</span> <span class="toc-text">MySQL相关操作</span></a></li></ol></li></ol>
+		
+		</div>
+		
+		<h2 id="MySQL5-7在centos7上的安装步骤"><a href="#MySQL5-7在centos7上的安装步骤" class="headerlink" title="MySQL5.7在centos7上的安装步骤"></a>MySQL5.7在centos7上的安装步骤</h2><a id="more"></a>
+
+<h3 id="查看系统中是否已安装-MySQL-服务"><a href="#查看系统中是否已安装-MySQL-服务" class="headerlink" title="查看系统中是否已安装 MySQL 服务"></a>查看系统中是否已安装 MySQL 服务</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">rpm -qa | grep mysql</span><br><span class="line">或</span><br><span class="line">yum list installed | grep mysql</span><br></pre></td></tr></table></figure>
+<p>如果已安装则删除 MySQL 及其依赖的包：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum -y remove mysql-libs.x86_64</span><br></pre></td></tr></table></figure>
+<h3 id="下载MySQL的repo源"><a href="#下载MySQL的repo源" class="headerlink" title="下载MySQL的repo源"></a>下载MySQL的repo源</h3><p>CentOS7的yum源中默认是没有mysql的。为了解决这个问题，我们要先下载mysql的repo源。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget http:&#x2F;&#x2F;repo.mysql.com&#x2F;mysql57-community-release-el7-8.noarch.rpm</span><br></pre></td></tr></table></figure>
+<h3 id="安装mysql57-community-release-el7-8-noarch-rpm"><a href="#安装mysql57-community-release-el7-8-noarch-rpm" class="headerlink" title="安装mysql57-community-release-el7-8.noarch.rpm"></a>安装mysql57-community-release-el7-8.noarch.rpm</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rpm -ivh mysql57-community-release-el7-8.noarch.rpm</span><br></pre></td></tr></table></figure>
+<p>安装 MySQL</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install mysql-server</span><br></pre></td></tr></table></figure>
+<p>遇到疑问的地方，一路 Y 下去即可</p>
+<h3 id="重启mysql服务并得到随机密码"><a href="#重启mysql服务并得到随机密码" class="headerlink" title="重启mysql服务并得到随机密码"></a>重启mysql服务并得到随机密码</h3><p>安装完毕后，在  /var/log/mysqld.log 文件中会自动生成一个随机的密码，网上有些教程在这里没有重启mysql服务而直接去得随机密码，但是我试了得不到随机密码，重启mysql服务器就得到了</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">service mysqld restart  #重启mysql服务</span><br><span class="line">grep &quot;password&quot; &#x2F;var&#x2F;log&#x2F;mysqld.log    &#x2F;&#x2F;得到随机密码</span><br></pre></td></tr></table></figure>
+<h3 id="登录到-MySQL-服务端并更新用户-root-的密码"><a href="#登录到-MySQL-服务端并更新用户-root-的密码" class="headerlink" title="登录到 MySQL 服务端并更新用户 root 的密码"></a>登录到 MySQL 服务端并更新用户 root 的密码</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mysql -u root -p随机密码   #打印出 MySQL 的版本即表明已登录；</span><br><span class="line">mysql&gt; set password &#x3D; password(&#39;新密码&#39;);   #在mysql控制台输入</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>由于 MySQL5.7 采用了密码强度验证插件 validate_password，设置简单的密码可能会如下错误<br>ERROR 1819 (HY000): Your password does not satisfy the current policy requirements<br>故此我们需要设置一个有一定强度的密码，如果不想设置难度大的密码，可进行如下设置<br>首先，修改validate_password_policy参数的值</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; set global validate_password_policy&#x3D;0;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>validate_password_policy有以下取值：<br>Policy        |Tests Performed<br>0 or LOW      |Length<br>1 or MEDIUM   |Length; numeric, lowercase/uppercase, and special characters<br>2 or STRONG   |Length; numeric, lowercase/uppercase, and special characters; dictionary file<br>这样，判断密码的标准就基于密码的长度了。这个由validate_password_length参数来决定。<br>validate_password_length最小值为4</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; set global validate_password_length&#x3D;4;</span><br></pre></td></tr></table></figure>
+<h3 id="设置MySQL远程访问"><a href="#设置MySQL远程访问" class="headerlink" title="设置MySQL远程访问"></a>设置MySQL远程访问</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; grant all privileges on *.* to root@&quot;%&quot; identified by &quot;新密码&quot;;          &#x2F;&#x2F;设置用户 root 可以在任意 IP 下被访问：</span><br><span class="line">mysql&gt; grant all privileges on *.* to root@&quot;localhost&quot; identified by &quot;新密码&quot;;  &#x2F;&#x2F;设置用户 root 可以在本地被访问：</span><br><span class="line">mysql&gt; flush privileges;    #刷新权限使之生效：</span><br></pre></td></tr></table></figure>
+<h3 id="开放3306端口或者关闭防火墙"><a href="#开放3306端口或者关闭防火墙" class="headerlink" title="开放3306端口或者关闭防火墙"></a>开放3306端口或者关闭防火墙</h3><p>开通端口：centos7跟以前相比使用的是Firewalld防火墙管理工具，不再是iptables<br>Firewalld增加端口的命令是：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">firewall-cmd --zone&#x3D;public --add-port&#x3D;3306&#x2F;tcp --permanent    &#x2F;&#x2F;permanent永久生效，没有此参数重启后失效</span><br><span class="line">systemctl restart firewall                    &#x2F;&#x2F;重启防火墙</span><br></pre></td></tr></table></figure>
+<p>或者关闭防火墙</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl stop firewalld</span><br></pre></td></tr></table></figure>
+<h3 id="忘记密码时，可用如下方法重置"><a href="#忘记密码时，可用如下方法重置" class="headerlink" title="忘记密码时，可用如下方法重置"></a>忘记密码时，可用如下方法重置</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># service mysqld stop</span><br><span class="line"># mysqld_safe --user&#x3D;root --skip-grant-tables --skip-networking &amp;</span><br><span class="line"># mysql -u root </span><br><span class="line">mysql&gt; use mysql;</span><br><span class="line">mysql&gt; update user set password&#x3D;password(&quot;new_password&quot;) where user&#x3D;&quot;root&quot;; </span><br><span class="line">mysql&gt; flush privileges;</span><br></pre></td></tr></table></figure>
+<h3 id="MySQL相关操作"><a href="#MySQL相关操作" class="headerlink" title="MySQL相关操作"></a>MySQL相关操作</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">service mysqld start    &#x2F;&#x2F;启动 MySQL 服务</span><br><span class="line">service mysqld stop     &#x2F;&#x2F;关闭 MySQL 服务</span><br><span class="line">service mysqld restart  &#x2F;&#x2F;重启 MySQL 服务</span><br><span class="line">service mysqld status   &#x2F;&#x2F;查看 MySQL 的状态</span><br></pre></td></tr></table></figure>  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/linux/">linux</a><a href="/tags/centos/">centos</a><a href="/tags/mysql/">mysql</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://github.com/dxysun/2017/12/26/mysqlForCentos7/" data-title="CentOS7 上安装 MySQL5.7 | 迎着朝阳的博客" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2017/12/27/javaAndMeavn/" title="java和maven的环境变量">
+  <strong>上一篇：</strong><br/>
+  <span>
+  java和maven的环境变量</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2017/12/26/checkLinuxVersion/"  title="查看Linux版本系统信息方法汇总">
+ <strong>下一篇：</strong><br/> 
+ <span>查看Linux版本系统信息方法汇总
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#MySQL5-7%E5%9C%A8centos7%E4%B8%8A%E7%9A%84%E5%AE%89%E8%A3%85%E6%AD%A5%E9%AA%A4"><span class="toc-number">1.</span> <span class="toc-text">MySQL5.7在centos7上的安装步骤</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8B%E7%B3%BB%E7%BB%9F%E4%B8%AD%E6%98%AF%E5%90%A6%E5%B7%B2%E5%AE%89%E8%A3%85-MySQL-%E6%9C%8D%E5%8A%A1"><span class="toc-number">1.1.</span> <span class="toc-text">查看系统中是否已安装 MySQL 服务</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%8B%E8%BD%BDMySQL%E7%9A%84repo%E6%BA%90"><span class="toc-number">1.2.</span> <span class="toc-text">下载MySQL的repo源</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E8%A3%85mysql57-community-release-el7-8-noarch-rpm"><span class="toc-number">1.3.</span> <span class="toc-text">安装mysql57-community-release-el7-8.noarch.rpm</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%87%8D%E5%90%AFmysql%E6%9C%8D%E5%8A%A1%E5%B9%B6%E5%BE%97%E5%88%B0%E9%9A%8F%E6%9C%BA%E5%AF%86%E7%A0%81"><span class="toc-number">1.4.</span> <span class="toc-text">重启mysql服务并得到随机密码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%99%BB%E5%BD%95%E5%88%B0-MySQL-%E6%9C%8D%E5%8A%A1%E7%AB%AF%E5%B9%B6%E6%9B%B4%E6%96%B0%E7%94%A8%E6%88%B7-root-%E7%9A%84%E5%AF%86%E7%A0%81"><span class="toc-number">1.5.</span> <span class="toc-text">登录到 MySQL 服务端并更新用户 root 的密码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AE%BE%E7%BD%AEMySQL%E8%BF%9C%E7%A8%8B%E8%AE%BF%E9%97%AE"><span class="toc-number">1.6.</span> <span class="toc-text">设置MySQL远程访问</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BC%80%E6%94%BE3306%E7%AB%AF%E5%8F%A3%E6%88%96%E8%80%85%E5%85%B3%E9%97%AD%E9%98%B2%E7%81%AB%E5%A2%99"><span class="toc-number">1.7.</span> <span class="toc-text">开放3306端口或者关闭防火墙</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BF%98%E8%AE%B0%E5%AF%86%E7%A0%81%E6%97%B6%EF%BC%8C%E5%8F%AF%E7%94%A8%E5%A6%82%E4%B8%8B%E6%96%B9%E6%B3%95%E9%87%8D%E7%BD%AE"><span class="toc-number">1.8.</span> <span class="toc-text">忘记密码时，可用如下方法重置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#MySQL%E7%9B%B8%E5%85%B3%E6%93%8D%E4%BD%9C"><span class="toc-number">1.9.</span> <span class="toc-text">MySQL相关操作</span></a></li></ol></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+
+  
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">Categories</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/spring官方文档/" title="spring官方文档">spring官方文档<sup>8</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>54</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/linux/" title="linux">linux<sup>34</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/centos/" title="centos">centos<sup>19</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/springboot/" title="springboot">springboot<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/ubuntu/" title="ubuntu">ubuntu<sup>9</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/hadoop/" title="hadoop">hadoop<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/spring/" title="spring">spring<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/nginx/" title="nginx">nginx<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/spark/" title="spark">spark<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/mybatis/" title="mybatis">mybatis<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/mysql/" title="mysql">mysql<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/算法/" title="算法">算法<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/git/" title="git">git<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/maven/" title="maven">maven<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/hdfs/" title="hdfs">hdfs<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/dubbo/" title="dubbo">dubbo<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/kafka/" title="kafka">kafka<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Hbase/" title="Hbase">Hbase<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/sql/" title="sql">sql<sup>2</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="http://majorkevin.xyz/blog/" target="_blank" title="朋友的博客">朋友的博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+  <div class="weiboshow">
+  <p class="asidetitle">Weibo</p>
+    <iframe width="100%" height="119" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=119&fansRow=2&ptype=1&speed=0&skin=9&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=&verifier=&dpc=1"></iframe>
+</div>
+
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> Hello ,I&#39;m dxysun. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2020 
+		
+		<a href="/about" target="_blank" title="dxysun">dxysun</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?e6d1f421bbc9962127a50488f9ed37d1";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

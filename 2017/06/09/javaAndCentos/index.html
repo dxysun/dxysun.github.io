@@ -1,0 +1,582 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>centos7下卸载自带的java安装jdk8 | 迎着朝阳的博客</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="dxysun">
+    
+
+    
+    <meta name="description" content="使用rpm命令查看系统已经安装的java123rpm -qa | grep java或者yum list installed | grep java   &#x2F;&#x2F;列举匹配已安装的java的软件包 得到结果 12345java-1.8.0-openjdk-headless-1.8.0.101-3.b13.el7_2.x86_64javapackages-tools-3.4.1-11.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="centos7下卸载自带的java安装jdk8">
+<meta property="og:url" content="https://github.com/dxysun/2017/06/09/javaAndCentos/index.html">
+<meta property="og:site_name" content="迎着朝阳的博客">
+<meta property="og:description" content="使用rpm命令查看系统已经安装的java123rpm -qa | grep java或者yum list installed | grep java   &#x2F;&#x2F;列举匹配已安装的java的软件包 得到结果 12345java-1.8.0-openjdk-headless-1.8.0.101-3.b13.el7_2.x86_64javapackages-tools-3.4.1-11.">
+<meta property="og:locale">
+<meta property="article:published_time" content="2017-06-09T14:47:07.000Z">
+<meta property="article:modified_time" content="2018-04-16T02:44:48.000Z">
+<meta property="article:author" content="dxysun">
+<meta property="article:tag" content="java">
+<meta property="article:tag" content="centos7">
+<meta name="twitter:card" content="summary">
+
+    
+    <link rel="alternative" href="/atom.xml" title="迎着朝阳的博客" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    
+<link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/%02.css">
+<link rel="stylesheet" href="/.css">
+
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="迎着朝阳的博客" title="迎着朝阳的博客"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="迎着朝阳的博客">迎着朝阳的博客</a></h1>
+				<h2 class="blog-motto"></h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">主页</a></li>
+					
+						<li><a href="/archives">归档</a></li>
+					
+						<li><a href="/about">关于</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:github.com/dxysun">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2017/06/09/javaAndCentos/" title="centos7下卸载自带的java安装jdk8" itemprop="url">centos7下卸载自带的java安装jdk8</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="dxysun" target="_blank" itemprop="author">dxysun</a>
+		
+  <p class="article-time">
+    <time datetime="2017-06-09T14:47:07.000Z" itemprop="datePublished"> Published 2017-06-09</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8rpm%E5%91%BD%E4%BB%A4%E6%9F%A5%E7%9C%8B%E7%B3%BB%E7%BB%9F%E5%B7%B2%E7%BB%8F%E5%AE%89%E8%A3%85%E7%9A%84java"><span class="toc-number">1.</span> <span class="toc-text">使用rpm命令查看系统已经安装的java</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8rpm%E5%91%BD%E4%BB%A4%E5%88%A0%E9%99%A4%E5%B7%B2%E5%AE%89%E8%A3%85%E7%9A%84java%E4%BE%9D%E8%B5%96"><span class="toc-number">2.</span> <span class="toc-text">使用rpm命令删除已安装的java依赖</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%86%8D%E6%AC%A1%E6%A3%80%E6%9F%A5java%E7%9B%B8%E5%85%B3%E4%BE%9D%E8%B5%96"><span class="toc-number">3.</span> <span class="toc-text">再次检查java相关依赖</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E8%A3%85JDK-%E4%BB%8B%E7%BB%8D%E4%B8%89%E7%A7%8D%E6%96%B9%E6%B3%95"><span class="toc-number">4.</span> <span class="toc-text">安装JDK(介绍三种方法)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%A9%E7%94%A8yum%E6%BA%90%E6%9D%A5%E5%AE%89%E8%A3%85jdk%EF%BC%88%E6%AD%A4%E6%96%B9%E6%B3%95%E4%B8%8D%E9%9C%80%E8%A6%81%E9%85%8D%E7%BD%AE%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%EF%BC%89"><span class="toc-number">4.1.</span> <span class="toc-text">利用yum源来安装jdk（此方法不需要配置环境变量）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%A8rpm%E5%AE%89%E8%A3%85jdk-%E5%8F%AF%E4%BB%A5%E4%BD%BF%E7%94%A8man-rpm%E5%91%BD%E4%BB%A4%E6%9F%A5%E7%9C%8Brpm%E7%9A%84%E5%B8%AE%E5%8A%A9%E6%96%87%E6%A1%A3"><span class="toc-number">4.2.</span> <span class="toc-text">用rpm安装jdk(可以使用man rpm命令查看rpm的帮助文档)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%89%8B%E5%8A%A8%E8%A7%A3%E5%8E%8BJDK%E7%9A%84%E5%8E%8B%E7%BC%A9%E5%8C%85%EF%BC%8C%E7%84%B6%E5%90%8E%E8%AE%BE%E7%BD%AE%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F"><span class="toc-number">4.3.</span> <span class="toc-text">手动解压JDK的压缩包，然后设置环境变量</span></a></li></ol></li></ol>
+		
+		</div>
+		
+		<h2 id="使用rpm命令查看系统已经安装的java"><a href="#使用rpm命令查看系统已经安装的java" class="headerlink" title="使用rpm命令查看系统已经安装的java"></a>使用rpm命令查看系统已经安装的java</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">rpm -qa | grep java</span><br><span class="line">或者</span><br><span class="line">yum list installed | grep java   &#x2F;&#x2F;列举匹配已安装的java的软件包</span><br></pre></td></tr></table></figure>
+<p>得到结果</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">java-1.8.0-openjdk-headless-1.8.0.101-3.b13.el7_2.x86_64</span><br><span class="line">javapackages-tools-3.4.1-11.el7.noarch</span><br><span class="line">tzdata-java-2016f-1.el7.noarch</span><br><span class="line">java-1.8.0-openjdk-1.8.0.101-3.b13.el7_2.x86_64</span><br><span class="line">Python-javapackages-3.4.1-11.el7.noarch</span><br></pre></td></tr></table></figure>
+<a id="more"></a>
+<h2 id="使用rpm命令删除已安装的java依赖"><a href="#使用rpm命令删除已安装的java依赖" class="headerlink" title="使用rpm命令删除已安装的java依赖"></a>使用rpm命令删除已安装的java依赖</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">rpm -e --nodeps Java-1.8.0-openjdk-1.8.0.101-3.b13.el7_2.x86_64</span><br><span class="line">rpm -e --nodeps java-1.8.0-openjdk-headless-1.8.0.101-3.b13.el7_2.x86_64</span><br><span class="line">或者</span><br><span class="line">yum -y remove java-1.8.0-openjdk*</span><br></pre></td></tr></table></figure>
+<h2 id="再次检查java相关依赖"><a href="#再次检查java相关依赖" class="headerlink" title="再次检查java相关依赖"></a>再次检查java相关依赖</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">rpm -qa | grep java</span><br><span class="line">java -version</span><br></pre></td></tr></table></figure>
+<h2 id="安装JDK-介绍三种方法"><a href="#安装JDK-介绍三种方法" class="headerlink" title="安装JDK(介绍三种方法)"></a>安装JDK(介绍三种方法)</h2><h3 id="利用yum源来安装jdk（此方法不需要配置环境变量）"><a href="#利用yum源来安装jdk（此方法不需要配置环境变量）" class="headerlink" title="利用yum源来安装jdk（此方法不需要配置环境变量）"></a>利用yum源来安装jdk（此方法不需要配置环境变量）</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum -y install java-1.8.0-openjdk*</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>安装完之后，默认的安装目录是在: /usr/lib/jvm/java-1.8.0-openjdk-1.8.0.151-1.b12.el7_4.x86_64</p>
+</blockquote>
+<h3 id="用rpm安装jdk-可以使用man-rpm命令查看rpm的帮助文档"><a href="#用rpm安装jdk-可以使用man-rpm命令查看rpm的帮助文档" class="headerlink" title="用rpm安装jdk(可以使用man rpm命令查看rpm的帮助文档)"></a>用rpm安装jdk(可以使用man rpm命令查看rpm的帮助文档)</h3><p>使用Xftp将下载好的jdk-8u152-linux-x64.rpm上传到CentOs上去</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rpm -ivh jdk-8u152-linux-x64.rpm</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>默认安装在/usr/java目录下，不用配置环境变量</p>
+</blockquote>
+<h3 id="手动解压JDK的压缩包，然后设置环境变量"><a href="#手动解压JDK的压缩包，然后设置环境变量" class="headerlink" title="手动解压JDK的压缩包，然后设置环境变量"></a>手动解压JDK的压缩包，然后设置环境变量</h3><p>先将之前使用rpm方式安装的jdk卸载掉(如果没有安装过可跳过此步骤)<br>查询之前安装的jdk名称：rpm -qa | grep jdk<br>卸载jdk：rpm -e –nodeps jdk1.8    (此处也可以使用全名jdk1.8-1.8.0_152-fcs.x86_64)</p>
+<p>将jdk1.8.0_152.tar.gz上传到服务器<br>解压缩包到/usr/java中</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tar  -zxvf jdk1.8.0_152.tar.gz -C &#x2F;usr&#x2F;java</span><br></pre></td></tr></table></figure>
+<p>设置环境变量</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim &#x2F;etc&#x2F;profile </span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>注：进入profile 之后按 i 键进行编辑，Esc 键进入命令模式输出 :wq! 保存并退出</p>
+</blockquote>
+<p>写入以下配置</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">#set java environment</span><br><span class="line">JAVA_HOME&#x3D;&#x2F;usr&#x2F;java&#x2F;jdk1.8.0_152</span><br><span class="line">JRE_HOME&#x3D;$JAVA_HOME&#x2F;jre</span><br><span class="line">PATH&#x3D;$PATH:$JAVA_HOME&#x2F;bin:$JRE_HOME&#x2F;bin</span><br><span class="line">CLASSPATH&#x3D;.:$JAVA_HOME&#x2F;lib&#x2F;dt.jar:$JAVA_HOME&#x2F;lib&#x2F;tools.jar:$JRE_HOME&#x2F;lib</span><br><span class="line">export JAVA_HOME JRE_HOME PATH CLASSPATH</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>注释：<br>JAVA_HOME指明JDK安装路径，就是刚才安装时所选择的路径，此路径下包括lib，bin，jre等文件夹（tomcat，Eclipse的运行都需要依靠此变量）。<br>CLASSPATH为java加载类(class or lib)路径，只有类在classpath中，java命令才能识别，设：.:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar:$JRE_HOME/lib。CLASSPATH变量值中的.表示当前目录<br>PATH使得系统可以在任何路径下识别java命令，设为：$JAVA_HOME/bin:$JRE_HOME/bin。<br>特别注意：环境变量值的结尾没有任何符号，不同值之间用:隔开（windows中用;）</p>
+</blockquote>
+<p>执行下面命令让profile生效</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">source &#x2F;etc&#x2F;profile</span><br></pre></td></tr></table></figure>
+<p>检查是否安装成功</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java -version</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>注：如果出现jdk版本信息便表示成功</p>
+</blockquote>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/java/">java</a><a href="/tags/centos7/">centos7</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://github.com/dxysun/2017/06/09/javaAndCentos/" data-title="centos7下卸载自带的java安装jdk8 | 迎着朝阳的博客" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2017/06/09/centosForInstallJava/" title="centos7下卸载自带的java安装jdk8">
+  <strong>上一篇：</strong><br/>
+  <span>
+  centos7下卸载自带的java安装jdk8</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2017/06/09/centosNginx/"  title="centos7下安装nginx">
+ <strong>下一篇：</strong><br/> 
+ <span>centos7下安装nginx
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8rpm%E5%91%BD%E4%BB%A4%E6%9F%A5%E7%9C%8B%E7%B3%BB%E7%BB%9F%E5%B7%B2%E7%BB%8F%E5%AE%89%E8%A3%85%E7%9A%84java"><span class="toc-number">1.</span> <span class="toc-text">使用rpm命令查看系统已经安装的java</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8rpm%E5%91%BD%E4%BB%A4%E5%88%A0%E9%99%A4%E5%B7%B2%E5%AE%89%E8%A3%85%E7%9A%84java%E4%BE%9D%E8%B5%96"><span class="toc-number">2.</span> <span class="toc-text">使用rpm命令删除已安装的java依赖</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%86%8D%E6%AC%A1%E6%A3%80%E6%9F%A5java%E7%9B%B8%E5%85%B3%E4%BE%9D%E8%B5%96"><span class="toc-number">3.</span> <span class="toc-text">再次检查java相关依赖</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E8%A3%85JDK-%E4%BB%8B%E7%BB%8D%E4%B8%89%E7%A7%8D%E6%96%B9%E6%B3%95"><span class="toc-number">4.</span> <span class="toc-text">安装JDK(介绍三种方法)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%A9%E7%94%A8yum%E6%BA%90%E6%9D%A5%E5%AE%89%E8%A3%85jdk%EF%BC%88%E6%AD%A4%E6%96%B9%E6%B3%95%E4%B8%8D%E9%9C%80%E8%A6%81%E9%85%8D%E7%BD%AE%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%EF%BC%89"><span class="toc-number">4.1.</span> <span class="toc-text">利用yum源来安装jdk（此方法不需要配置环境变量）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%A8rpm%E5%AE%89%E8%A3%85jdk-%E5%8F%AF%E4%BB%A5%E4%BD%BF%E7%94%A8man-rpm%E5%91%BD%E4%BB%A4%E6%9F%A5%E7%9C%8Brpm%E7%9A%84%E5%B8%AE%E5%8A%A9%E6%96%87%E6%A1%A3"><span class="toc-number">4.2.</span> <span class="toc-text">用rpm安装jdk(可以使用man rpm命令查看rpm的帮助文档)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%89%8B%E5%8A%A8%E8%A7%A3%E5%8E%8BJDK%E7%9A%84%E5%8E%8B%E7%BC%A9%E5%8C%85%EF%BC%8C%E7%84%B6%E5%90%8E%E8%AE%BE%E7%BD%AE%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F"><span class="toc-number">4.3.</span> <span class="toc-text">手动解压JDK的压缩包，然后设置环境变量</span></a></li></ol></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+
+  
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">Categories</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/spring官方文档/" title="spring官方文档">spring官方文档<sup>8</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>54</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/linux/" title="linux">linux<sup>34</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/centos/" title="centos">centos<sup>19</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/springboot/" title="springboot">springboot<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/ubuntu/" title="ubuntu">ubuntu<sup>9</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/hadoop/" title="hadoop">hadoop<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/spring/" title="spring">spring<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/nginx/" title="nginx">nginx<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/spark/" title="spark">spark<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/mybatis/" title="mybatis">mybatis<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/mysql/" title="mysql">mysql<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/算法/" title="算法">算法<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/git/" title="git">git<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/maven/" title="maven">maven<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/hdfs/" title="hdfs">hdfs<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/dubbo/" title="dubbo">dubbo<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/kafka/" title="kafka">kafka<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Hbase/" title="Hbase">Hbase<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/sql/" title="sql">sql<sup>2</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="http://majorkevin.xyz/blog/" target="_blank" title="朋友的博客">朋友的博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+  <div class="weiboshow">
+  <p class="asidetitle">Weibo</p>
+    <iframe width="100%" height="119" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=119&fansRow=2&ptype=1&speed=0&skin=9&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=&verifier=&dpc=1"></iframe>
+</div>
+
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> Hello ,I&#39;m dxysun. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2020 
+		
+		<a href="/about" target="_blank" title="dxysun">dxysun</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?e6d1f421bbc9962127a50488f9ed37d1";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

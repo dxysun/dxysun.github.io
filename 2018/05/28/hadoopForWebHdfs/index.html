@@ -1,0 +1,590 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>Hadoop WebHDFS设置和使用 | 迎着朝阳的博客</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="dxysun">
+    
+
+    
+    <meta name="description" content="WebHdfsWeb HDFS是HortonWorks开发的，然后捐给了Apache,是HDFS的REST API。WebHDFS是一个内置HDFS的REST API。 它不需要任何进一步的安装，但提供的文件访问支持较简单，如果集群未做HA,那么是优先选择，其中默认50070是http服务的端口。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hadoop WebHDFS设置和使用">
+<meta property="og:url" content="https://github.com/dxysun/2018/05/28/hadoopForWebHdfs/index.html">
+<meta property="og:site_name" content="迎着朝阳的博客">
+<meta property="og:description" content="WebHdfsWeb HDFS是HortonWorks开发的，然后捐给了Apache,是HDFS的REST API。WebHDFS是一个内置HDFS的REST API。 它不需要任何进一步的安装，但提供的文件访问支持较简单，如果集群未做HA,那么是优先选择，其中默认50070是http服务的端口。">
+<meta property="og:locale">
+<meta property="article:published_time" content="2018-05-28T11:04:30.000Z">
+<meta property="article:modified_time" content="2018-05-28T11:36:44.000Z">
+<meta property="article:author" content="dxysun">
+<meta property="article:tag" content="hadoop">
+<meta property="article:tag" content="hdfs">
+<meta name="twitter:card" content="summary">
+
+    
+    <link rel="alternative" href="/atom.xml" title="迎着朝阳的博客" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    
+<link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/%02.css">
+<link rel="stylesheet" href="/.css">
+
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="迎着朝阳的博客" title="迎着朝阳的博客"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="迎着朝阳的博客">迎着朝阳的博客</a></h1>
+				<h2 class="blog-motto"></h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">主页</a></li>
+					
+						<li><a href="/archives">归档</a></li>
+					
+						<li><a href="/about">关于</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:github.com/dxysun">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/05/28/hadoopForWebHdfs/" title="Hadoop WebHDFS设置和使用" itemprop="url">Hadoop WebHDFS设置和使用</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="dxysun" target="_blank" itemprop="author">dxysun</a>
+		
+  <p class="article-time">
+    <time datetime="2018-05-28T11:04:30.000Z" itemprop="datePublished"> Published 2018-05-28</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#WebHdfs"><span class="toc-number">1.</span> <span class="toc-text">WebHdfs</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E8%A3%85"><span class="toc-number">1.1.</span> <span class="toc-text">安装</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE"><span class="toc-number">1.2.</span> <span class="toc-text">配置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8"><span class="toc-number">1.3.</span> <span class="toc-text">使用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8B%E6%96%87%E4%BB%B6%E7%8A%B6%E6%80%81"><span class="toc-number">1.3.1.</span> <span class="toc-text">查看文件状态</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8B%E6%96%87%E4%BB%B6%E5%A4%B9%E6%8F%8F%E8%BF%B0"><span class="toc-number">1.3.2.</span> <span class="toc-text">查看文件夹描述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%97%E5%87%BA%E6%96%87%E4%BB%B6%E5%A4%B9%E4%B8%8B%E7%9A%84%E6%96%87%E4%BB%B6"><span class="toc-number">1.3.3.</span> <span class="toc-text">列出文件夹下的文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AF%BB%E5%8F%96hdfs%E4%B8%8A%E7%9A%84%E6%96%87%E4%BB%B6"><span class="toc-number">1.3.4.</span> <span class="toc-text">读取hdfs上的文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E6%96%87%E4%BB%B6%E5%A4%B9"><span class="toc-number">1.3.5.</span> <span class="toc-text">创建文件夹</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%A0%E9%99%A4%E6%96%87%E4%BB%B6%E5%A4%B9%E6%88%96%E6%96%87%E4%BB%B6"><span class="toc-number">1.3.6.</span> <span class="toc-text">删除文件夹或文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E5%B9%B6%E5%86%99%E5%85%A5%E6%96%87%E4%BB%B6"><span class="toc-number">1.3.7.</span> <span class="toc-text">创建并写入文件</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#HttpFS-Hadoop-HDFS-over-HTTP"><span class="toc-number">2.</span> <span class="toc-text">HttpFS(Hadoop HDFS over HTTP)</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E8%A3%85-1"><span class="toc-number">2.1.</span> <span class="toc-text">安装</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE-1"><span class="toc-number">2.2.</span> <span class="toc-text">配置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#hdfs-site-xml"><span class="toc-number">2.3.</span> <span class="toc-text">hdfs-site.xml</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%90%AF%E5%8A%A8"><span class="toc-number">2.4.</span> <span class="toc-text">启动</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8-1"><span class="toc-number">2.5.</span> <span class="toc-text">使用</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%A4%E8%80%85%E6%AF%94%E8%BE%83"><span class="toc-number">3.</span> <span class="toc-text">两者比较</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%80%89%E6%8B%A9"><span class="toc-number">4.</span> <span class="toc-text">选择</span></a></li></ol>
+		
+		</div>
+		
+		<h1 id="WebHdfs"><a href="#WebHdfs" class="headerlink" title="WebHdfs"></a>WebHdfs</h1><p>Web HDFS是HortonWorks开发的，然后捐给了Apache,是HDFS的REST API。WebHDFS是一个内置HDFS的REST API。 它不需要任何进一步的安装，但提供的文件访问支持较简单，如果集群未做HA,那么是优先选择，其中默认50070是http服务的端口。</p>
+<a id="more"></a>
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p>WebHDFS服务内置在HDFS中，不需额外安装、启动。</p>
+<h2 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h2><p>需要在hdfs-site.xml打开WebHDFS开关，此开关默认打开。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;property&gt;</span><br><span class="line">    &lt;name&gt;dfs.webhdfs.enabled&lt;&#x2F;name&gt;</span><br><span class="line">    &lt;value&gt;true&lt;&#x2F;value&gt;</span><br><span class="line">&lt;&#x2F;property&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><p>连接NameNode的50070端口进行文件操作。<br>下面介绍一下常用操作<br>首先设置url和header，需要使用到Python的request库</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">host &#x3D; &#39;http:&#x2F;&#x2F;host:50070&#x2F;webhdfs&#x2F;v1&#39;</span><br><span class="line">headers &#x3D; &#123;&#39;Content-Type&#39;: &#39;application&#x2F;json&#39;&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>在REST API中，前缀/webhdfs/v1插入到路径中(官方规定)，并在结尾处追加查询。因此，相应的HTTP URL具有以下格式<br>http://<HOST>:<HTTP_PORT>/webhdfs/v1/<PATH>?op=…</p>
+</blockquote>
+<h3 id="查看文件状态"><a href="#查看文件状态" class="headerlink" title="查看文件状态"></a>查看文件状态</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">def status_file():</span><br><span class="line">    r &#x3D; requests.get(host + &#39;&#x2F;mycode?op&#x3D;GETFILESTATUS&#39;, headers&#x3D;headers)</span><br><span class="line">    print(r.json())</span><br></pre></td></tr></table></figure>
+<h3 id="查看文件夹描述"><a href="#查看文件夹描述" class="headerlink" title="查看文件夹描述"></a>查看文件夹描述</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">def summary_directory():</span><br><span class="line">    r &#x3D; requests.get(host + &#39;&#x2F;result&#x2F;iris.text?op&#x3D;GETCONTENTSUMMARY&#39;, headers&#x3D;headers)</span><br><span class="line">    print(r.json())</span><br></pre></td></tr></table></figure>
+<h3 id="列出文件夹下的文件"><a href="#列出文件夹下的文件" class="headerlink" title="列出文件夹下的文件"></a>列出文件夹下的文件</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">def list_file():</span><br><span class="line">    r &#x3D; requests.get(host + &#39;&#x2F;result&#x2F;iris.text?op&#x3D;LISTSTATUS&#39;, headers&#x3D;headers)</span><br><span class="line">    print(r.json())</span><br></pre></td></tr></table></figure>
+<h3 id="读取hdfs上的文件"><a href="#读取hdfs上的文件" class="headerlink" title="读取hdfs上的文件"></a>读取hdfs上的文件</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">def open_read_file(path):</span><br><span class="line">    r &#x3D; requests.get(host + &#39;&#x2F;&#39;+path+&#39;&#x2F;?op&#x3D;OPEN&#39;, headers&#x3D;headers)</span><br><span class="line">    print(r)</span><br><span class="line">    f &#x3D; open(&quot;part_file&quot;, &quot;wb&quot;)</span><br><span class="line">    s &#x3D; &quot;&quot;</span><br><span class="line">    for chunk in r.iter_content(chunk_size&#x3D;512):</span><br><span class="line">        if chunk:</span><br><span class="line">            f.write(chunk)</span><br><span class="line">            s +&#x3D; str(chunk)</span><br><span class="line">    print(s)</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>读取文件的操作WebHdfs是将文件下载下来之后在本地进行查看的</p>
+</blockquote>
+<h3 id="创建文件夹"><a href="#创建文件夹" class="headerlink" title="创建文件夹"></a>创建文件夹</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">def make_directory():</span><br><span class="line">    r &#x3D; requests.put(host + &#39;&#x2F;test?op&#x3D;MKDIRS&amp;user.name&#x3D;spark&#39;, headers&#x3D;headers)</span><br><span class="line">    print(r.json())</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>该方法为put方法，注意设置user.name参数，不然会报权限不够的错误</p>
+</blockquote>
+<h3 id="删除文件夹或文件"><a href="#删除文件夹或文件" class="headerlink" title="删除文件夹或文件"></a>删除文件夹或文件</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">def delete_file_directory(path):</span><br><span class="line">    r &#x3D; requests.delete(host + &#39;&#x2F;&#39;+path+&#39;?op&#x3D;DELETE&amp;user.name&#x3D;spark&#39;, headers&#x3D;headers)</span><br><span class="line">    print(r.json())</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>此方法为delete方法</p>
+</blockquote>
+<h3 id="创建并写入文件"><a href="#创建并写入文件" class="headerlink" title="创建并写入文件"></a>创建并写入文件</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">def create_write_file():</span><br><span class="line">    files &#x3D; &#123;&#39;file&#39;: open(&#39;test.txt&#39;, &#39;rb&#39;)&#125;</span><br><span class="line">    r &#x3D; requests.put(host + &#39;&#x2F;filetest3?op&#x3D;CREATE&amp;user.name&#x3D;spark&#39;, headers&#x3D;headers, files&#x3D;files)</span><br><span class="line">    print(r.headers[&#39;location&#39;])</span><br><span class="line">    print(r.text)</span><br><span class="line">    print(r.content)</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>该方法为put方法，注意设置user.name参数，不然会报权限不够的错误，r.headers[‘location’]返回文件存储在hdfs上的位置</p>
+</blockquote>
+<p>更多详细操作参见<a target="_blank" rel="noopener" href="http://hadoop.apache.org/docs/r2.7.5/hadoop-project-dist/hadoop-hdfs/WebHDFS.html">官方文档</a></p>
+<p>还有另一种方法通过web api访问hdfs，具体怎样使用我还没试，在这里也记录一下，以便日后测试使用</p>
+<h1 id="HttpFS-Hadoop-HDFS-over-HTTP"><a href="#HttpFS-Hadoop-HDFS-over-HTTP" class="headerlink" title="HttpFS(Hadoop HDFS over HTTP)"></a>HttpFS(Hadoop HDFS over HTTP)</h1><p>HttpFS是Cloudera开发的，也捐给了Apache。HttpFS是HDFS一个独立的服务，若使用需要手动安装（CDH中安装HDFS时将HttpFS勾选上即可）。提供的文件访问支持较好，如果集群做了HA，那么HttpFS Server将不是它的瓶颈，性能更好！是http服务的优先选择。默认提供服务的端口是14000.</p>
+<h2 id="安装-1"><a href="#安装-1" class="headerlink" title="安装"></a>安装</h2><p>Hadoop自带，不需要额外安装。默认服务未启动，需要手工启动。</p>
+<h2 id="配置-1"><a href="#配置-1" class="headerlink" title="配置"></a>配置</h2><p>httpfs-site.xml<br>有配置文件httpfs-site.xml，此配置文件一般保存默认即可，无需修改。</p>
+<h2 id="hdfs-site-xml"><a href="#hdfs-site-xml" class="headerlink" title="hdfs-site.xml"></a>hdfs-site.xml</h2><p>需要增加如下配置，其他两个参数名称中的root代表的是启动hdfs服务的OS用户，应以实际的用户名称代替。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&lt;property&gt;  </span><br><span class="line">    &lt;name&gt;hadoop.proxyuser.root.hosts&lt;&#x2F;name&gt;  </span><br><span class="line">    &lt;value&gt;*&lt;&#x2F;value&gt;  </span><br><span class="line">&lt;&#x2F;property&gt;  </span><br><span class="line">&lt;property&gt;  </span><br><span class="line">&lt;name&gt;hadoop.proxyuser.root.groups&lt;&#x2F;name&gt;  </span><br><span class="line">    &lt;value&gt;*&lt;&#x2F;value&gt;  </span><br><span class="line">&lt;&#x2F;property&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="启动"><a href="#启动" class="headerlink" title="启动"></a>启动</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sbin&#x2F;httpfs.sh start</span><br><span class="line">sbin&#x2F;httpfs.sh stop</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>启动后，默认监听14000端口</p>
+</blockquote>
+<h2 id="使用-1"><a href="#使用-1" class="headerlink" title="使用"></a>使用</h2><p>详细使用参考<a target="_blank" rel="noopener" href="http://hadoop.apache.org/docs/r2.7.5/hadoop-hdfs-httpfs/index.html">官方文档</a></p>
+<h1 id="两者比较"><a href="#两者比较" class="headerlink" title="两者比较"></a>两者比较</h1><p>然两者都是HDFS的REST API，但稍有差异，具体差异为当client请求某文件时，WebHDFS会将其重定向到该资源所在的datanode，而HttpFs相等于一个“网关”，所有的数据先传输到该httpfs server，再由该httpfs server传输到client。</p>
+<h1 id="选择"><a href="#选择" class="headerlink" title="选择"></a>选择</h1><p>一般来说两个都可以使用，而且差别不大。但若集群配置了HA，那就最好使用HttpFS了，因为namenode的地址一直在变化，我们是不可能也随时修改脚本里的请求地址的，故在这种情况下直接写HttpFS Server的地址好了。</p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/hadoop/">hadoop</a><a href="/tags/hdfs/">hdfs</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://github.com/dxysun/2018/05/28/hadoopForWebHdfs/" data-title="Hadoop WebHDFS设置和使用 | 迎着朝阳的博客" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2018/05/29/javaForGC/" title="java备忘录之垃圾回收">
+  <strong>上一篇：</strong><br/>
+  <span>
+  java备忘录之垃圾回收</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/05/22/springBootForRestTemplate/"  title="RestTemplate使用总结">
+ <strong>下一篇：</strong><br/> 
+ <span>RestTemplate使用总结
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#WebHdfs"><span class="toc-number">1.</span> <span class="toc-text">WebHdfs</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E8%A3%85"><span class="toc-number">1.1.</span> <span class="toc-text">安装</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE"><span class="toc-number">1.2.</span> <span class="toc-text">配置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8"><span class="toc-number">1.3.</span> <span class="toc-text">使用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8B%E6%96%87%E4%BB%B6%E7%8A%B6%E6%80%81"><span class="toc-number">1.3.1.</span> <span class="toc-text">查看文件状态</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8B%E6%96%87%E4%BB%B6%E5%A4%B9%E6%8F%8F%E8%BF%B0"><span class="toc-number">1.3.2.</span> <span class="toc-text">查看文件夹描述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%97%E5%87%BA%E6%96%87%E4%BB%B6%E5%A4%B9%E4%B8%8B%E7%9A%84%E6%96%87%E4%BB%B6"><span class="toc-number">1.3.3.</span> <span class="toc-text">列出文件夹下的文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AF%BB%E5%8F%96hdfs%E4%B8%8A%E7%9A%84%E6%96%87%E4%BB%B6"><span class="toc-number">1.3.4.</span> <span class="toc-text">读取hdfs上的文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E6%96%87%E4%BB%B6%E5%A4%B9"><span class="toc-number">1.3.5.</span> <span class="toc-text">创建文件夹</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%A0%E9%99%A4%E6%96%87%E4%BB%B6%E5%A4%B9%E6%88%96%E6%96%87%E4%BB%B6"><span class="toc-number">1.3.6.</span> <span class="toc-text">删除文件夹或文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E5%B9%B6%E5%86%99%E5%85%A5%E6%96%87%E4%BB%B6"><span class="toc-number">1.3.7.</span> <span class="toc-text">创建并写入文件</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#HttpFS-Hadoop-HDFS-over-HTTP"><span class="toc-number">2.</span> <span class="toc-text">HttpFS(Hadoop HDFS over HTTP)</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E8%A3%85-1"><span class="toc-number">2.1.</span> <span class="toc-text">安装</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE-1"><span class="toc-number">2.2.</span> <span class="toc-text">配置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#hdfs-site-xml"><span class="toc-number">2.3.</span> <span class="toc-text">hdfs-site.xml</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%90%AF%E5%8A%A8"><span class="toc-number">2.4.</span> <span class="toc-text">启动</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8-1"><span class="toc-number">2.5.</span> <span class="toc-text">使用</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%A4%E8%80%85%E6%AF%94%E8%BE%83"><span class="toc-number">3.</span> <span class="toc-text">两者比较</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%80%89%E6%8B%A9"><span class="toc-number">4.</span> <span class="toc-text">选择</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+
+  
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">Categories</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/spring官方文档/" title="spring官方文档">spring官方文档<sup>8</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>54</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/linux/" title="linux">linux<sup>34</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/centos/" title="centos">centos<sup>19</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/springboot/" title="springboot">springboot<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/ubuntu/" title="ubuntu">ubuntu<sup>9</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/hadoop/" title="hadoop">hadoop<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/spring/" title="spring">spring<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/nginx/" title="nginx">nginx<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/spark/" title="spark">spark<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/mybatis/" title="mybatis">mybatis<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/mysql/" title="mysql">mysql<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/算法/" title="算法">算法<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/git/" title="git">git<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/maven/" title="maven">maven<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/hdfs/" title="hdfs">hdfs<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/dubbo/" title="dubbo">dubbo<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/kafka/" title="kafka">kafka<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Hbase/" title="Hbase">Hbase<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/sql/" title="sql">sql<sup>2</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="http://majorkevin.xyz/blog/" target="_blank" title="朋友的博客">朋友的博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+  <div class="weiboshow">
+  <p class="asidetitle">Weibo</p>
+    <iframe width="100%" height="119" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=119&fansRow=2&ptype=1&speed=0&skin=9&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=&verifier=&dpc=1"></iframe>
+</div>
+
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> Hello ,I&#39;m dxysun. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2020 
+		
+		<a href="/about" target="_blank" title="dxysun">dxysun</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?e6d1f421bbc9962127a50488f9ed37d1";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

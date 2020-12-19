@@ -1,0 +1,596 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>使用Python操作hdfs | 迎着朝阳的博客</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="dxysun">
+    
+
+    
+    <meta name="description" content="使用python的hdfs库操作hdfs">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用Python操作hdfs">
+<meta property="og:url" content="https://github.com/dxysun/2018/07/19/hadoopForPythonHdfs/index.html">
+<meta property="og:site_name" content="迎着朝阳的博客">
+<meta property="og:description" content="使用python的hdfs库操作hdfs">
+<meta property="og:locale">
+<meta property="article:published_time" content="2018-07-19T06:24:05.000Z">
+<meta property="article:modified_time" content="2018-09-12T10:27:28.000Z">
+<meta property="article:author" content="dxysun">
+<meta property="article:tag" content="python">
+<meta property="article:tag" content="hadoop">
+<meta property="article:tag" content="hdfs">
+<meta name="twitter:card" content="summary">
+
+    
+    <link rel="alternative" href="/atom.xml" title="迎着朝阳的博客" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    
+<link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/%02.css">
+<link rel="stylesheet" href="/.css">
+
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="迎着朝阳的博客" title="迎着朝阳的博客"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="迎着朝阳的博客">迎着朝阳的博客</a></h1>
+				<h2 class="blog-motto"></h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">主页</a></li>
+					
+						<li><a href="/archives">归档</a></li>
+					
+						<li><a href="/about">关于</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:github.com/dxysun">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/07/19/hadoopForPythonHdfs/" title="使用Python操作hdfs" itemprop="url">使用Python操作hdfs</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="dxysun" target="_blank" itemprop="author">dxysun</a>
+		
+  <p class="article-time">
+    <time datetime="2018-07-19T06:24:05.000Z" itemprop="datePublished"> Published 2018-07-19</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E8%A3%85"><span class="toc-number">1.</span> <span class="toc-text">安装</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AF%BC%E5%85%A5"><span class="toc-number">2.</span> <span class="toc-text">导入</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BB%BA%E7%AB%8B%E8%BF%9E%E6%8E%A5"><span class="toc-number">3.</span> <span class="toc-text">建立连接</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B8%B8%E8%A7%81%E9%94%99%E8%AF%AF"><span class="toc-number">4.</span> <span class="toc-text">常见错误</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B8%B8%E7%94%A8%E6%93%8D%E4%BD%9C"><span class="toc-number">5.</span> <span class="toc-text">常用操作</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%8E%B7%E5%8F%96%E6%96%87%E4%BB%B6%E4%BF%A1%E6%81%AF"><span class="toc-number">5.1.</span> <span class="toc-text">获取文件信息</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#list%E2%80%94%E2%80%94%E8%8E%B7%E5%8F%96%E6%8C%87%E5%AE%9A%E8%B7%AF%E5%BE%84%E7%9A%84%E5%AD%90%E7%9B%AE%E5%BD%95%E4%BF%A1%E6%81%AF"><span class="toc-number">5.2.</span> <span class="toc-text">list——获取指定路径的子目录信息</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#makedirs%E2%80%94%E2%80%94%E5%88%9B%E5%BB%BA%E7%9B%AE%E5%BD%95"><span class="toc-number">5.3.</span> <span class="toc-text">makedirs——创建目录</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#rename%E2%80%94%E9%87%8D%E5%91%BD%E5%90%8D"><span class="toc-number">5.4.</span> <span class="toc-text">rename—重命名</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#delete%E2%80%94%E5%88%A0%E9%99%A4"><span class="toc-number">5.5.</span> <span class="toc-text">delete—删除</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#upload%E2%80%94%E2%80%94%E4%B8%8A%E4%BC%A0%E6%95%B0%E6%8D%AE"><span class="toc-number">5.6.</span> <span class="toc-text">upload——上传数据</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#download%E2%80%94%E2%80%94%E4%B8%8B%E8%BD%BD"><span class="toc-number">5.7.</span> <span class="toc-text">download——下载</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#read%E2%80%94%E2%80%94%E8%AF%BB%E5%8F%96%E6%96%87%E4%BB%B6"><span class="toc-number">5.8.</span> <span class="toc-text">read——读取文件</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AE%80%E5%8D%95%E5%B0%81%E8%A3%85"><span class="toc-number">6.</span> <span class="toc-text">简单封装</span></a></li></ol>
+		
+		</div>
+		
+		<p>使用python的hdfs库操作hdfs</p>
+<a id="more"></a>
+<p><a target="_blank" rel="noopener" href="https://hdfscli.readthedocs.io/en/latest/index.html">官网</a></p>
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install hdfs</span><br></pre></td></tr></table></figure>
+<h2 id="导入"><a href="#导入" class="headerlink" title="导入"></a>导入</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> hdfs.client <span class="keyword">import</span> Client</span><br></pre></td></tr></table></figure>
+<h2 id="建立连接"><a href="#建立连接" class="headerlink" title="建立连接"></a>建立连接</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">client = Client(<span class="string">&quot;http://127.0.0.1:50070&quot;</span>, root=<span class="string">&quot;/&quot;</span>, timeout=<span class="number">100</span>, session=<span class="literal">False</span>)</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>参数说明：<br>classhdfs.client.Client(url, root=None, proxy=None, timeout=None, session=None)<br>url：ip：端口<br>root：指定的hdfs根目录<br>proxy：制定登陆的用户身份<br>timeout：设置的超时时间<br>seesion：requests.Session instance, used to emit all requests.</p>
+</blockquote>
+<h2 id="常见错误"><a href="#常见错误" class="headerlink" title="常见错误"></a>常见错误</h2><p>这里使用的是root用户登录，能看查看文件列表，但上传删除文件时会有以下错误</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hdfs.util.HdfsError: Permission denied: user&#x3D;dr.who, access&#x3D;WRITE, inode&#x3D;&quot;&#x2F;test&quot;:root:supergroup:drwxr-xr-x</span><br></pre></td></tr></table></figure>
+<p>解决办法是：在配置文件hdfs-site.xml中加入</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">name</span>&gt;</span>dfs.permissions<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">value</span>&gt;</span>false<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>重启集群即可</p>
+<p>如果报连接不上错误<br>改一下本机的hosts文件，把集群的主机名和ip都写入hosts文件中<br>如我的集群信息是master,slave1,salve2<br>在hosts文件添加如下信息</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">10.4.20.100 master</span><br><span class="line">10.4.20.101 slave1</span><br><span class="line">10.4.20.102 slave2</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>window的hosts文件在c:\windows\system32\drivers\etc文件夹下<br>linux的hosts文件在/etc/hosts</p>
+</blockquote>
+<h2 id="常用操作"><a href="#常用操作" class="headerlink" title="常用操作"></a>常用操作</h2><h3 id="获取文件信息"><a href="#获取文件信息" class="headerlink" title="获取文件信息"></a>获取文件信息</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">client.status(&quot;&#x2F;&quot;)</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>参数：status(hdfs_path, strict=True)<br>hdfs_path：就是hdfs路径<br>strict：设置为True时，如果hdfs_path路径不存在就会抛出异常，如果设置为False，如果路径为不存在，则返回None</p>
+</blockquote>
+<h3 id="list——获取指定路径的子目录信息"><a href="#list——获取指定路径的子目录信息" class="headerlink" title="list——获取指定路径的子目录信息"></a>list——获取指定路径的子目录信息</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">client.list(&quot;&#x2F;&quot;)</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>参数：list(hdfs_path, status=False)</p>
+</blockquote>
+<h3 id="makedirs——创建目录"><a href="#makedirs——创建目录" class="headerlink" title="makedirs——创建目录"></a>makedirs——创建目录</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">client.makedirs(&quot;&#x2F;test&quot;)</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>参数：makedirs(hdfs_path, permission=None)<br>permission：设置权限</p>
+</blockquote>
+<h3 id="rename—重命名"><a href="#rename—重命名" class="headerlink" title="rename—重命名"></a>rename—重命名</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">client.rename(&quot;&#x2F;test&quot;,&quot;&#x2F;new_name&quot;)</span><br></pre></td></tr></table></figure>
+<h3 id="delete—删除"><a href="#delete—删除" class="headerlink" title="delete—删除"></a>delete—删除</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">client.delete(&quot;&#x2F;new_name&quot;)</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>参数：delete(hdfs_path, recursive=False)<br>recursive：删除文件和其子目录，设置为False如果不存在或者删除一个不为空的文件，则会抛出异常，默认为False</p>
+</blockquote>
+<h3 id="upload——上传数据"><a href="#upload——上传数据" class="headerlink" title="upload——上传数据"></a>upload——上传数据</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">client.upload(&quot;&#x2F;test&quot;,&quot;&#x2F;opt&#x2F;bigdata&#x2F;hadoop&#x2F;NOTICE.txt&quot;)</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>参数：upload(hdfs_path, local_path, overwrite=False, n_threads=1, temp_dir=None, chunk_size=65536,progress=None, cleanup=True, **kwargs)<br>overwrite：是否是覆盖性上传文件<br>n_threads：启动的线程数目<br>temp_dir：当overwrite=true时，远程文件一旦存在，则会在上传完之后进行交换<br>chunk_size：文件上传的大小区间<br>progress：回调函数来跟踪进度，为每一chunk_size字节。它将传递两个参数，文件上传的路径和传输的字节数。一旦完成，-1将作为第二个参数<br>cleanup：如果在上传任何文件时发生错误，则删除该文件</p>
+</blockquote>
+<h3 id="download——下载"><a href="#download——下载" class="headerlink" title="download——下载"></a>download——下载</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">client.download(&quot;&#x2F;test&#x2F;NOTICE.txt&quot;,&quot;&#x2F;home&quot;)</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>参数：download(hdfs_path, local_path, overwrite=False, n_threads=1, temp_dir=None, **kwargs)<br>参考上传 upload</p>
+</blockquote>
+<h3 id="read——读取文件"><a href="#read——读取文件" class="headerlink" title="read——读取文件"></a>read——读取文件</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">with client.read(&quot;&#x2F;test&#x2F;NOTICE.txt&quot;) as reader:</span><br><span class="line">    print(reader)</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>参数：read(*args, **kwds)<br>hdfs_path：hdfs路径<br>offset：设置开始的字节位置<br>length：读取的长度（字节为单位）<br>buffer_size：用于传输数据的字节的缓冲区的大小。默认值设置在HDFS配置。<br>encoding：制定编码<br>chunk_size：如果设置为正数，上下文管理器将返回一个发生器产生的每一chunk_size字节而不是一个类似文件的对象<br>delimiter：如果设置，上下文管理器将返回一个发生器产生每次遇到分隔符。此参数要求指定的编码。<br>progress：回调函数来跟踪进度，为每一chunk_size字节（不可用，如果块大小不是指定）。它将传递两个参数，文件上传的路径和传输的字节数。称为一次与- 1作为第二个参数。</p>
+</blockquote>
+<h2 id="简单封装"><a href="#简单封装" class="headerlink" title="简单封装"></a>简单封装</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">#读取hdfs文件内容,将每行存入数组返回</span><br><span class="line">def read_hdfs_file(client,filename):</span><br><span class="line">    #with client.read(&#39;samples.csv&#39;, encoding&#x3D;&#39;utf-8&#39;, delimiter&#x3D;&#39;\n&#39;) as reader:</span><br><span class="line">    #  for line in reader:</span><br><span class="line">    #pass</span><br><span class="line">    lines &#x3D; []</span><br><span class="line">    with client.read(filename, encoding&#x3D;&#39;utf-8&#39;, delimiter&#x3D;&#39;\n&#39;) as reader:</span><br><span class="line">        for line in reader:</span><br><span class="line">            #pass</span><br><span class="line">            #print line.strip()</span><br><span class="line">            lines.append(line.strip())</span><br><span class="line">    return lines</span><br><span class="line">    </span><br><span class="line">#创建目录</span><br><span class="line">def mkdirs(client,hdfs_path) :</span><br><span class="line">    client.makedirs(hdfs_path)</span><br><span class="line"> </span><br><span class="line">#删除hdfs文件</span><br><span class="line">def delete_hdfs_file(client,hdfs_path):</span><br><span class="line">    client.delete(hdfs_path)</span><br><span class="line">    </span><br><span class="line">#上传文件到hdfs</span><br><span class="line">def put_to_hdfs(client,local_path,hdfs_path):</span><br><span class="line">    client.upload(hdfs_path, local_path,cleanup&#x3D;True)</span><br><span class="line">    </span><br><span class="line">#从hdfs获取文件到本地</span><br><span class="line">def get_from_hdfs(client,hdfs_path,local_path):</span><br><span class="line">    download(hdfs_path, local_path, overwrite&#x3D;False)</span><br><span class="line"></span><br><span class="line">#追加数据到hdfs文件    </span><br><span class="line">def append_to_hdfs(client,hdfs_path,data):</span><br><span class="line">    client.write(hdfs_path, data,overwrite&#x3D;False,append&#x3D;True)</span><br><span class="line">    </span><br><span class="line">#覆盖数据写到hdfs文件</span><br><span class="line">def write_to_hdfs(client,hdfs_path,data):</span><br><span class="line">    client.write(hdfs_path, data,overwrite&#x3D;True,append&#x3D;False)</span><br><span class="line">  </span><br><span class="line">#移动或者修改文件  </span><br><span class="line">def move_or_rename(client,hdfs_src_path, hdfs_dst_path):</span><br><span class="line">    client.rename(hdfs_src_path, hdfs_dst_path)</span><br><span class="line">   </span><br><span class="line">#返回目录下的文件</span><br><span class="line">def list(client,hdfs_path):</span><br><span class="line">    return client.list(hdfs_path, status&#x3D;False)</span><br><span class="line"></span><br></pre></td></tr></table></figure>  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/python/">python</a><a href="/tags/hadoop/">hadoop</a><a href="/tags/hdfs/">hdfs</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://github.com/dxysun/2018/07/19/hadoopForPythonHdfs/" data-title="使用Python操作hdfs | 迎着朝阳的博客" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2018/07/19/javaForSql/" title="MySQL相关内容">
+  <strong>上一篇：</strong><br/>
+  <span>
+  MySQL相关内容</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/07/16/javaForInterviewMutil/"  title="java面试题之多线程篇">
+ <strong>下一篇：</strong><br/> 
+ <span>java面试题之多线程篇
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E8%A3%85"><span class="toc-number">1.</span> <span class="toc-text">安装</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AF%BC%E5%85%A5"><span class="toc-number">2.</span> <span class="toc-text">导入</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BB%BA%E7%AB%8B%E8%BF%9E%E6%8E%A5"><span class="toc-number">3.</span> <span class="toc-text">建立连接</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B8%B8%E8%A7%81%E9%94%99%E8%AF%AF"><span class="toc-number">4.</span> <span class="toc-text">常见错误</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B8%B8%E7%94%A8%E6%93%8D%E4%BD%9C"><span class="toc-number">5.</span> <span class="toc-text">常用操作</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%8E%B7%E5%8F%96%E6%96%87%E4%BB%B6%E4%BF%A1%E6%81%AF"><span class="toc-number">5.1.</span> <span class="toc-text">获取文件信息</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#list%E2%80%94%E2%80%94%E8%8E%B7%E5%8F%96%E6%8C%87%E5%AE%9A%E8%B7%AF%E5%BE%84%E7%9A%84%E5%AD%90%E7%9B%AE%E5%BD%95%E4%BF%A1%E6%81%AF"><span class="toc-number">5.2.</span> <span class="toc-text">list——获取指定路径的子目录信息</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#makedirs%E2%80%94%E2%80%94%E5%88%9B%E5%BB%BA%E7%9B%AE%E5%BD%95"><span class="toc-number">5.3.</span> <span class="toc-text">makedirs——创建目录</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#rename%E2%80%94%E9%87%8D%E5%91%BD%E5%90%8D"><span class="toc-number">5.4.</span> <span class="toc-text">rename—重命名</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#delete%E2%80%94%E5%88%A0%E9%99%A4"><span class="toc-number">5.5.</span> <span class="toc-text">delete—删除</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#upload%E2%80%94%E2%80%94%E4%B8%8A%E4%BC%A0%E6%95%B0%E6%8D%AE"><span class="toc-number">5.6.</span> <span class="toc-text">upload——上传数据</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#download%E2%80%94%E2%80%94%E4%B8%8B%E8%BD%BD"><span class="toc-number">5.7.</span> <span class="toc-text">download——下载</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#read%E2%80%94%E2%80%94%E8%AF%BB%E5%8F%96%E6%96%87%E4%BB%B6"><span class="toc-number">5.8.</span> <span class="toc-text">read——读取文件</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AE%80%E5%8D%95%E5%B0%81%E8%A3%85"><span class="toc-number">6.</span> <span class="toc-text">简单封装</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+
+  
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">Categories</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/spring官方文档/" title="spring官方文档">spring官方文档<sup>8</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>54</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/linux/" title="linux">linux<sup>34</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/centos/" title="centos">centos<sup>19</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/springboot/" title="springboot">springboot<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/ubuntu/" title="ubuntu">ubuntu<sup>9</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/hadoop/" title="hadoop">hadoop<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/spring/" title="spring">spring<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/nginx/" title="nginx">nginx<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/spark/" title="spark">spark<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/mybatis/" title="mybatis">mybatis<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/mysql/" title="mysql">mysql<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/算法/" title="算法">算法<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/git/" title="git">git<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/maven/" title="maven">maven<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/hdfs/" title="hdfs">hdfs<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/dubbo/" title="dubbo">dubbo<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/kafka/" title="kafka">kafka<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Hbase/" title="Hbase">Hbase<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/sql/" title="sql">sql<sup>2</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="http://majorkevin.xyz/blog/" target="_blank" title="朋友的博客">朋友的博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+  <div class="weiboshow">
+  <p class="asidetitle">Weibo</p>
+    <iframe width="100%" height="119" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=119&fansRow=2&ptype=1&speed=0&skin=9&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=&verifier=&dpc=1"></iframe>
+</div>
+
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> Hello ,I&#39;m dxysun. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2020 
+		
+		<a href="/about" target="_blank" title="dxysun">dxysun</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?e6d1f421bbc9962127a50488f9ed37d1";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

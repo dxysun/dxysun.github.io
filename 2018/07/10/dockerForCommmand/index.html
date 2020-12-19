@@ -1,0 +1,642 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>常用docker命令 | 迎着朝阳的博客</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="dxysun">
+    
+
+    
+    <meta name="description" content="最近要用docker，在这里记录docker常用命令">
+<meta property="og:type" content="article">
+<meta property="og:title" content="常用docker命令">
+<meta property="og:url" content="https://github.com/dxysun/2018/07/10/dockerForCommmand/index.html">
+<meta property="og:site_name" content="迎着朝阳的博客">
+<meta property="og:description" content="最近要用docker，在这里记录docker常用命令">
+<meta property="og:locale">
+<meta property="article:published_time" content="2018-07-10T02:53:24.000Z">
+<meta property="article:modified_time" content="2018-07-10T03:20:00.000Z">
+<meta property="article:author" content="dxysun">
+<meta property="article:tag" content="docker">
+<meta name="twitter:card" content="summary">
+
+    
+    <link rel="alternative" href="/atom.xml" title="迎着朝阳的博客" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    
+<link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/%02.css">
+<link rel="stylesheet" href="/.css">
+
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="迎着朝阳的博客" title="迎着朝阳的博客"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="迎着朝阳的博客">迎着朝阳的博客</a></h1>
+				<h2 class="blog-motto"></h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">主页</a></li>
+					
+						<li><a href="/archives">归档</a></li>
+					
+						<li><a href="/about">关于</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:github.com/dxysun">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/07/10/dockerForCommmand/" title="常用docker命令" itemprop="url">常用docker命令</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="dxysun" target="_blank" itemprop="author">dxysun</a>
+		
+  <p class="article-time">
+    <time datetime="2018-07-10T02:53:24.000Z" itemprop="datePublished"> Published 2018-07-10</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%90%AF%E5%8A%A8-%E5%81%9C%E6%AD%A2-%E9%87%8D%E5%90%AF-%E6%9D%80%E6%8E%89%E5%AE%B9%E5%99%A8"><span class="toc-number">1.</span> <span class="toc-text">启动&#x2F;停止&#x2F;重启&#x2F;杀掉容器</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E5%B9%B6%E5%90%AF%E5%8A%A8%E4%B8%80%E4%B8%AA%E6%96%B0%E7%9A%84%E5%AE%B9%E5%99%A8"><span class="toc-number">2.</span> <span class="toc-text">创建并启动一个新的容器</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%88%A0%E9%99%A4%E5%AE%B9%E5%99%A8"><span class="toc-number">3.</span> <span class="toc-text">删除容器</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E4%B8%80%E4%B8%AA%E6%96%B0%E7%9A%84%E5%AE%B9%E5%99%A8%E4%BD%86%E4%B8%8D%E5%90%AF%E5%8A%A8%E5%AE%83"><span class="toc-number">4.</span> <span class="toc-text">创建一个新的容器但不启动它</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%9C%A8%E8%BF%90%E8%A1%8C%E7%9A%84%E5%AE%B9%E5%99%A8%E4%B8%AD%E6%89%A7%E8%A1%8C%E5%91%BD%E4%BB%A4"><span class="toc-number">5.</span> <span class="toc-text">在运行的容器中执行命令</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%88%97%E5%87%BA%E5%AE%B9%E5%99%A8%EF%BC%88%E6%AD%A3%E5%9C%A8%E8%BF%90%E8%A1%8C%EF%BC%89"><span class="toc-number">6.</span> <span class="toc-text">列出容器（正在运行）</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%8E%B7%E5%8F%96%E5%AE%B9%E5%99%A8%E7%9A%84%E5%85%83%E6%95%B0%E6%8D%AE"><span class="toc-number">7.</span> <span class="toc-text">获取容器的元数据</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%8E%B7%E5%8F%96%E5%AE%B9%E5%99%A8%E7%9A%84%E6%97%A5%E5%BF%97"><span class="toc-number">8.</span> <span class="toc-text">获取容器的日志</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%98%BE%E7%A4%BA%E6%8C%87%E5%AE%9A%E5%AE%B9%E5%99%A8%E7%9A%84%E7%AB%AF%E5%8F%A3%E6%98%A0%E5%B0%84"><span class="toc-number">9.</span> <span class="toc-text">显示指定容器的端口映射</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%94%A8%E5%B7%B2%E5%AD%98%E5%9C%A8%E7%9A%84%E5%AE%B9%E5%99%A8%E9%87%8D%E6%96%B0%E5%88%9B%E5%BB%BA%E4%B8%80%E4%B8%AA%E6%96%B0%E7%9A%84%E9%95%9C%E5%83%8F"><span class="toc-number">10.</span> <span class="toc-text">用已存在的容器重新创建一个新的镜像</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%AE%B9%E5%99%A8%E4%B8%8E%E7%89%A9%E7%90%86%E4%B8%BB%E6%9C%BA%E4%B9%8B%E9%97%B4%E6%8B%B7%E8%B4%9D%E6%96%87%E4%BB%B6"><span class="toc-number">11.</span> <span class="toc-text">容器与物理主机之间拷贝文件</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%99%BB%E5%BD%95%E4%B8%8E%E7%99%BB%E5%87%BA%E5%AE%B9%E5%99%A8%E9%95%9C%E5%83%8F%E4%BB%93%E5%BA%93"><span class="toc-number">12.</span> <span class="toc-text">登录与登出容器镜像仓库</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BB%8E%E9%95%9C%E5%83%8F%E4%BB%93%E5%BA%93%E4%B8%AD%E6%8B%89%E5%8F%96%E6%88%96%E4%B8%8A%E4%BC%A0%E9%95%9C%E5%83%8F"><span class="toc-number">13.</span> <span class="toc-text">从镜像仓库中拉取或上传镜像</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%98%BE%E7%A4%BA%E7%B3%BB%E7%BB%9F%E6%9C%AC%E5%9C%B0%E5%AE%B9%E5%99%A8%E9%95%9C%E5%83%8F%E6%96%87%E4%BB%B6"><span class="toc-number">14.</span> <span class="toc-text">显示系统本地容器镜像文件</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%88%A0%E9%99%A4%E9%95%9C%E5%83%8F"><span class="toc-number">15.</span> <span class="toc-text">删除镜像</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%A0%87%E8%AE%B0%E6%9C%AC%E5%9C%B0%E9%95%9C%E5%83%8F"><span class="toc-number">16.</span> <span class="toc-text">标记本地镜像</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8Dockerfile%E5%88%9B%E5%BB%BA%E9%95%9C%E5%83%8F"><span class="toc-number">17.</span> <span class="toc-text">使用Dockerfile创建镜像</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8B%E6%8C%87%E5%AE%9A%E9%95%9C%E5%83%8F%E7%9A%84%E5%88%9B%E5%BB%BA%E5%8E%86%E5%8F%B2"><span class="toc-number">18.</span> <span class="toc-text">查看指定镜像的创建历史</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%98%BE%E7%A4%BA-Docker-%E7%B3%BB%E7%BB%9F%E4%BF%A1%E6%81%AF%EF%BC%8C%E5%8C%85%E6%8B%AC%E9%95%9C%E5%83%8F%E5%92%8C%E5%AE%B9%E5%99%A8%E6%95%B0"><span class="toc-number">19.</span> <span class="toc-text">显示 Docker 系统信息，包括镜像和容器数</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%98%BE%E7%A4%BA-Docker-%E7%89%88%E6%9C%AC%E4%BF%A1%E6%81%AF"><span class="toc-number">20.</span> <span class="toc-text">显示 Docker 版本信息</span></a></li></ol>
+		
+		</div>
+		
+		<p>最近要用docker，在这里记录docker常用命令</p>
+<a id="more"></a>
+
+<h1 id="启动-停止-重启-杀掉容器"><a href="#启动-停止-重启-杀掉容器" class="headerlink" title="启动/停止/重启/杀掉容器"></a>启动/停止/重启/杀掉容器</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker start&#x2F;stop&#x2F;restart&#x2F;kill 容器name或容器id</span><br></pre></td></tr></table></figure>
+<p>示例</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@docker ~]# docker start myweb</span><br><span class="line">[root@docker ~]# docker stop myweb</span><br><span class="line">[root@docker ~]# docker restart myweb</span><br><span class="line">[root@docker ~]# docker kill -s kill myweb</span><br><span class="line">参数 -s  #向容器发送信号</span><br></pre></td></tr></table></figure>
+<h1 id="创建并启动一个新的容器"><a href="#创建并启动一个新的容器" class="headerlink" title="创建并启动一个新的容器"></a>创建并启动一个新的容器</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>常用参数<br>-d             #后台运行容器，并返回容器ID<br>-i              #以交互式模式运行容器，常与-t参数同时使用<br>-t              #给容器重新分配一个伪终端，常与-i参数同时使用<br>–name     #给容器指定一个名称<br>-m            #指定容器使用内存的最大值<br>–net        #指定容器使用的网络类型<br>–link        #链接到另一个容器</p>
+</blockquote>
+<p>示例</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[root@docker ~]# docker run -d --name nginx nginx:latest</span><br><span class="line">#后台启动并运行一个名为nginx的容器，运行前它会自动去docker镜像站点下载最新的镜像文件</span><br><span class="line">[root@docker ~]# docker run -d -P 80:80 nginx:latest</span><br><span class="line">#后台启动并运名为nginx的容器，然后将容器的80端口映射到物理机的80端口</span><br><span class="line">[root@docker ~]# docker run -d -v &#x2F;docker&#x2F;data:&#x2F;docker&#x2F;data -P 80:80 nginx:latest</span><br><span class="line">#后台启动并运名为nginx的容器，然后将容器的80端口映射到物理机的80端口,并且将物理机的&#x2F;docker&#x2F;data目录映射到容器的&#x2F;docker&#x2F;data</span><br><span class="line">[root@docker ~]# docker run -it  nginx:latest &#x2F;bin&#x2F;bash</span><br><span class="line">#以交互式模式运行容器，然后在容器内执行&#x2F;bin&#x2F;bash命令</span><br></pre></td></tr></table></figure>
+<h1 id="删除容器"><a href="#删除容器" class="headerlink" title="删除容器"></a>删除容器</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker rm 容器id或容器name</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>常用参数<br>-f     #强制删除一个运行中的容器<br>-l     #删除指定的链接<br>-v     #删除与容器关联和卷</p>
+</blockquote>
+<p>示例</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[root@docker ~]# docker rm -f mydocker</span><br><span class="line">#强制删除容器mydocker</span><br><span class="line">[root@docker ~]# docker rm -f dockerA dockerB</span><br><span class="line">#强制删除容器dockerA，dockerB</span><br><span class="line">[root@docker ~]# docker rm -v mydocker</span><br><span class="line">#删除容器，并删除容器挂载的数据卷</span><br></pre></td></tr></table></figure>
+<h1 id="创建一个新的容器但不启动它"><a href="#创建一个新的容器但不启动它" class="headerlink" title="创建一个新的容器但不启动它"></a>创建一个新的容器但不启动它</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker create</span><br></pre></td></tr></table></figure>
+<p>示例</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@docker ~]# docker create --name myserver nginx:latest</span><br><span class="line">09b93464c2f75b7b69f83d56a9cfc23ceb50a48a9db7652ee4c27e3e2cb1961f</span><br><span class="line">#创建一个名为myserver的容器</span><br></pre></td></tr></table></figure>
+<h1 id="在运行的容器中执行命令"><a href="#在运行的容器中执行命令" class="headerlink" title="在运行的容器中执行命令"></a>在运行的容器中执行命令</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker exec</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>常用参数<br>-d      #在后台运行<br>-i      #保持STDIN打开<br>-t      #分配一个伪终端</p>
+</blockquote>
+<p>示例</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[root@docker ~]# docker exec -it mydocker &#x2F;bin&#x2F;sh &#x2F;server&#x2F;scripts&#x2F;docker.sh</span><br><span class="line">hello world!!!!!!!!!!</span><br><span class="line">#以交互模式执行容器中的&#x2F;server&#x2F;scripts&#x2F;docker.sh脚本</span><br><span class="line">[root@docker ~]# docker exec -it mydocker &#x2F;bin&#x2F;sh </span><br><span class="line">root@b1a0703e41e7:&#x2F;#</span><br><span class="line">#以交互模式给容器分配一个伪终端连接</span><br></pre></td></tr></table></figure>
+<h1 id="列出容器（正在运行）"><a href="#列出容器（正在运行）" class="headerlink" title="列出容器（正在运行）"></a>列出容器（正在运行）</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker ps</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>常用参数<br>-a      #列出所有容器包括停止的<br>-f      #根据条件过滤显示内容<br>-l      #列出最近创建的容器<br>-n      #列出最近创建的N个容器，N为数字<br>-q      #只显示容器ID<br>-s      #显示总文件大小</p>
+</blockquote>
+<p>示例</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">[root@docker ~]# docker ps</span><br><span class="line">CONTAINER ID  IMAGE            COMMAND                  CREATED       STATUS       PORTS                                            NAMES</span><br><span class="line">bd96d72ed9c7  google&#x2F;cadvisor  &quot;&#x2F;usr&#x2F;bin&#x2F;cadvisor...&quot;   47 hours ago  Up 47 hours  0.0.0.0:8082-&gt;8080&#x2F;tcp                           cadvisor</span><br><span class="line">665563143eb7  grafana&#x2F;grafana  &quot;&#x2F;run.sh&quot;                2 days ago    Up 2 days    0.0.0.0:3000-&gt;3000&#x2F;tcp                           grafana</span><br><span class="line">f2304dad5855  tutum&#x2F;influxdb   &quot;&#x2F;run.sh&quot;                2 days ago    Up 2 days    0.0.0.0:8083-&gt;8083&#x2F;tcp, 0.0.0.0:8086-&gt;8086&#x2F;tcp   influxdb</span><br><span class="line">#列出正在运行的容器</span><br><span class="line">[root@docker ~]# docker ps -n 2</span><br><span class="line">CONTAINER ID   IMAGE               COMMAND                  CREATED       STATUS       PORTS                    NAMES</span><br><span class="line">bd96d72ed9c7   google&#x2F;cadvisor     &quot;&#x2F;usr&#x2F;bin&#x2F;cadvisor...&quot;   47 hours ago  Up 47 hours  0.0.0.0:8082-&gt;8080&#x2F;tcp   cadvisor</span><br><span class="line">665563143eb7   grafana&#x2F;grafana     &quot;&#x2F;run.sh&quot;                2 days ago    Up 2 days    0.0.0.0:3000-&gt;3000&#x2F;tcp   grafana</span><br><span class="line">#列出最近创建的2个容器</span><br><span class="line">[root@docker ~]# docker ps -a -q</span><br><span class="line">bd96d72ed9c7</span><br><span class="line">665563143eb7</span><br><span class="line">f2304dad5855</span><br><span class="line">9921d2660307</span><br><span class="line">#显示所有容器的ID</span><br></pre></td></tr></table></figure>
+<h1 id="获取容器的元数据"><a href="#获取容器的元数据" class="headerlink" title="获取容器的元数据"></a>获取容器的元数据</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker inspect</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>常用参数<br>-f        #指定返回值格式或模板文件<br>-s        #显示总文件大小<br>–type    #为指定类型返回JSON</p>
+</blockquote>
+<p>示例</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line">[root@docker ~]# docker inspect bd96d72ed9c7</span><br><span class="line">[</span><br><span class="line">    &#123;</span><br><span class="line">        &quot;Id&quot;: &quot;bd96d72ed9c713591ba8db0ed4c0ae2689188255da71033c7bced6bb34aa8542&quot;,</span><br><span class="line">        &quot;Created&quot;: &quot;2018-05-23T09:22:10.633809699Z&quot;,</span><br><span class="line">        &quot;Path&quot;: &quot;&#x2F;usr&#x2F;bin&#x2F;cadvisor&quot;,</span><br><span class="line">        &quot;Args&quot;: [</span><br><span class="line">            &quot;-logtostderr&quot;,</span><br><span class="line">            &quot;-storage_driver&#x3D;influxdb&quot;,</span><br><span class="line">            &quot;-storage_driver_db&#x3D;cadvisor&quot;,</span><br><span class="line">            &quot;-storage_driver_host&#x3D;192.168.3.82:8086&quot;</span><br><span class="line">        ],</span><br><span class="line">        &quot;State&quot;: &#123;</span><br><span class="line">            &quot;Status&quot;: &quot;running&quot;,</span><br><span class="line">            &quot;Running&quot;: true,</span><br><span class="line">            &quot;Paused&quot;: false,</span><br><span class="line">            &quot;Restarting&quot;: false,</span><br><span class="line">            &quot;OOMKilled&quot;: false,</span><br><span class="line">            &quot;Dead&quot;: false,</span><br><span class="line">            &quot;Pid&quot;: 17589,</span><br><span class="line">            &quot;ExitCode&quot;: 0,</span><br><span class="line">            &quot;Error&quot;: &quot;&quot;,</span><br><span class="line">            &quot;StartedAt&quot;: &quot;2018-05-23T09:22:10.769771142Z&quot;,</span><br><span class="line">            &quot;FinishedAt&quot;: &quot;0001-01-01T00:00:00Z&quot;</span><br><span class="line">        &#125;,</span><br><span class="line">        &quot;Image&quot;: &quot;sha256:75f88e3ec333cbb410297e4f40297ac615e076b4a50aeeae49f287093ff01ab1&quot;,</span><br><span class="line">        &quot;ResolvConfPath&quot;: &quot;&#x2F;var&#x2F;lib&#x2F;docker&#x2F;containers&#x2F;bd96d72ed9c713591ba8db0ed4c0ae2689188255da71033c7bced6bb34aa8542&#x2F;resolv.conf&quot;,</span><br><span class="line">        &quot;HostnamePath&quot;: &quot;&#x2F;var&#x2F;lib&#x2F;docker&#x2F;containers&#x2F;bd96d72ed9c713591ba8db0ed4c0ae2689188255da71033c7bced6bb34aa8542&#x2F;hostname&quot;,</span><br><span class="line">        &quot;HostsPath&quot;: &quot;&#x2F;var&#x2F;lib&#x2F;docker&#x2F;containers&#x2F;bd96d72ed9c713591ba8db0ed4c0ae2689188255da71033c7bced6bb34aa8542&#x2F;hosts&quot;,</span><br><span class="line">        &quot;LogPath&quot;: &quot;&quot;,</span><br><span class="line">        &quot;Name&quot;: &quot;&#x2F;cadvisor&quot;,</span><br><span class="line">        &quot;RestartCount&quot;: 0,</span><br><span class="line">        &quot;Driver&quot;: &quot;overlay2&quot;,</span><br><span class="line">        &quot;MountLabel&quot;: &quot;&quot;,</span><br><span class="line">        &quot;ProcessLabel&quot;: &quot;&quot;,</span><br><span class="line">        &quot;AppArmorProfile&quot;: &quot;&quot;,</span><br><span class="line">        &quot;ExecIDs&quot;: null,</span><br><span class="line">        &quot;HostConfig&quot;: &#123;</span><br><span class="line">            &quot;Binds&quot;: [</span><br><span class="line">                &quot;&#x2F;:&#x2F;rootfs,ro&quot;,</span><br><span class="line">                &quot;&#x2F;var&#x2F;run:&#x2F;var&#x2F;run&quot;,</span><br><span class="line">-------------------------------------------省略部分内容</span><br><span class="line">#获取容器ID为bd96d72ed9c7的元数据信息</span><br><span class="line">[root@docker ~]# docker inspect --format&#x3D;&#39;&#123;&#123;range .NetworkSettings.Networks&#125;&#125;&#123;&#123;.IPAddress&#125;&#125;&#123;&#123;end&#125;&#125;&#39; cadvisor</span><br><span class="line">172.17.0.3</span><br><span class="line">[root@docker ~]# docker inspect --format&#x3D;&#39;&#123;&#123;range .NetworkSettings.Networks&#125;&#125;&#123;&#123;.IPAddress&#125;&#125;&#123;&#123;end&#125;&#125;&#39; influxdb</span><br><span class="line">172.17.0.2</span><br><span class="line">#获取容器名为influxdb\cadvisor的IP地址</span><br></pre></td></tr></table></figure>
+<h1 id="获取容器的日志"><a href="#获取容器的日志" class="headerlink" title="获取容器的日志"></a>获取容器的日志</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker logs</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>常用参数<br>-f        #跟踪日志输出<br>-t        #显示时间戳<br>–tail    #只显示最新n条容器日志<br>–since   #显示某个开始时间的所有日志</p>
+</blockquote>
+<p>实例操作如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[root@docker ~]# docker logs -f cadvisor</span><br><span class="line">I0523 09:22:10.794233       1 storagedriver.go:48] Using backend storage type &quot;influxdb&quot;</span><br><span class="line">I0523 09:22:10.794295       1 storagedriver.go:50] Caching stats in memory for 2m0s</span><br><span class="line">I0523 09:22:10.794551       1 manager.go:151] cAdvisor running in container: &quot;&#x2F;sys&#x2F;fs&#x2F;cgroup&#x2F;cpuacct,cpu&quot;</span><br><span class="line">I0523 09:22:10.810585       1 fs.go:139] Filesystem UUIDs: map[]</span><br><span class="line">#跟踪查看容器cadvisor的日志</span><br></pre></td></tr></table></figure>
+<h1 id="显示指定容器的端口映射"><a href="#显示指定容器的端口映射" class="headerlink" title="显示指定容器的端口映射"></a>显示指定容器的端口映射</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker port</span><br></pre></td></tr></table></figure>
+<p>示例</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@docker ~]# docker port cadvisor</span><br><span class="line">8080&#x2F;tcp -&gt; 0.0.0.0:8082</span><br><span class="line">#显示cadvisor容器的端口映射信息</span><br></pre></td></tr></table></figure>
+<h1 id="用已存在的容器重新创建一个新的镜像"><a href="#用已存在的容器重新创建一个新的镜像" class="headerlink" title="用已存在的容器重新创建一个新的镜像"></a>用已存在的容器重新创建一个新的镜像</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker commit</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>常用参数<br>-a      #提交的镜像作者<br>-c      #使用Dockerfile指令来创建镜像<br>-m      #提交时附上说明文字<br>-p      #在commit时，将容器暂停</p>
+</blockquote>
+<p>示例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[root@docker ~]# docker commit -a &quot;mingongge&quot; -m &quot;add a new images&quot; bd96d72ed9c7  newdocker_images:v1.0.0</span><br><span class="line">sha256:20ee805752cb7cae660fbae89d7c6ea4a9c6372f16a6cb079ecf6c79f87ed8c9</span><br><span class="line">[root@docker ~]# docker images</span><br><span class="line">REPOSITORY          TAG       IMAGE ID       CREATED        SIZE</span><br><span class="line">newdocker_images    v1.0.0    20ee805752cb   7 seconds ago  62.2 MB</span><br><span class="line">#将容器bd96d72ed9c7重新生成一个新的镜像名为newdocker_images</span><br></pre></td></tr></table></figure>
+<h1 id="容器与物理主机之间拷贝文件"><a href="#容器与物理主机之间拷贝文件" class="headerlink" title="容器与物理主机之间拷贝文件"></a>容器与物理主机之间拷贝文件</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker cp</span><br></pre></td></tr></table></figure>
+<p>示例</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[root@docker ~]# docker cp &#x2F;data&#x2F;index.html bd96d72ed9c7:&#x2F;web&#x2F;</span><br><span class="line">#将物理主机中的&#x2F;data&#x2F;index.html拷贝到容器bd96d72ed9c7:&#x2F;web&#x2F;目录下</span><br><span class="line">[root@docker ~]# docker cp &#x2F;data&#x2F;index.html bd96d72ed9c7:&#x2F;web&#x2F;index.php</span><br><span class="line">#将物理主机中的&#x2F;data&#x2F;index.html拷贝到容器bd96d72ed9c7:&#x2F;web&#x2F;目录下并改名为index.php</span><br><span class="line">[root@docker ~]# docker cp  bd96d72ed9c7:&#x2F;web  &#x2F;data&#x2F;</span><br><span class="line">#拷贝容器bd96d72ed9c7:&#x2F;web&#x2F;目录到物理主机中的&#x2F;data&#x2F;目录下</span><br></pre></td></tr></table></figure>
+<h1 id="登录与登出容器镜像仓库"><a href="#登录与登出容器镜像仓库" class="headerlink" title="登录与登出容器镜像仓库"></a>登录与登出容器镜像仓库</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker login       #登陆到一个Docker镜像仓库，如果未指定镜像仓库地址，默认为官方仓库 Docker Hub</span><br><span class="line">docker logout      #登出一个Docker镜像仓库，如果未指定镜像仓库地址，默认为官方仓库 Docker Hub</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>常用参数<br>-u      #登陆的用户名<br>-p      #登陆的密码</p>
+</blockquote>
+<p>示例</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@docker ~]# docker login -u username -p password</span><br><span class="line">Login Succeeded</span><br><span class="line">[root@docker ~]# docker logout</span><br><span class="line">Removing login credentials for https:&#x2F;&#x2F;index.docker.io&#x2F;v1&#x2F;</span><br><span class="line">#登录与登出默认的容器镜像仓库</span><br></pre></td></tr></table></figure>
+<h1 id="从镜像仓库中拉取或上传镜像"><a href="#从镜像仓库中拉取或上传镜像" class="headerlink" title="从镜像仓库中拉取或上传镜像"></a>从镜像仓库中拉取或上传镜像</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker pull    #从镜像仓库中拉取或者更新指定镜像</span><br><span class="line">docker push    #将本地的镜像上传到镜像仓库,要先登陆到镜像仓库</span><br></pre></td></tr></table></figure>
+<p>示例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">[root@docker ~]# docker  pull  nginx</span><br><span class="line">Using default tag: latest</span><br><span class="line">Trying to pull repository docker.io&#x2F;library&#x2F;nginx ... </span><br><span class="line">latest: Pulling from docker.io&#x2F;library&#x2F;nginx</span><br><span class="line">f2aa67a397c4: Already exists </span><br><span class="line">3c091c23e29d: Pulling fs layer </span><br><span class="line">4a99993b8636: Pulling fs layer</span><br><span class="line">#从镜像仓库中拉取或者更新指定镜像，输出信息如上</span><br><span class="line">[root@docker ~]# docker push newdocker_images:v1.0.0</span><br><span class="line">#上传镜像到镜像仓库上</span><br></pre></td></tr></table></figure>
+<h1 id="显示系统本地容器镜像文件"><a href="#显示系统本地容器镜像文件" class="headerlink" title="显示系统本地容器镜像文件"></a>显示系统本地容器镜像文件</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker images</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>常用参数<br>-a                #列出所有的镜像（含中间映像层，默认，过滤掉中间映像层）；<br>–digests      #显示镜像的摘要信息；<br>-f                  #显示满足条件的镜像；<br>–format       #指定返回值的模板文件；<br>–no-trunc     #显示完整的镜像信息；<br>-q                 #只显示镜像ID。</p>
+</blockquote>
+<p>示例</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">[root@docker ~]# docker images</span><br><span class="line">REPOSITORY                                 TAG       IMAGE ID       CREATED         SIZE</span><br><span class="line">newdocker_images                           v1.0.0    20ee805752cb   28 minutes ago  62.2 MB</span><br><span class="line">docker.io&#x2F;grafana&#x2F;grafana                  latest    4700307f41f2   9 days ago      238 MB</span><br><span class="line">registry.jumpserver.org&#x2F;public&#x2F;guacamole   1.0.0     6300349f2642   2 months ago    1.23 GB</span><br><span class="line">docker.io&#x2F;google&#x2F;cadvisor                  latest    75f88e3ec333   5 months ago    62.2 MB</span><br><span class="line">docker.io&#x2F;tutum&#x2F;influxdb                   latest    c061e5808198   19 months ago   290 MB</span><br><span class="line">#列出本地所有的镜像</span><br><span class="line">[root@docker ~]# docker images -q</span><br><span class="line">20ee805752cb</span><br><span class="line">4700307f41f2</span><br><span class="line">6300349f2642</span><br><span class="line">75f88e3ec333</span><br><span class="line">c061e5808198</span><br><span class="line">#只显示容器ID</span><br><span class="line">[root@docker ~]# docker images --digests</span><br><span class="line">REPOSITORY                                 TAG      DIGEST                                                                    IMAGE ID        CREATED         SIZE</span><br><span class="line">newdocker_images                           v1.0.0   &lt;none&gt;                                                                    20ee805752cb    32 minutes ago  62.2 MB</span><br><span class="line">docker.io&#x2F;grafana&#x2F;grafana                  latest   sha256:364bec4a39ecbec744ea4270aae35f6554eb6f2047b3ee08f7b5f1134857c32c   4700307f41f2    9 days ago      238 MB</span><br><span class="line">registry.jumpserver.org&#x2F;public&#x2F;guacamole   1.0.0    sha256:ea862bb2e83b648701655c27900bca14b0ab7ab9d4572e716c25a816dc55307b   6300349f2642    2 months ago    1.23 GB</span><br><span class="line">docker.io&#x2F;google&#x2F;cadvisor                  latest   sha256:9e347affc725efd3bfe95aa69362cf833aa810f84e6cb9eed1cb65c35216632a   75f88e3ec333    5 months ago    62.2 MB</span><br><span class="line">docker.io&#x2F;tutum&#x2F;influxdb                   latest   sha256:5b7c5e318303ad059f3d1a73d084c12cb39ae4f35f7391b79b0ff2c0ba45304b   c061e5808198    19 months ago   290 MB</span><br><span class="line">[root@docker ~]# docker images --no-trunc                                                                                                     </span><br><span class="line">REPOSITORY                                 TAG      IMAGE ID                                                                  CREATED         SIZE</span><br><span class="line">newdocker_images                           v1.0.0   sha256:20ee805752cb7cae660fbae89d7c6ea4a9c6372f16a6cb079ecf6c79f87ed8c9   32 minutes ago  62.2 MB</span><br><span class="line">docker.io&#x2F;grafana&#x2F;grafana                  latest   sha256:4700307f41f249630f6d772638ad8d32c7d7e3ec86c324d449d5e21076991bb7   9 days ago      238 MB</span><br><span class="line">registry.jumpserver.org&#x2F;public&#x2F;guacamole   1.0.0    sha256:6300349f264218e783cd2bd6f7863d356ac8d5ac05a62584cb4680af7ebec292   2 months ago    1.23 GB</span><br><span class="line">docker.io&#x2F;google&#x2F;cadvisor                  latest   sha256:75f88e3ec333cbb410297e4f40297ac615e076b4a50aeeae49f287093ff01ab1   5 months ago    62.2 MB</span><br><span class="line">docker.io&#x2F;tutum&#x2F;influxdb                   latest   sha256:c061e580819875fad91910841fd3fc53893524bbb9326a68b2470861633aebb1   19 months ago   290 MB</span><br><span class="line">#可以对比下两个参数显示的不同信息</span><br></pre></td></tr></table></figure>
+<h1 id="删除镜像"><a href="#删除镜像" class="headerlink" title="删除镜像"></a>删除镜像</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker rmi</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>常用参数<br>-f      #强制删除</p>
+</blockquote>
+<h1 id="标记本地镜像"><a href="#标记本地镜像" class="headerlink" title="标记本地镜像"></a>标记本地镜像</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker tag</span><br></pre></td></tr></table></figure>
+<p>示例</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[root@docker ~]# docker images</span><br><span class="line">REPOSITORY           TAG        IMAGE ID            CREATED             SIZE</span><br><span class="line">newdocker_images     v1.1.0     858cbd9ba687        39 seconds ago      62.2 MB</span><br><span class="line">[root@docker ~]# docker tag newdocker_images:v1.1.0 newdocker_images:v2</span><br><span class="line">[root@docker ~]# docker images</span><br><span class="line">REPOSITORY           TAG        IMAGE ID            CREATED             SIZE</span><br><span class="line">newdocker_images     v1.1.0     858cbd9ba687        4 minutes ago       62.2 MB</span><br><span class="line">newdocker_images     v2         858cbd9ba687        4 minutes ago       62.2 MB</span><br><span class="line">#从结果可以看出两个容器的ID是一样的，只是TAG改变了，类似于linux中文件与文件的硬链接一样，其两者的inode号相同。</span><br></pre></td></tr></table></figure>
+<h1 id="使用Dockerfile创建镜像"><a href="#使用Dockerfile创建镜像" class="headerlink" title="使用Dockerfile创建镜像"></a>使用Dockerfile创建镜像</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker build</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>常用参数<br>-f                          #指定要使用的Dockerfile路径<br>–label=[]              #设置镜像使用的元数据；<br>-m                        #设置内存最大值<br>–memory-swap   #设置Swap的最大值为内存+swap，”-1”表示不限swap<br>–no-cache          #创建镜像的过程不使用缓存<br>–pull                   #尝试去更新镜像的新版本<br>-q                       #安静模式，成功后只输出镜像ID<br>–rm                    #设置镜像成功后删除中间容器<br>–ulimit               #Ulimit配置</p>
+</blockquote>
+<h1 id="查看指定镜像的创建历史"><a href="#查看指定镜像的创建历史" class="headerlink" title="查看指定镜像的创建历史"></a>查看指定镜像的创建历史</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker history</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>常用参数<br>-H               #以可读的格式打印镜像大小和日期，默认为true；<br>–no-trunc   #显示完整的提交记录；<br>-q                #仅列出提交记录ID。</p>
+</blockquote>
+<p>示例</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">[root@docker ~]# docker history newdocker_images:v2</span><br><span class="line">IMAGE             CREATED          CREATED BY                                    SIZE      COMMENT</span><br><span class="line">858cbd9ba687    32 minutes ago   -storage_driver&#x3D;influxdb -storage_driver_d...   0 B       add new images</span><br><span class="line">75f88e3ec333    5 months ago     &#x2F;bin&#x2F;sh -c #(nop)  ENTRYPOINT [&quot;&#x2F;usr&#x2F;bin&#x2F;c...   0 B       </span><br><span class="line">&lt;missing&gt;       5 months ago     &#x2F;bin&#x2F;sh -c #(nop)  EXPOSE 8080&#x2F;tcp              0 B       </span><br><span class="line">&lt;missing&gt;       5 months ago     &#x2F;bin&#x2F;sh -c #(nop) ADD file:e138bb5c0c12107...   26.5 MB   </span><br><span class="line">&lt;missing&gt;       5 months ago     &#x2F;bin&#x2F;sh -c apk --no-cache add ca-certifica...   30.9 MB   </span><br><span class="line">&lt;missing&gt;       5 months ago     &#x2F;bin&#x2F;sh -c #(nop)  ENV GLIBC_VERSION&#x3D;2.23-r3    0 B       </span><br><span class="line">&lt;missing&gt;       5 months ago     &#x2F;bin&#x2F;sh -c #(nop)  MAINTAINER dengnan@goog...   0 B       </span><br><span class="line">&lt;missing&gt;       5 months ago     &#x2F;bin&#x2F;sh -c #(nop)  CMD [&quot;&#x2F;bin&#x2F;sh&quot;]              0 B       </span><br><span class="line">&lt;missing&gt;       5 months ago     &#x2F;bin&#x2F;sh -c #(nop) ADD file:c05a199f603e2a9...   4.82 MB </span><br></pre></td></tr></table></figure>
+<h1 id="显示-Docker-系统信息，包括镜像和容器数"><a href="#显示-Docker-系统信息，包括镜像和容器数" class="headerlink" title="显示 Docker 系统信息，包括镜像和容器数"></a>显示 Docker 系统信息，包括镜像和容器数</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker info</span><br></pre></td></tr></table></figure>
+<p>示例</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line">[root@docker ~]# docker info</span><br><span class="line">Containers: 4</span><br><span class="line"> Running: 3</span><br><span class="line"> Paused: 0</span><br><span class="line"> Stopped: 1</span><br><span class="line">Images: 5</span><br><span class="line">Server Version: 1.13.1</span><br><span class="line">Storage Driver: overlay2</span><br><span class="line"> Backing Filesystem: xfs</span><br><span class="line"> Supports d_type: true</span><br><span class="line"> Native Overlay Diff: true</span><br><span class="line">Logging Driver: journald</span><br><span class="line">Cgroup Driver: systemd</span><br><span class="line">Plugins: </span><br><span class="line"> Volume: local</span><br><span class="line"> Network: bridge host macvlan null overlay</span><br><span class="line">Swarm: inactive</span><br><span class="line">Runtimes: docker-runc runc</span><br><span class="line">Default Runtime: docker-runc</span><br><span class="line">Init Binary: &#x2F;usr&#x2F;libexec&#x2F;docker&#x2F;docker-init-current</span><br><span class="line">containerd version:  (expected: aa8187dbd3b7ad67d8e5e3a15115d3eef43a7ed1)</span><br><span class="line">runc version: e9c345b3f906d5dc5e8100b05ce37073a811c74a (expected: 9df8b306d01f59d3a8029be411de015b7304dd8f)</span><br><span class="line">init version: 5b117de7f824f3d3825737cf09581645abbe35d4 (expected: 949e6facb77383876aeff8a6944dde66b3089574)</span><br><span class="line">Security Options:</span><br><span class="line"> seccomp</span><br><span class="line">  WARNING: You&#39;re not using the default seccomp profile</span><br><span class="line">  Profile: &#x2F;etc&#x2F;docker&#x2F;seccomp.json</span><br><span class="line">Kernel Version: 3.10.0-693.el7.x86_64</span><br><span class="line">Operating System: CentOS Linux 7 (Core)</span><br><span class="line">OSType: linux</span><br><span class="line">Architecture: x86_64</span><br><span class="line">Number of Docker Hooks: 3</span><br><span class="line">CPUs: 1</span><br><span class="line">Total Memory: 7.64 GiB</span><br><span class="line">Name: docker</span><br><span class="line">ID: K7N6:CHF5:KAZP:QFDB:VYBP:IWMW:7VMV:L4TB:OJD2:SEZI:YRRR:4TJN</span><br><span class="line">Docker Root Dir: &#x2F;var&#x2F;lib&#x2F;docker</span><br><span class="line">Debug Mode (client): false</span><br><span class="line">Debug Mode (server): false</span><br><span class="line">Registry: https:&#x2F;&#x2F;index.docker.io&#x2F;v1&#x2F;</span><br><span class="line">WARNING: bridge-nf-call-iptables is disabled</span><br><span class="line">WARNING: bridge-nf-call-ip6tables is disabled</span><br><span class="line">Experimental: false</span><br><span class="line">Insecure Registries:</span><br><span class="line"> 127.0.0.0&#x2F;8</span><br><span class="line">Live Restore Enabled: false</span><br><span class="line">Registries: docker.io (secure)</span><br></pre></td></tr></table></figure>
+<h1 id="显示-Docker-版本信息"><a href="#显示-Docker-版本信息" class="headerlink" title="显示 Docker 版本信息"></a>显示 Docker 版本信息</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker version</span><br></pre></td></tr></table></figure>
+<p>示例</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">[root@docker ~]# docker version</span><br><span class="line">Client:</span><br><span class="line"> Version:      18.05.0-ce</span><br><span class="line"> API version:  1.37</span><br><span class="line"> Go version:   go1.9.5</span><br><span class="line"> Git commit:   f150324</span><br><span class="line"> Built:        Wed May  9 22:16:25 2018</span><br><span class="line"> OS&#x2F;Arch:      linux&#x2F;amd64</span><br><span class="line"> Experimental: false</span><br><span class="line"> Orchestrator: swarm</span><br><span class="line"></span><br><span class="line">Server:</span><br><span class="line"> Engine:</span><br><span class="line">  Version:      18.05.0-ce</span><br><span class="line">  API version:  1.37 (minimum version 1.12)</span><br><span class="line">  Go version:   go1.9.5</span><br><span class="line">  Git commit:   f150324</span><br><span class="line">  Built:        Wed May  9 22:14:32 2018</span><br><span class="line">  OS&#x2F;Arch:      linux&#x2F;amd64</span><br><span class="line">  Experimental: false</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/docker/">docker</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://github.com/dxysun/2018/07/10/dockerForCommmand/" data-title="常用docker命令 | 迎着朝阳的博客" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2018/07/10/allKindsOfSort/" title="各种排序算法总结及java实现">
+  <strong>上一篇：</strong><br/>
+  <span>
+  各种排序算法总结及java实现</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/07/09/sparkForLocalhostPython/"  title="Spark伪分布式部署并使用pyspark">
+ <strong>下一篇：</strong><br/> 
+ <span>Spark伪分布式部署并使用pyspark
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%90%AF%E5%8A%A8-%E5%81%9C%E6%AD%A2-%E9%87%8D%E5%90%AF-%E6%9D%80%E6%8E%89%E5%AE%B9%E5%99%A8"><span class="toc-number">1.</span> <span class="toc-text">启动&#x2F;停止&#x2F;重启&#x2F;杀掉容器</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E5%B9%B6%E5%90%AF%E5%8A%A8%E4%B8%80%E4%B8%AA%E6%96%B0%E7%9A%84%E5%AE%B9%E5%99%A8"><span class="toc-number">2.</span> <span class="toc-text">创建并启动一个新的容器</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%88%A0%E9%99%A4%E5%AE%B9%E5%99%A8"><span class="toc-number">3.</span> <span class="toc-text">删除容器</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E4%B8%80%E4%B8%AA%E6%96%B0%E7%9A%84%E5%AE%B9%E5%99%A8%E4%BD%86%E4%B8%8D%E5%90%AF%E5%8A%A8%E5%AE%83"><span class="toc-number">4.</span> <span class="toc-text">创建一个新的容器但不启动它</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%9C%A8%E8%BF%90%E8%A1%8C%E7%9A%84%E5%AE%B9%E5%99%A8%E4%B8%AD%E6%89%A7%E8%A1%8C%E5%91%BD%E4%BB%A4"><span class="toc-number">5.</span> <span class="toc-text">在运行的容器中执行命令</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%88%97%E5%87%BA%E5%AE%B9%E5%99%A8%EF%BC%88%E6%AD%A3%E5%9C%A8%E8%BF%90%E8%A1%8C%EF%BC%89"><span class="toc-number">6.</span> <span class="toc-text">列出容器（正在运行）</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%8E%B7%E5%8F%96%E5%AE%B9%E5%99%A8%E7%9A%84%E5%85%83%E6%95%B0%E6%8D%AE"><span class="toc-number">7.</span> <span class="toc-text">获取容器的元数据</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%8E%B7%E5%8F%96%E5%AE%B9%E5%99%A8%E7%9A%84%E6%97%A5%E5%BF%97"><span class="toc-number">8.</span> <span class="toc-text">获取容器的日志</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%98%BE%E7%A4%BA%E6%8C%87%E5%AE%9A%E5%AE%B9%E5%99%A8%E7%9A%84%E7%AB%AF%E5%8F%A3%E6%98%A0%E5%B0%84"><span class="toc-number">9.</span> <span class="toc-text">显示指定容器的端口映射</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%94%A8%E5%B7%B2%E5%AD%98%E5%9C%A8%E7%9A%84%E5%AE%B9%E5%99%A8%E9%87%8D%E6%96%B0%E5%88%9B%E5%BB%BA%E4%B8%80%E4%B8%AA%E6%96%B0%E7%9A%84%E9%95%9C%E5%83%8F"><span class="toc-number">10.</span> <span class="toc-text">用已存在的容器重新创建一个新的镜像</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%AE%B9%E5%99%A8%E4%B8%8E%E7%89%A9%E7%90%86%E4%B8%BB%E6%9C%BA%E4%B9%8B%E9%97%B4%E6%8B%B7%E8%B4%9D%E6%96%87%E4%BB%B6"><span class="toc-number">11.</span> <span class="toc-text">容器与物理主机之间拷贝文件</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%99%BB%E5%BD%95%E4%B8%8E%E7%99%BB%E5%87%BA%E5%AE%B9%E5%99%A8%E9%95%9C%E5%83%8F%E4%BB%93%E5%BA%93"><span class="toc-number">12.</span> <span class="toc-text">登录与登出容器镜像仓库</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BB%8E%E9%95%9C%E5%83%8F%E4%BB%93%E5%BA%93%E4%B8%AD%E6%8B%89%E5%8F%96%E6%88%96%E4%B8%8A%E4%BC%A0%E9%95%9C%E5%83%8F"><span class="toc-number">13.</span> <span class="toc-text">从镜像仓库中拉取或上传镜像</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%98%BE%E7%A4%BA%E7%B3%BB%E7%BB%9F%E6%9C%AC%E5%9C%B0%E5%AE%B9%E5%99%A8%E9%95%9C%E5%83%8F%E6%96%87%E4%BB%B6"><span class="toc-number">14.</span> <span class="toc-text">显示系统本地容器镜像文件</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%88%A0%E9%99%A4%E9%95%9C%E5%83%8F"><span class="toc-number">15.</span> <span class="toc-text">删除镜像</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%A0%87%E8%AE%B0%E6%9C%AC%E5%9C%B0%E9%95%9C%E5%83%8F"><span class="toc-number">16.</span> <span class="toc-text">标记本地镜像</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8Dockerfile%E5%88%9B%E5%BB%BA%E9%95%9C%E5%83%8F"><span class="toc-number">17.</span> <span class="toc-text">使用Dockerfile创建镜像</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8B%E6%8C%87%E5%AE%9A%E9%95%9C%E5%83%8F%E7%9A%84%E5%88%9B%E5%BB%BA%E5%8E%86%E5%8F%B2"><span class="toc-number">18.</span> <span class="toc-text">查看指定镜像的创建历史</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%98%BE%E7%A4%BA-Docker-%E7%B3%BB%E7%BB%9F%E4%BF%A1%E6%81%AF%EF%BC%8C%E5%8C%85%E6%8B%AC%E9%95%9C%E5%83%8F%E5%92%8C%E5%AE%B9%E5%99%A8%E6%95%B0"><span class="toc-number">19.</span> <span class="toc-text">显示 Docker 系统信息，包括镜像和容器数</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%98%BE%E7%A4%BA-Docker-%E7%89%88%E6%9C%AC%E4%BF%A1%E6%81%AF"><span class="toc-number">20.</span> <span class="toc-text">显示 Docker 版本信息</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+
+  
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">Categories</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/spring官方文档/" title="spring官方文档">spring官方文档<sup>8</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>54</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/linux/" title="linux">linux<sup>34</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/centos/" title="centos">centos<sup>19</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/springboot/" title="springboot">springboot<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/ubuntu/" title="ubuntu">ubuntu<sup>9</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/hadoop/" title="hadoop">hadoop<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/spring/" title="spring">spring<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/nginx/" title="nginx">nginx<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/spark/" title="spark">spark<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/mybatis/" title="mybatis">mybatis<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/mysql/" title="mysql">mysql<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/算法/" title="算法">算法<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/git/" title="git">git<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/maven/" title="maven">maven<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/hdfs/" title="hdfs">hdfs<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/dubbo/" title="dubbo">dubbo<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/kafka/" title="kafka">kafka<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Hbase/" title="Hbase">Hbase<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/sql/" title="sql">sql<sup>2</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="http://majorkevin.xyz/blog/" target="_blank" title="朋友的博客">朋友的博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+  <div class="weiboshow">
+  <p class="asidetitle">Weibo</p>
+    <iframe width="100%" height="119" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=119&fansRow=2&ptype=1&speed=0&skin=9&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=&verifier=&dpc=1"></iframe>
+</div>
+
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> Hello ,I&#39;m dxysun. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2020 
+		
+		<a href="/about" target="_blank" title="dxysun">dxysun</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?e6d1f421bbc9962127a50488f9ed37d1";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

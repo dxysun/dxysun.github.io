@@ -1,0 +1,591 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>centos6科学上网方式 v2ray+nginx+tls | 迎着朝阳的博客</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="dxysun">
+    
+
+    
+    <meta name="description" content="前一段时间我的bwg的ip被封了，估计是因为ssr科学上网方式不行了，今天换了一种新的科学上网方式v2ray+nginx+tls">
+<meta property="og:type" content="article">
+<meta property="og:title" content="centos6科学上网方式 v2ray+nginx+tls">
+<meta property="og:url" content="https://github.com/dxysun/2019/06/20/centos6ForKeXueShangWang/index.html">
+<meta property="og:site_name" content="迎着朝阳的博客">
+<meta property="og:description" content="前一段时间我的bwg的ip被封了，估计是因为ssr科学上网方式不行了，今天换了一种新的科学上网方式v2ray+nginx+tls">
+<meta property="og:locale">
+<meta property="og:image" content="https://s2.ax1x.com/2019/06/20/VxQAmj.png">
+<meta property="article:published_time" content="2019-06-20T13:43:04.000Z">
+<meta property="article:modified_time" content="2019-06-20T15:04:14.000Z">
+<meta property="article:author" content="dxysun">
+<meta property="article:tag" content="linux">
+<meta property="article:tag" content="centos">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s2.ax1x.com/2019/06/20/VxQAmj.png">
+
+    
+    <link rel="alternative" href="/atom.xml" title="迎着朝阳的博客" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    
+<link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/%02.css">
+<link rel="stylesheet" href="/.css">
+
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="迎着朝阳的博客" title="迎着朝阳的博客"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="迎着朝阳的博客">迎着朝阳的博客</a></h1>
+				<h2 class="blog-motto"></h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">主页</a></li>
+					
+						<li><a href="/archives">归档</a></li>
+					
+						<li><a href="/about">关于</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:github.com/dxysun">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2019/06/20/centos6ForKeXueShangWang/" title="centos6科学上网方式 v2ray+nginx+tls" itemprop="url">centos6科学上网方式 v2ray+nginx+tls</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="dxysun" target="_blank" itemprop="author">dxysun</a>
+		
+  <p class="article-time">
+    <time datetime="2019-06-20T13:43:04.000Z" itemprop="datePublished"> Published 2019-06-20</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%89%80%E9%9C%80%E7%8E%AF%E5%A2%83"><span class="toc-number">1.</span> <span class="toc-text">所需环境</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E8%A3%85-V2ray"><span class="toc-number">2.</span> <span class="toc-text">安装 V2ray</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88"><span class="toc-number">2.1.</span> <span class="toc-text">解决方案</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AE%BE%E7%BD%AE-v2ray"><span class="toc-number">2.2.</span> <span class="toc-text">设置 v2ray</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%9F%E5%90%8D%E8%AE%BE%E7%BD%AE"><span class="toc-number">3.</span> <span class="toc-text">域名设置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E8%A3%85-Nginx"><span class="toc-number">4.</span> <span class="toc-text">安装 Nginx</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AD%BE%E5%8F%91-Let%E2%80%99s-Encrypt-%E8%AF%81%E4%B9%A6"><span class="toc-number">5.</span> <span class="toc-text">签发 Let’s Encrypt 证书</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BF%AE%E6%94%B9nginx%E9%85%8D%E7%BD%AE"><span class="toc-number">6.</span> <span class="toc-text">修改nginx配置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AE%BE%E7%BD%AE%E5%AE%A2%E6%88%B7%E7%AB%AF"><span class="toc-number">7.</span> <span class="toc-text">设置客户端</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83"><span class="toc-number">8.</span> <span class="toc-text">参考</span></a></li></ol>
+		
+		</div>
+		
+		<p>前一段时间我的<a target="_blank" rel="noopener" href="https://www.banwago.com/">bwg</a>的ip被封了，估计是因为ssr科学上网方式不行了，今天换了一种新的科学上网方式<code>v2ray+nginx+tls</code></p>
+<a id="more"></a>
+
+<h2 id="所需环境"><a href="#所需环境" class="headerlink" title="所需环境"></a>所需环境</h2><p>一台 VPS(bwg购买)<br>系统为centos6<br>域名(腾讯云购买)</p>
+<blockquote>
+<p>以下教程都在root用户下安装</p>
+</blockquote>
+<h2 id="安装-V2ray"><a href="#安装-V2ray" class="headerlink" title="安装 V2ray"></a>安装 V2ray</h2><p>输入下面的命令安装v2ray</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bash &lt;(curl -L -s https:&#x2F;&#x2F;install.direct&#x2F;go.sh)</span><br></pre></td></tr></table></figure>
+<p>会报下面报错</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Install daemon fail, please install it manually</span><br></pre></td></tr></table></figure>
+<p>原因是安装脚本在创建守护服务的时候不支持CentOS6</p>
+<h3 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h3><p>将下述代码保存为/etc/init.d/v2ray，并添加执行权限。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br></pre></td><td class="code"><pre><span class="line">#!&#x2F;bin&#x2F;sh</span><br><span class="line">#</span><br><span class="line"># v2ray        Startup script for v2ray</span><br><span class="line">#</span><br><span class="line"># chkconfig: - 24 76</span><br><span class="line"># processname: v2ray</span><br><span class="line"># pidfile: &#x2F;var&#x2F;run&#x2F;v2ray.pid</span><br><span class="line"># description: V2Ray proxy services</span><br><span class="line">#</span><br><span class="line"> </span><br><span class="line">### BEGIN INIT INFO</span><br><span class="line"># Provides:          v2ray</span><br><span class="line"># Required-Start:    $network $local_fs $remote_fs</span><br><span class="line"># Required-Stop:     $remote_fs</span><br><span class="line"># Default-Start:     2 3 4 5</span><br><span class="line"># Default-Stop:      0 1 6</span><br><span class="line"># Short-Description: V2Ray proxy services</span><br><span class="line"># Description:       V2Ray proxy services</span><br><span class="line">### END INIT INFO</span><br><span class="line"> </span><br><span class="line">DESC&#x3D;v2ray</span><br><span class="line">NAME&#x3D;v2ray</span><br><span class="line">DAEMON&#x3D;&#x2F;usr&#x2F;bin&#x2F;v2ray&#x2F;v2ray</span><br><span class="line">PIDFILE&#x3D;&#x2F;var&#x2F;run&#x2F;$NAME.pid</span><br><span class="line">LOCKFILE&#x3D;&#x2F;var&#x2F;lock&#x2F;subsys&#x2F;$NAME</span><br><span class="line">SCRIPTNAME&#x3D;&#x2F;etc&#x2F;init.d&#x2F;$NAME</span><br><span class="line">RETVAL&#x3D;0</span><br><span class="line"> </span><br><span class="line">DAEMON_OPTS&#x3D;&quot;-config &#x2F;etc&#x2F;v2ray&#x2F;config.json&quot;</span><br><span class="line"> </span><br><span class="line"># Exit if the package is not installed</span><br><span class="line">[ -x $DAEMON ] || exit 0</span><br><span class="line"> </span><br><span class="line"># Read configuration variable file if it is present</span><br><span class="line">[ -r &#x2F;etc&#x2F;default&#x2F;$NAME ] &amp;&amp; . &#x2F;etc&#x2F;default&#x2F;$NAME</span><br><span class="line"> </span><br><span class="line"># Source function library.</span><br><span class="line">. &#x2F;etc&#x2F;rc.d&#x2F;init.d&#x2F;functions</span><br><span class="line"> </span><br><span class="line">start() &#123;</span><br><span class="line">  local pids&#x3D;$(pgrep -f $DAEMON)</span><br><span class="line">  if [ -n &quot;$pids&quot; ]; then</span><br><span class="line">    echo &quot;$NAME (pid $pids) is already running&quot;</span><br><span class="line">    RETVAL&#x3D;0</span><br><span class="line">    return 0</span><br><span class="line">  fi</span><br><span class="line"> </span><br><span class="line">  echo -n $&quot;Starting $NAME: &quot;</span><br><span class="line"> </span><br><span class="line">  mkdir -p &#x2F;var&#x2F;log&#x2F;v2ray</span><br><span class="line">  $DAEMON $DAEMON_OPTS 1&gt;&#x2F;dev&#x2F;null 2&gt;&amp;1 &amp;</span><br><span class="line">  echo $! &gt; $PIDFILE</span><br><span class="line"> </span><br><span class="line">  sleep 2</span><br><span class="line">  pgrep -f $DAEMON &gt;&#x2F;dev&#x2F;null 2&gt;&amp;1</span><br><span class="line">  RETVAL&#x3D;$?</span><br><span class="line">  if [ $RETVAL -eq 0 ]; then</span><br><span class="line">    success; echo</span><br><span class="line">    touch $LOCKFILE</span><br><span class="line">  else</span><br><span class="line">    failure; echo</span><br><span class="line">  fi</span><br><span class="line">  return $RETVAL</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line">stop() &#123;</span><br><span class="line">  local pids&#x3D;$(pgrep -f $DAEMON)</span><br><span class="line">  if [ -z &quot;$pids&quot; ]; then</span><br><span class="line">    echo &quot;$NAME is not running&quot;</span><br><span class="line">    RETVAL&#x3D;0</span><br><span class="line">    return 0</span><br><span class="line">  fi</span><br><span class="line"> </span><br><span class="line">  echo -n $&quot;Stopping $NAME: &quot;</span><br><span class="line">  killproc -p $&#123;PIDFILE&#125; $&#123;NAME&#125;</span><br><span class="line">  RETVAL&#x3D;$?</span><br><span class="line">  echo</span><br><span class="line">  [ $RETVAL &#x3D; 0 ] &amp;&amp; rm -f $&#123;LOCKFILE&#125; $&#123;PIDFILE&#125;</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line">reload() &#123;</span><br><span class="line">  echo -n $&quot;Reloading $NAME: &quot;</span><br><span class="line">  killproc -p $&#123;PIDFILE&#125; $&#123;NAME&#125; -HUP</span><br><span class="line">  RETVAL&#x3D;$?</span><br><span class="line">  echo</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line">rh_status() &#123;</span><br><span class="line">  status -p $&#123;PIDFILE&#125; $&#123;DAEMON&#125;</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"># See how we were called.</span><br><span class="line">case &quot;$1&quot; in</span><br><span class="line">  start)</span><br><span class="line">    rh_status &gt;&#x2F;dev&#x2F;null 2&gt;&amp;1 &amp;&amp; exit 0</span><br><span class="line">    start</span><br><span class="line">    ;;</span><br><span class="line">  stop)</span><br><span class="line">    stop</span><br><span class="line">    ;;</span><br><span class="line">  status)</span><br><span class="line">    rh_status</span><br><span class="line">    RETVAL&#x3D;$?</span><br><span class="line">    ;;</span><br><span class="line">  restart)</span><br><span class="line">    stop</span><br><span class="line">    start</span><br><span class="line">    ;;</span><br><span class="line">  reload)</span><br><span class="line">    reload</span><br><span class="line">  ;;</span><br><span class="line">  *)</span><br><span class="line">    echo &quot;Usage: $SCRIPTNAME &#123;start|stop|status|reload|restart&#125;&quot; &gt;&amp;2</span><br><span class="line">    RETVAL&#x3D;2</span><br><span class="line">  ;;</span><br><span class="line">esac</span><br><span class="line">exit $RETVAL</span><br></pre></td></tr></table></figure>
+<p>加入开机启动，开启服务</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">chmod a+x &#x2F;etc&#x2F;init.d&#x2F;v2ray</span><br><span class="line">chkconfig v2ray on</span><br><span class="line">service v2ray start</span><br></pre></td></tr></table></figure>
+<h3 id="设置-v2ray"><a href="#设置-v2ray" class="headerlink" title="设置 v2ray"></a>设置 v2ray</h3><p>备份之前数据 </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cp &#x2F;etc&#x2F;v2ray&#x2F;config.json &#x2F;etc&#x2F;v2ray&#x2F;config.json.bak</span><br></pre></td></tr></table></figure>
+<p>修改 config 服务端配置</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim &#x2F;etc&#x2F;v2ray&#x2F;config.json</span><br></pre></td></tr></table></figure>
+<p>将其中的端口 port 以及 UUID(即clients下的id) 修改成你自己的</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    &quot;log&quot;: &#123;</span><br><span class="line">            &quot;access&quot;: &quot;&#x2F;var&#x2F;log&#x2F;v2ray&#x2F;access.log&quot;,</span><br><span class="line">            &quot;error&quot;: &quot;&#x2F;var&#x2F;log&#x2F;v2ray&#x2F;error.log&quot;,</span><br><span class="line">            &quot;loglevel&quot;: &quot;warning&quot;</span><br><span class="line">    &#125;,</span><br><span class="line">    &quot;inbound&quot;: &#123;</span><br><span class="line">            &quot;port&quot;: 11025,</span><br><span class="line">            &quot;protocol&quot;: &quot;vmess&quot;,</span><br><span class="line">            &quot;settings&quot;: &#123;</span><br><span class="line">                    &quot;clients&quot;: [&#123;</span><br><span class="line">                            &quot;id&quot;: &quot;&quot;,  #UUID，设置成自己的</span><br><span class="line">                            &quot;level&quot;: 1,</span><br><span class="line">                            &quot;alterId&quot;: 64,</span><br><span class="line">                            &quot;security&quot;: &quot;auto&quot;</span><br><span class="line">                    &#125;]</span><br><span class="line">            &#125;,</span><br><span class="line">            &quot;streamSettings&quot;:&#123;</span><br><span class="line">                    &quot;network&quot;:&quot;ws&quot;,</span><br><span class="line">                    &quot;security&quot;: &quot;auto&quot;,</span><br><span class="line">                    &quot;wsSettings&quot;:&#123;</span><br><span class="line">                            &quot;connectionReuse&quot;: true,</span><br><span class="line">                            &quot;path&quot;: &quot;&#x2F;enterv2ray&#x2F;&quot;</span><br><span class="line">                            &#125;</span><br><span class="line">                    &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    &quot;outbound&quot;: &#123;</span><br><span class="line">            &quot;protocol&quot;: &quot;freedom&quot;,</span><br><span class="line">            &quot;settings&quot;: &#123;&#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    &quot;outboundDetour&quot;: [</span><br><span class="line">        &#123;</span><br><span class="line">            &quot;protocol&quot;: &quot;blackhole&quot;,</span><br><span class="line">            &quot;settings&quot;: &#123;&#125;,</span><br><span class="line">            &quot;tag&quot;: &quot;blocked&quot;</span><br><span class="line">        &#125;</span><br><span class="line">    ],</span><br><span class="line">    &quot;routing&quot;: &#123;</span><br><span class="line">        &quot;strategy&quot;: &quot;rules&quot;,</span><br><span class="line">        &quot;settings&quot;: &#123;</span><br><span class="line">            &quot;rules&quot;: [</span><br><span class="line">                &#123;</span><br><span class="line">                    &quot;type&quot;: &quot;field&quot;,</span><br><span class="line">                    &quot;ip&quot;: [</span><br><span class="line">                        &quot;0.0.0.0&#x2F;8&quot;,</span><br><span class="line">                        &quot;10.0.0.0&#x2F;8&quot;,</span><br><span class="line">                        &quot;100.64.0.0&#x2F;10&quot;,</span><br><span class="line">                        &quot;127.0.0.0&#x2F;8&quot;,</span><br><span class="line">                        &quot;169.254.0.0&#x2F;16&quot;,</span><br><span class="line">                        &quot;172.16.0.0&#x2F;12&quot;,</span><br><span class="line">                        &quot;192.0.0.0&#x2F;24&quot;,</span><br><span class="line">                        &quot;192.0.2.0&#x2F;24&quot;,</span><br><span class="line">                        &quot;192.168.0.0&#x2F;16&quot;,</span><br><span class="line">                        &quot;198.18.0.0&#x2F;15&quot;,</span><br><span class="line">                        &quot;198.51.100.0&#x2F;24&quot;,</span><br><span class="line">                        &quot;203.0.113.0&#x2F;24&quot;,</span><br><span class="line">                        &quot;::1&#x2F;128&quot;,</span><br><span class="line">                        &quot;fc00::&#x2F;7&quot;,</span><br><span class="line">                        &quot;fe80::&#x2F;10&quot;</span><br><span class="line">                    ],</span><br><span class="line">                    &quot;outboundTag&quot;: &quot;blocked&quot;</span><br><span class="line">                &#125;</span><br><span class="line">            ]</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>如果你想获取一个全新的 UUID 请访问 <a target="_blank" rel="noopener" href="https://www.uuidgenerator.net/">https://www.uuidgenerator.net/</a><br>或者使用 <a target="_blank" rel="noopener" href="https://htfy96.github.io/v2ray-config-gen/">https://htfy96.github.io/v2ray-config-gen/</a> 配置全新的 v2ray 服务端以及客户端</p>
+</blockquote>
+<p>此时已经可以使用V2RayN进行科学上网了，使用方法参考<a href="https://github.com/233boy/v2ray/wiki/V2RayN%E4%BD%BF%E7%94%A8%E6%95%99%E7%A8%8B">V2RayN使用教程</a></p>
+<p>为了使用更科学的方式上网(预防被封)，下面进一步使用域名并用nginx作为服务器，通过https来进行代理访问(将其进一步伪装，进行科学上网时使其看起来好像在访问一个网站)</p>
+<h2 id="域名设置"><a href="#域名设置" class="headerlink" title="域名设置"></a>域名设置</h2><p>我的域名是<code>vps.dxysun.com</code>，使用腾讯云设置的二级域名，使其指向我的vps的ip。</p>
+<h2 id="安装-Nginx"><a href="#安装-Nginx" class="headerlink" title="安装 Nginx"></a>安装 Nginx</h2><p>参考我的另一篇博客<a target="_blank" rel="noopener" href="https://dxysun.com/2019/06/20/centos6ForNginx">centos6安装nginx</a></p>
+<h2 id="签发-Let’s-Encrypt-证书"><a href="#签发-Let’s-Encrypt-证书" class="headerlink" title="签发 Let’s Encrypt 证书"></a>签发 Let’s Encrypt 证书</h2><p>参考<a target="_blank" rel="noopener" href="https://dxysun.com/2019/06/20/nginxForZhengshu">签发 Let’s Encrypt 证书指南</a></p>
+<h2 id="修改nginx配置"><a href="#修改nginx配置" class="headerlink" title="修改nginx配置"></a>修改nginx配置</h2><p>以上的步骤都完成之后，还需要在nginx的配置文件添加一些配置</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim &#x2F;etc&#x2F;nginx&#x2F;conf.d&#x2F;default.conf</span><br></pre></td></tr></table></figure>
+<p>添加的配置</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">location &#x2F;enterv2ray&#x2F; &#123;</span><br><span class="line">	proxy_redirect off;</span><br><span class="line">	proxy_pass http:&#x2F;&#x2F;127.0.0.1:11025; #此处的11025为你的v2ray端口。请自己修改</span><br><span class="line">	proxy_http_version 1.1;</span><br><span class="line">	proxy_set_header Upgrade $http_upgrade;</span><br><span class="line">	proxy_set_header Connection &quot;upgrade&quot;;</span><br><span class="line">	proxy_set_header Host $http_host;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>添加后内容如下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">        listen 443 ssl;</span><br><span class="line">        server_name vps.dxysun.com;</span><br><span class="line">        </span><br><span class="line">        ssl_certificate      &#x2F;etc&#x2F;nginx&#x2F;ssl&#x2F;fullchain.cer;</span><br><span class="line">        ssl_certificate_key  &#x2F;etc&#x2F;nginx&#x2F;ssl&#x2F;vps.dxysun.com.key;</span><br><span class="line"></span><br><span class="line">        root &#x2F;var&#x2F;nginx;</span><br><span class="line">        index index.html;</span><br><span class="line">    </span><br><span class="line">        location &#x2F; &#123;</span><br><span class="line">            try_files $uri $uri&#x2F; @router;</span><br><span class="line">            index index.html;</span><br><span class="line">        &#125;</span><br><span class="line">        location &#x2F;enterv2ray&#x2F; &#123;</span><br><span class="line">			proxy_redirect off;</span><br><span class="line">			proxy_pass http:&#x2F;&#x2F;127.0.0.1:11025; #此处的11025为你的v2ray端口。请自己修改</span><br><span class="line">			proxy_http_version 1.1;</span><br><span class="line">			proxy_set_header Upgrade $http_upgrade;</span><br><span class="line">			proxy_set_header Connection &quot;upgrade&quot;;</span><br><span class="line">			proxy_set_header Host $http_host;</span><br><span class="line">		&#125;</span><br><span class="line">    </span><br><span class="line">        location @router &#123;</span><br><span class="line">            rewrite ^.*$ &#x2F;index.html last;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    server &#123;</span><br><span class="line">        listen 80;</span><br><span class="line">        server_name vps.dxysun.com;</span><br><span class="line">        return 301 https:&#x2F;&#x2F;$server_name$request_uri;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>重启 nginx</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">service nginx restart</span><br></pre></td></tr></table></figure>
+<p>重启 v2ray</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">service v2ray restart</span><br></pre></td></tr></table></figure>
+<h2 id="设置客户端"><a href="#设置客户端" class="headerlink" title="设置客户端"></a>设置客户端</h2><p>这里使用<a href="https://github.com/2dust/v2rayN">v2rayN</a>，win10下运行。<br>配置信息参考如下<br><img src="https://s2.ax1x.com/2019/06/20/VxQAmj.png" alt="VxQAmj.png"></p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a target="_blank" rel="noopener" href="https://www.aihoom.com/1274.html">v2ray+nginx+tls 安全的爱国方式</a><br><a target="_blank" rel="noopener" href="https://woyard.com/5270.html">CentOS6安装v2ray服务</a></p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/linux/">linux</a><a href="/tags/centos/">centos</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://github.com/dxysun/2019/06/20/centos6ForKeXueShangWang/" data-title="centos6科学上网方式 v2ray+nginx+tls | 迎着朝阳的博客" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2019/06/20/nginxForZhengshu/" title="签发 Let&#39;s Encrypt 证书指南,nginx添加ssl证书">
+  <strong>上一篇：</strong><br/>
+  <span>
+  签发 Let&#39;s Encrypt 证书指南,nginx添加ssl证书</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2019/06/20/centos6ForNginx/"  title="centos6安装nginx">
+ <strong>下一篇：</strong><br/> 
+ <span>centos6安装nginx
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%89%80%E9%9C%80%E7%8E%AF%E5%A2%83"><span class="toc-number">1.</span> <span class="toc-text">所需环境</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E8%A3%85-V2ray"><span class="toc-number">2.</span> <span class="toc-text">安装 V2ray</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88"><span class="toc-number">2.1.</span> <span class="toc-text">解决方案</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AE%BE%E7%BD%AE-v2ray"><span class="toc-number">2.2.</span> <span class="toc-text">设置 v2ray</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%9F%E5%90%8D%E8%AE%BE%E7%BD%AE"><span class="toc-number">3.</span> <span class="toc-text">域名设置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E8%A3%85-Nginx"><span class="toc-number">4.</span> <span class="toc-text">安装 Nginx</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AD%BE%E5%8F%91-Let%E2%80%99s-Encrypt-%E8%AF%81%E4%B9%A6"><span class="toc-number">5.</span> <span class="toc-text">签发 Let’s Encrypt 证书</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BF%AE%E6%94%B9nginx%E9%85%8D%E7%BD%AE"><span class="toc-number">6.</span> <span class="toc-text">修改nginx配置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AE%BE%E7%BD%AE%E5%AE%A2%E6%88%B7%E7%AB%AF"><span class="toc-number">7.</span> <span class="toc-text">设置客户端</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83"><span class="toc-number">8.</span> <span class="toc-text">参考</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+
+  
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">Categories</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/spring官方文档/" title="spring官方文档">spring官方文档<sup>8</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>54</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/linux/" title="linux">linux<sup>34</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/centos/" title="centos">centos<sup>19</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/springboot/" title="springboot">springboot<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/ubuntu/" title="ubuntu">ubuntu<sup>9</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/hadoop/" title="hadoop">hadoop<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/spring/" title="spring">spring<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/nginx/" title="nginx">nginx<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/spark/" title="spark">spark<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/mybatis/" title="mybatis">mybatis<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/mysql/" title="mysql">mysql<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/算法/" title="算法">算法<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/git/" title="git">git<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/maven/" title="maven">maven<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/hdfs/" title="hdfs">hdfs<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/dubbo/" title="dubbo">dubbo<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/kafka/" title="kafka">kafka<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Hbase/" title="Hbase">Hbase<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/sql/" title="sql">sql<sup>2</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="http://majorkevin.xyz/blog/" target="_blank" title="朋友的博客">朋友的博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+  <div class="weiboshow">
+  <p class="asidetitle">Weibo</p>
+    <iframe width="100%" height="119" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=119&fansRow=2&ptype=1&speed=0&skin=9&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=&verifier=&dpc=1"></iframe>
+</div>
+
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> Hello ,I&#39;m dxysun. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2020 
+		
+		<a href="/about" target="_blank" title="dxysun">dxysun</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?e6d1f421bbc9962127a50488f9ed37d1";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

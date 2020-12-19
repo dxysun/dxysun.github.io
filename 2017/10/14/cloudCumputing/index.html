@@ -1,0 +1,576 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>云计算学习笔记 | 迎着朝阳的博客</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="dxysun">
+    
+
+    
+    <meta name="description" content="云计算概述云计算是一种基于网络的致力于共享计算的环境，云计算网络可访问可配置网络、服务器、存储、服务、应用以及其他重要计算资源的共享池。换而言之，云计算通过Internet提供计算机或IT基础设施。 云计算部署模式至今为止，云计算应用的部署模式主要有四种模式：私有云（Private Cloud），公有云（Public Cloud），社区云（Community Cloud），混合云（Hybrid C">
+<meta property="og:type" content="article">
+<meta property="og:title" content="云计算学习笔记">
+<meta property="og:url" content="https://github.com/dxysun/2017/10/14/cloudCumputing/index.html">
+<meta property="og:site_name" content="迎着朝阳的博客">
+<meta property="og:description" content="云计算概述云计算是一种基于网络的致力于共享计算的环境，云计算网络可访问可配置网络、服务器、存储、服务、应用以及其他重要计算资源的共享池。换而言之，云计算通过Internet提供计算机或IT基础设施。 云计算部署模式至今为止，云计算应用的部署模式主要有四种模式：私有云（Private Cloud），公有云（Public Cloud），社区云（Community Cloud），混合云（Hybrid C">
+<meta property="og:locale">
+<meta property="article:published_time" content="2017-10-14T14:08:40.000Z">
+<meta property="article:modified_time" content="2017-10-14T15:13:00.000Z">
+<meta property="article:author" content="dxysun">
+<meta property="article:tag" content="云计算">
+<meta name="twitter:card" content="summary">
+
+    
+    <link rel="alternative" href="/atom.xml" title="迎着朝阳的博客" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    
+<link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/%02.css">
+<link rel="stylesheet" href="/.css">
+
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="迎着朝阳的博客" title="迎着朝阳的博客"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="迎着朝阳的博客">迎着朝阳的博客</a></h1>
+				<h2 class="blog-motto"></h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">主页</a></li>
+					
+						<li><a href="/archives">归档</a></li>
+					
+						<li><a href="/about">关于</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:github.com/dxysun">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2017/10/14/cloudCumputing/" title="云计算学习笔记" itemprop="url">云计算学习笔记</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="dxysun" target="_blank" itemprop="author">dxysun</a>
+		
+  <p class="article-time">
+    <time datetime="2017-10-14T14:08:40.000Z" itemprop="datePublished"> Published 2017-10-14</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%91%E8%AE%A1%E7%AE%97%E6%A6%82%E8%BF%B0"><span class="toc-number">1.</span> <span class="toc-text">云计算概述</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%91%E8%AE%A1%E7%AE%97%E9%83%A8%E7%BD%B2%E6%A8%A1%E5%BC%8F"><span class="toc-number">1.1.</span> <span class="toc-text">云计算部署模式</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%A7%81%E6%9C%89%E4%BA%91"><span class="toc-number">1.1.1.</span> <span class="toc-text">私有云</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%85%AC%E6%9C%89%E4%BA%91"><span class="toc-number">1.1.2.</span> <span class="toc-text">公有云</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%A4%BE%E5%8C%BA%E4%BA%91"><span class="toc-number">1.1.3.</span> <span class="toc-text">社区云</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%B7%B7%E5%90%88%E4%BA%91"><span class="toc-number">1.1.4.</span> <span class="toc-text">混合云</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%91%E8%AE%A1%E7%AE%97%E7%9A%84%E6%9C%8D%E5%8A%A1"><span class="toc-number">1.2.</span> <span class="toc-text">云计算的服务</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#IaaS"><span class="toc-number">1.2.1.</span> <span class="toc-text">IaaS</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#PaaS"><span class="toc-number">1.2.2.</span> <span class="toc-text">PaaS</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#SaaS"><span class="toc-number">1.2.3.</span> <span class="toc-text">SaaS</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%99%9A%E6%8B%9F%E5%8C%96%E5%B9%B3%E5%8F%B0VMware%E5%8E%9F%E7%90%86%E3%80%81%E6%9E%B6%E6%9E%84%E4%B8%8E%E9%83%A8%E7%BD%B2"><span class="toc-number">1.3.</span> <span class="toc-text">虚拟化平台VMware原理、架构与部署</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#VMware%E5%8E%9F%E7%90%86"><span class="toc-number">1.3.1.</span> <span class="toc-text">VMware原理</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#OpenStack%E6%9E%B6%E6%9E%84%E5%92%8C%E9%83%A8%E7%BD%B2%E5%AE%89%E8%A3%85"><span class="toc-number">1.4.</span> <span class="toc-text">OpenStack架构和部署安装</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#OpenStack%E6%9E%B6%E6%9E%84"><span class="toc-number">1.4.1.</span> <span class="toc-text">OpenStack架构</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#KVM-Citrix%E6%9E%B6%E6%9E%84"><span class="toc-number">1.5.</span> <span class="toc-text">KVM, Citrix架构</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#KVM%E6%9E%B6%E6%9E%84"><span class="toc-number">1.5.1.</span> <span class="toc-text">KVM架构</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Citrix%E6%9E%B6%E6%9E%84"><span class="toc-number">1.5.2.</span> <span class="toc-text">Citrix架构</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%AC%E6%9C%89%E4%BA%91%E5%AE%89%E5%85%A8%E9%A3%8E%E9%99%A9%E5%8F%8A%E9%98%B2%E6%8A%A4"><span class="toc-number">1.6.</span> <span class="toc-text">公有云安全风险及防护</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%89%A9%E7%90%86%E5%B1%82%E5%AE%89%E5%85%A8"><span class="toc-number">1.6.1.</span> <span class="toc-text">物理层安全</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%99%9A%E6%8B%9F%E5%B1%82%E5%AE%89%E5%85%A8"><span class="toc-number">1.6.2.</span> <span class="toc-text">虚拟层安全</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9C%8D%E5%8A%A1%E5%B1%82%E5%AE%89%E5%85%A8"><span class="toc-number">1.6.3.</span> <span class="toc-text">服务层安全</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%8B%92%E7%BB%9D%E6%9C%8D%E5%8A%A1%E6%94%BB%E5%87%BB"><span class="toc-number">1.6.3.1.</span> <span class="toc-text">拒绝服务攻击</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E4%BE%A7%E4%BF%A1%E9%81%93%E6%94%BB%E5%87%BB"><span class="toc-number">1.6.3.2.</span> <span class="toc-text">侧信道攻击</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#SQL-%E6%B3%A8%E5%85%A5%E6%94%BB%E5%87%BB"><span class="toc-number">1.6.3.3.</span> <span class="toc-text">SQL 注入攻击</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E8%B7%A8%E7%AB%99%E8%84%9A%E6%9C%AC%E5%AE%89%E5%85%A8%E6%94%BB%E5%87%BB%E5%8F%8A%E7%BD%91%E7%BB%9C%E5%97%85%E6%8E%A2"><span class="toc-number">1.6.3.4.</span> <span class="toc-text">跨站脚本安全攻击及网络嗅探</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E4%B8%AD%E9%97%B4%E4%BA%BA%E5%AE%89%E5%85%A8%E6%94%BB%E5%87%BB"><span class="toc-number">1.6.3.5.</span> <span class="toc-text">中间人安全攻击</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%85%AC%E6%9C%89%E4%BA%91%E5%AE%89%E5%85%A8%E9%98%B2%E8%8C%83%E6%8E%AA%E6%96%BD"><span class="toc-number">1.6.4.</span> <span class="toc-text">公有云安全防范措施</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E8%BE%B9%E7%95%8C%E9%98%B2%E6%8A%A4"><span class="toc-number">1.6.4.1.</span> <span class="toc-text">边界防护</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%B9%B3%E5%8F%B0%E5%AE%89%E5%85%A8"><span class="toc-number">1.6.4.2.</span> <span class="toc-text">平台安全</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93%E5%AE%89%E5%85%A8"><span class="toc-number">1.6.4.3.</span> <span class="toc-text">数据库安全</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E8%84%86%E5%BC%B1%E7%82%B9%E6%89%AB%E6%8F%8F"><span class="toc-number">1.6.4.4.</span> <span class="toc-text">脆弱点扫描</span></a></li></ol></li></ol></li></ol></li></ol>
+		
+		</div>
+		
+		<h2 id="云计算概述"><a href="#云计算概述" class="headerlink" title="云计算概述"></a>云计算概述</h2><p>云计算是一种基于网络的致力于共享计算的环境，云计算网络可访问可配置网络、服务器、存储、服务、应用以及其他重要计算资源的共享池。换而言之，云计算通过Internet提供计算机或IT基础设施。</p>
+<h3 id="云计算部署模式"><a href="#云计算部署模式" class="headerlink" title="云计算部署模式"></a>云计算部署模式</h3><p>至今为止，云计算应用的部署模式主要有四种模式：私有云（Private Cloud），公有云（Public Cloud），社区云（Community Cloud），混合云（Hybrid Cloud）。</p>
+<a id="more"></a>
+<h4 id="私有云"><a href="#私有云" class="headerlink" title="私有云"></a>私有云</h4><p>私有云是一种单组织支持云容量并且仅组织成员允许使用该容量的模型。私有云通常是在企业内部的专有网络，通常用于独占使用；现在这个网络在商业组织中非常流行。在私有云的情况下，维护成本很高;数据比公共云计算更安全。</p>
+<h4 id="公有云"><a href="#公有云" class="headerlink" title="公有云"></a>公有云</h4><p>公有云，是指为外部客户提供服务的云，它所有的服务是供别人使用，而不是自己用。目前，典型的公共云有微软的 Windows Azure Platform、亚马逊的 AWS、Salesforce.com，以及国内的阿里云、腾讯云等。<br>在此种模式下，应用程序、资源、存储和其他服务，都由云服务供应商来提供给用户，这些服务多半都是免费的，也有部分按需按使用量来付费，这种模式只能使用互联网来访问和使用。同时，这种模式在私人信息和数据保护方面也比较有保证。这种部署模型通常都可以提供可扩展的云服务并能高效设置。</p>
+<h4 id="社区云"><a href="#社区云" class="headerlink" title="社区云"></a>社区云</h4><p>这些云是由一组织维护的。社区云计算由互联网提供的资源并由来自具有共同兴趣的组织的特定用户群体所限制使用。常用客户是一群拥有共同背景或在社区或社会中有共同关心的人。社区云介于公有云和私有云之间。它可以由一个或多个特定社区组织、第三方或某些组织社区的结合体进行管理和操作，并且它可能存在前提或非前提下退出。</p>
+<h4 id="混合云"><a href="#混合云" class="headerlink" title="混合云"></a>混合云</h4><p>混合云是两种或更多的云模型(私有、社区、公共)的组合，它们仍然是唯一的实体，但是通过标准化的技术将数据和应用程序的可移植性结合在一起。云基础设施旨在通过外包实现最终的成本削减，同时保持所需的控制水平。例如:Google，Amazon, Windows Azure。</p>
+<h3 id="云计算的服务"><a href="#云计算的服务" class="headerlink" title="云计算的服务"></a>云计算的服务</h3><p>云计算服务共分为三层，分别是Infrastructure（基础设施）-as-a-Service（IaaS），Platform（平台）-as-a-Service(PaaS)，Software（软件）-as-a-Service(SaaS)。基础设施在最下端，平台在中间，软件在顶端。</p>
+<h4 id="IaaS"><a href="#IaaS" class="headerlink" title="IaaS"></a>IaaS</h4><p>IaaS叫做基础设施即服务。在IaaS模型中，根据用户的需求，资源可以很容易地按比例放大，服务以付费的方式收取。这个模型的主要概念是虚拟化，在这里用户拥有虚拟桌面，并使用云服务提供商提供的资源，如网络、存储、虚拟化服务器、路由器等等。使用费用按CPU时间计算，数据GB存储每小时，网络带宽消耗，网络基础设施每小时使用，增值服务使用，例如，监控，自动缩放等。例如:亚马逊S3(Amazon S3)提供的存储服务。计算服务:amazon ec2、分层技术等等。</p>
+<h4 id="PaaS"><a href="#PaaS" class="headerlink" title="PaaS"></a>PaaS</h4><p>PaaS叫做平台即服务，软件部署框架和组件，用于支持应用级资产或web应用程序的直接部署。PaaS是一个可以开发、测试和部署软件的平台。这意味着软件的整个生命周期可以在PaaS上运行。这个服务模型专门针对应用程序开发人员、测试人员、deplorers和管理员。示例：谷歌应用引擎(GAE)、微软Azure、IBM智能云、Amazon EC2、salesforce.com和j弹性网等等。</p>
+<h4 id="SaaS"><a href="#SaaS" class="headerlink" title="SaaS"></a>SaaS</h4><p>SaaS叫做软件即服务。通过这个服务交付模型，终端用户根据按需的方式直接消耗网络上的软件应用服务。例如，Gmail是一个SaaS，其中谷歌是提供者，而我们是消费者。其他著名的PaaS示例包括由Arial系统提供的账单服务，op source。金融服务:Concur，工作日，Beam4d。备份和恢复服务:丛林磁盘、Zmanda云备份等等。</p>
+<h3 id="虚拟化平台VMware原理、架构与部署"><a href="#虚拟化平台VMware原理、架构与部署" class="headerlink" title="虚拟化平台VMware原理、架构与部署"></a>虚拟化平台VMware原理、架构与部署</h3><p>VMware虚拟机软件，是全球桌面到数据中心虚拟化解决方案的领导厂商。旗下产品种类繁多，包括云计算管理平台，数据中心和云计算基础架构，网络连接与安全性，网络功能虚拟化，SDDC等14大类。</p>
+<h4 id="VMware原理"><a href="#VMware原理" class="headerlink" title="VMware原理"></a>VMware原理</h4><p>VMware虚拟化原理其实很简单，一句话概括即硬件和操作系统之间新增一个虚拟层，这个虚拟层也叫虚拟机管理器，通过这个管理器不同的操作 系统可<br>以共享一套硬件设备。VMware虚拟化的工作原理是，直接在计算机硬件或主机操作系统上面插入一个精简的软件层。该软件层包含一个以动态和透明方式<br>分配硬件资源的 虚拟机监视器（或称“管理程序”）。多个操作系统可以同时运行在单台物理机上，彼此之间共享硬件资源。由于是将整台计算机（包括<br>CPU、内存、操作系统和网络设备）封装 起来，因此虚拟机可与所有标准的x86操作系统、应用程序和设备驱动程序完全兼容。可以同时在单台计算机上<br>安全运行多个操作系统和应用程序，每个操作系统和应用程序都可以 在需要时访问其所需的资源。<br>虚拟机可以分两种。<br>一种是裸机型，直接运行在物理设备之上，是一种基于内核的虚拟机（其中包括 Oracle 虚拟机、VMware ESX Server、Microsoft Hyper-V 和 Citrix XenServer）。这种类型的Hypervisor所扮演的角色是一种抽象概念的OS。Hypervisor直接安装在硬件上，将所有的硬件资源接管。<br>另一种是宿主机型，运行在宿主机器的操作系统上（如上图）(VMware Workstation、Microsoft Virtual PC 和 Parallels Workstation) 创建硬件全仿真实例。Hypervisor构建出一整套虚拟硬件平台（CPU/Memory/Storage/Adapter），上面需要你再去安装新的操作系统和需要的应用软件，这样底层和上层的OS就可以完全无关化。</p>
+<h3 id="OpenStack架构和部署安装"><a href="#OpenStack架构和部署安装" class="headerlink" title="OpenStack架构和部署安装"></a>OpenStack架构和部署安装</h3><p>OpenStack是由Rackspace和美国国家航空航天局（NASA）共同开发的云计算平台，帮助服务商和企业内部实现类似于亚马逊EC2和S3的云基础架构服务。<br>OpenStack宗旨在于，帮助组织运行为虚拟计算或存储服务的云，为公有云、私有云，也为大云、小云提供可扩展的、灵活的云计算。</p>
+<h4 id="OpenStack架构"><a href="#OpenStack架构" class="headerlink" title="OpenStack架构"></a>OpenStack架构</h4><p>Nova：管理 VM 的生命周期，是 OpenStack中最核心的服务。Nova控制云计算架构（基础架构服务的核心组件）。<br>Neutron：为 OpenStack提供网络连接服务，负责创建和管理L2、L3 网络，为VM提供虚拟网络和物理网络连接。<br>Glance：管理VM的启动镜像，Nova创建VM时将使用Glance提供的镜像。Glance为 VM镜像（尤其是为启动 VM 实例中所使用的系统磁盘）提供了支持。除了发现、注册和激活服务之外，它还有快照和备份功能。<br>Cinder：为VM提供块存储服务。Cinder提供的每一个Volume在VM看来就是一块虚拟硬盘，一般用作数据盘。<br>Swift：提供对象存储服务。VM可以通过RESTful API存放对象数据。作为可选的方案，Glance可以将镜像存放在Swift中，Cinder也可以将Volume备份到Swift中。<br>Keystone：为OpenStack的各种服务提供认证和权限管理服务。简单的说，OpenStack 上的每一个操作都必须通过Keystone的审核。<br>Ceilometer：为OpenStack云的计费、基准、扩展性以及统计等目的提供监测和计量。<br>Horizon：OpenStack中各种服务的Web管理门户，用于简化用户对服务的操作，例如：启动实例、分配IP地址、配置访问控制等。</p>
+<h3 id="KVM-Citrix架构"><a href="#KVM-Citrix架构" class="headerlink" title="KVM, Citrix架构"></a>KVM, Citrix架构</h3><h4 id="KVM架构"><a href="#KVM架构" class="headerlink" title="KVM架构"></a>KVM架构</h4><p>KVM(Kernel-based  Virtual  Machine)是一款基于 GPL 授权方式的开源虚拟机软件。它是基于 X86 架构且基于硬件虚拟化的 Linux全虚拟化解决方案。KVM 是第一个成为原生Linux 内核（2.6.20）一部分的 Hypervisor由 Avi Kivity 开发和维护的，现在归红帽公司所有。<br>KVM 采用的是基于Intel  VT技术的硬件虚拟化方法，同时结合QEMU来提供设备虚拟化，有说法认为 KVM是寄宿虚拟化模型，那是因为 Linux 在设计之初并没有针对虚拟化方面的支持，所以 KVM 是以内核模块的形式而存在的。但是，随着越来越多的虚拟化功能被加入到 Linux 内核中来，也有说法认为 Linux 已经是一个 Hypervisor，因此 KVM是原生虚拟化模型。KVM项目的发起人和维护人倾向于认为 KVM是原生虚拟化模型。</p>
+<h4 id="Citrix架构"><a href="#Citrix架构" class="headerlink" title="Citrix架构"></a>Citrix架构</h4><p>Citrix主要有三款虚拟化产品，分别为：XenServer、XenDesktop和XenApp。</p>
+<h3 id="公有云安全风险及防护"><a href="#公有云安全风险及防护" class="headerlink" title="公有云安全风险及防护"></a>公有云安全风险及防护</h3><p>公有云作为云计算的主要形态，越来越多的个人、企业和机构在公有云部署信息数据系统，所以公有云的安全问题不容忽视。云计算的一种典型架构是从下至上分别为物理层、虚拟层和服务层。物理层存放的是物理设备，包括计算、存储等设备，为云计算提供最基本的计算和存储能力；虚拟层主要存放虚拟机，把物理资源虚拟化后提供给服务层；服务层主要对用户提供服务（基础设施即服务、平台即服务、应用软件即服务）。相应的公有云的安全也分为物理层安全、虚拟层安全和服务层安全。</p>
+<h4 id="物理层安全"><a href="#物理层安全" class="headerlink" title="物理层安全"></a>物理层安全</h4><p>物理层安全是整个云计算系统安全的基础，主要包括服务器和存储介质等物理设备。由于云计算所引起的服务模式变革，导致云租户的数据都要在云计算中心物理层进行计算和存储。大量的复杂计算和数据存储以及对用户隐私进行保护，是物理层安全主要关注的问题。</p>
+<h4 id="虚拟层安全"><a href="#虚拟层安全" class="headerlink" title="虚拟层安全"></a>虚拟层安全</h4><p>虚拟层主要以虚拟控制器和虚拟机形式为服务层提供服务。对下控制物理层设备的工作，对上为服务层提供用户接口。虚拟机运行在一个相对隔离的层，把物理层的资源虚拟化提供给调用服务层服务的用户，在一种安全的工作方式下隔离用户端和物理设备，使之不相互干扰。但是云计算共享资源的特点决定了虚拟层也有很多安全威胁和隐患，主要在于虚拟机资源的安全使用以及虚拟网络的互联和管理维护上。例如虚拟软件攻击，虚拟机监控器是一个管理控制程序，是物理机上具有最高权限的软件，这也使其成为恶意攻击的重要目标，通过监控器本身漏洞获得权限，会对整个虚拟化环境造成极大的危害。使用虚拟机镜像操作系统时，操作系统本身存在不断发现的漏洞、已经镜像到系统中的恶意软件、盗版软件及发布方故意安装的恶意软件等也是主要的安全威胁。</p>
+<h4 id="服务层安全"><a href="#服务层安全" class="headerlink" title="服务层安全"></a>服务层安全</h4><p>服务层实现了对资源的服务化抽象。将各种应用进行封装形成服务，如基础设施即服务（InfraInfrastructure as a Service， IaaS）、平台即服务（Platform as a Service，PaaS）、应用软件即服务（Software as a Service，SaaS）。按照提供服务的不同，存在的安全需求也不同，包括基础设施安全需求、平台安全需求、应用软件安全需求。由于云服务为不同用户提供不同服务，因此服务层需要维持大量的用户和资源的映射关系，而处理各种复杂的映射关系给云计算平台引入了新的安全威胁[8]。服务层安全主要有以下几种安全威胁。</p>
+<h5 id="拒绝服务攻击"><a href="#拒绝服务攻击" class="headerlink" title="拒绝服务攻击"></a>拒绝服务攻击</h5><p>攻击者采用非法手段消耗被攻击者的服务资源等，或直接攻击服务器主机导致主机死机，使服务器中断或者延迟向用户端提供服务，从而使用户端发出的请求无法被服务器正常响应。</p>
+<h5 id="侧信道攻击"><a href="#侧信道攻击" class="headerlink" title="侧信道攻击"></a>侧信道攻击</h5><p>侧信道攻击以FLUSH+RELOAD攻击为原型，以自动化跟踪被攻击者执行痕迹为驱动策略，进行了改进和拓展。攻击分为两个步骤：首先，判断两个用户应用是否同驻同一个操作系统；其次，跨边界获取共享Cache泄露的信息，通过分析获得敏感信，劫持用户账户，突破SMAL单点登录。</p>
+<h5 id="SQL-注入攻击"><a href="#SQL-注入攻击" class="headerlink" title="SQL 注入攻击"></a>SQL 注入攻击</h5><p>通过利用SQL注入安全漏洞将SQL命令插入到Web表单中提交或者添加到网络输入框当中，得到一个存在漏洞的网站的数据库，达到欺骗服务器执行恶意SQL代码，并不是按照设计者的意图执行命令，进而获得非法访问的权限。攻击者通过SQL攻击，不但可以操控 Web界面，也可以获取非授权的用户信息。</p>
+<h5 id="跨站脚本安全攻击及网络嗅探"><a href="#跨站脚本安全攻击及网络嗅探" class="headerlink" title="跨站脚本安全攻击及网络嗅探"></a>跨站脚本安全攻击及网络嗅探</h5><p>攻击者通过Web程序将恶意URL植入到网络链接并发送给用户，被攻击将用户导向特定页面，用户浏览器会执行该恶意代码，并同时窃取敏感数据，如Cookie、会话令牌等。网络嗅探指的是黑客利用网络嗅探器实施网络攻击，如网络嗅探器，通过检测网络性能、查找网络漏洞和抓取数据包，盗取用户数据的过程，数据未加密、密码过于简单容易使得黑客获取数据更方便，可进行ARP欺骗、会话劫持、IP欺骗等攻击。</p>
+<h5 id="中间人安全攻击"><a href="#中间人安全攻击" class="headerlink" title="中间人安全攻击"></a>中间人安全攻击</h5><p>这是一种“间接”的攻击，攻击者在通信双方不知情的情况下拦截双方在网络中传输的通信数据，并在拦截后嗅探及篡改数据，按照原来的数据流向继续发送，对于通信双方来说像是透明传播一样。SSL配置错误为中间人攻击提创造了有利条件，如通信双方没有正确安装SSL，则黑客就可以在双发交互信息的同时侵入到通信双方的计算机并同时窃取通信数据[8]。</p>
+<h4 id="公有云安全防范措施"><a href="#公有云安全防范措施" class="headerlink" title="公有云安全防范措施"></a>公有云安全防范措施</h4><h5 id="边界防护"><a href="#边界防护" class="headerlink" title="边界防护"></a>边界防护</h5><p>云边界的安全防护基于云边界识别的基础之上，可以借助传统网络的边界防护技术实现云的边界防护。实现边界防护主要有以下几种。<br>（1）身份认证系统。为了提升云计算系统的安全性，应采用多种组合的鉴别技术对用户进行用户身份鉴别，如用户名/口令、动态口令、安全插件、物理设备、生物识别技术、数字证书等身份鉴别技术都是目前身份鉴别的有效手段。<br>（2）防火墙、网关。防火墙（Fire Wall）部署在云边界，对云内部是一个保护屏障，用于隔离云环境和非云环境，或者私有云和公有云等。在云内部和云外部之间部署安全网关（Security Gateway），从而保护内部网免受非法用户的侵入，防火墙主要由服务访问规则、验证工具、包过滤和应用网关4个功能部分组成。安全网关主要用来阻止非法用户的访问。为了提高云边界安全，还可以采用计算机硬件和软件结合的方式。<br>（3）准入安全。云端控制终端设备接入安全通过在云端远程进行接入设备身份认证和管理。可以采用 IEEE 802.1X 协议等网络准入控制手段实行准入控制，采用IP与MAC地址绑定等手段以防止网络地址欺骗，采用较为安全的SSH、HTTPS等进行远程管理等措施。</p>
+<h5 id="平台安全"><a href="#平台安全" class="headerlink" title="平台安全"></a>平台安全</h5><p>平台安全与否直接关系到云计算的有用性和可靠性，影响到整个系统有多少用户愿意使用。以下从几个方面来阐述平台安全建设的内容。<br>（1）数据存储安全。云计算中云存储系统提供包括数据处理、存储、资源使用等服务。每个用户根据权限进行范围内的操作，禁止冒充和越权。用户的数据在云计算系统传输过程中，数据存放在云存储系统中，数据之间没有物理隔离，所以不同用户的数据都要通过加密等方式存储。同时要实现在可信用户间共享数据，所以需要有安全机制来保证共享安全性，让存放的云端数据安全可靠。<br>（2）数据传输安全。在云计算模式下，核心数据通过网络传递给云服务提供商进行处理，传输过程中的主要问题是如何确保企业的数据在网络传输中不被窃取、修改、破坏，甚至即使被窃取也不会泄露企业的有用信息，关键技术包括身份识别技术和数据加密传输技术进一步的发展和应用，在网络传输过程中对用户进行严格的身份认证和权限管理，使用数据加密技术用以确保合法的数据访问和该过程中完整的数据传输。<br>（3）虚拟化安全技术。虚拟化作为云计算实现的一种特征，虚拟化安全最重要的是虚拟化系统软件安全，保护虚拟化软件环境安全，保护虚拟化程序的运行安全、可信性，阻止病毒、木马和漏洞等。同时需要进行虚拟化应用程序和虚拟化数据的隔离，采用虚拟策略驱动加强、分割与隔离，划分管理等级、服务等级并按等级和使用情况计费。采用包括加密、认证和访问控制等技术保障虚拟机、虚拟化网络的通信安全以及虚拟数据的安全迁移等。<br>（4）拒绝服务攻击。针对DDOS攻击和僵尸网络泛滥的问题，可在云平台边界部署防 DDOS 攻击和僵尸网络检测系统。采用能够处理大流量数据的设备，对流量进行镜像，采样数据包发送给攻击特征识别设备，通过设备的识别和人工确认是否为攻击流。对攻击流行为，通过自动或半自动方式进行流量牵引，保证清洗设备能够处理大流量数据的前提下，过滤攻击流量，放行正常访问流量。<br>（5）抗隐蔽信道攻击。目前认为抗隐蔽信道攻击最好的方法是避免物理设备共享或者虚拟资源共享，避免攻击者与被攻击者共享资源的最有效方法，即服务提供商为用户提供独占资源的服务，但是用户要支付更多的费用，很大情况会造成资源浪费。<br>（6）安全即服务。所谓安全即服务（SecaaS），就是云计算技术在网络安全领域的应用和拓展，是安全管理的外包模式，从而实现网络SecaaS的一种技术和业务模式，通过集群化、池化和服务化提升网络安全的资源，以互联网的方式，用户不需要自身对安全设施进行维护管理、以最小化成本、尽量减小业务提供商之间交互的情况下，可以得到便捷、按需、可伸缩的网络安全防护服务。同时给用户和服务商带来了很多益处，包括避免人力资源浪费、避免低水平重复劳动、避免管理设备低水平重复配置、更多的知识、更智能的行为、更专业的安全设备维护等。<br>（7）SDN技术。软件定义网络（SDN）作为一种新兴的网络技术，被认为是解决当前云计算进一步发展瓶颈问题的有效方法，同时也为解决公有云安全问题带来了新的途径。一种基于SDN技术的云安全防护方案在原有的业务云之外，用云技术建设安全云，在业务云中部署安全代理，通过SDN技术连接业务云、安全云和安全代理，并通过安全代理把业务云动态划分为逻辑隔离的多个业务区域。方案不依赖于业务云的实现方式，除初始近乎零配置的安全代理外，不改变业务云的软硬件结构，具有易部署、易维护、安全性更高等特点。</p>
+<h5 id="数据库安全"><a href="#数据库安全" class="headerlink" title="数据库安全"></a>数据库安全</h5><p>数据库安全关系到存储信息的保密性，是云安全非常重要的部分，主要包括数据管理和使用安全、数据存储安全等内容。<br>（1）数据管理与使用安全。数据管理与使用安全是对数据库管理用户的身份认证。包括制定普通用户和管理员用户安全策略和管理策略、口令管理的相关安全策略、用户管理策略、用户访问控制策略，合理分配用户权限。<br>（2）数据存储安全。数据存储安全包括敏感的口令数据非明文存储，对关键敏感的业务数据加密存储；提供本地数据的备份与恢复，数据定期备份，备份介质应当场外存放和异地备份；在环境发生变更时或定期进行备份恢复测试，以保证所备份数据可恢复。 </p>
+<h5 id="脆弱点扫描"><a href="#脆弱点扫描" class="headerlink" title="脆弱点扫描"></a>脆弱点扫描</h5><p>脆弱点扫描分为系统弱点扫描、软件弱点扫描和网络设备弱点扫描等。<br>系统弱点扫描是使用弱点扫描工具定期对系统漏洞进行扫描，保证漏洞的及时发现和处理，应采用最新的漏洞扫描引擎工具，及时更新漏洞库，智能检测系统漏洞，采用第三方应用软件漏洞和相关安全设置，并帮助用户手动或自动修复漏洞，实现漏洞的自动修复，不仅简化了用户的操作，同时也能更加及时帮助用户在第一时间安装补丁，杜绝安全隐患。<br>定期对应用程序软件进行弱点扫描，扫描之前应更新扫描器特征代码。弱点扫描应在非核心业务时段进行，并制定回退计划，对于运行状态的应用，弱点扫描策略不能选择拒绝服务攻击类及应用服务端口缓冲区溢出类。及时同步更新已发布的核心安全补丁，根据扫描结果的危害，及时修复所发现的漏洞，更新补丁之前应当在测试系统中进行测试，并制定详细的回退方案[9]。</p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/云计算/">云计算</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://github.com/dxysun/2017/10/14/cloudCumputing/" data-title="云计算学习笔记 | 迎着朝阳的博客" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2017/10/15/ubuntuCameraProblem/" title="解决在VMware下Ubuntu14.04- 16.10版本cheese摄像头灯亮却黑屏问题">
+  <strong>上一篇：</strong><br/>
+  <span>
+  解决在VMware下Ubuntu14.04- 16.10版本cheese摄像头灯亮却黑屏问题</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2017/10/05/pythonModifypip/"  title="修改pip的镜像源">
+ <strong>下一篇：</strong><br/> 
+ <span>修改pip的镜像源
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%91%E8%AE%A1%E7%AE%97%E6%A6%82%E8%BF%B0"><span class="toc-number">1.</span> <span class="toc-text">云计算概述</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%91%E8%AE%A1%E7%AE%97%E9%83%A8%E7%BD%B2%E6%A8%A1%E5%BC%8F"><span class="toc-number">1.1.</span> <span class="toc-text">云计算部署模式</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%A7%81%E6%9C%89%E4%BA%91"><span class="toc-number">1.1.1.</span> <span class="toc-text">私有云</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%85%AC%E6%9C%89%E4%BA%91"><span class="toc-number">1.1.2.</span> <span class="toc-text">公有云</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%A4%BE%E5%8C%BA%E4%BA%91"><span class="toc-number">1.1.3.</span> <span class="toc-text">社区云</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%B7%B7%E5%90%88%E4%BA%91"><span class="toc-number">1.1.4.</span> <span class="toc-text">混合云</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%91%E8%AE%A1%E7%AE%97%E7%9A%84%E6%9C%8D%E5%8A%A1"><span class="toc-number">1.2.</span> <span class="toc-text">云计算的服务</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#IaaS"><span class="toc-number">1.2.1.</span> <span class="toc-text">IaaS</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#PaaS"><span class="toc-number">1.2.2.</span> <span class="toc-text">PaaS</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#SaaS"><span class="toc-number">1.2.3.</span> <span class="toc-text">SaaS</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%99%9A%E6%8B%9F%E5%8C%96%E5%B9%B3%E5%8F%B0VMware%E5%8E%9F%E7%90%86%E3%80%81%E6%9E%B6%E6%9E%84%E4%B8%8E%E9%83%A8%E7%BD%B2"><span class="toc-number">1.3.</span> <span class="toc-text">虚拟化平台VMware原理、架构与部署</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#VMware%E5%8E%9F%E7%90%86"><span class="toc-number">1.3.1.</span> <span class="toc-text">VMware原理</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#OpenStack%E6%9E%B6%E6%9E%84%E5%92%8C%E9%83%A8%E7%BD%B2%E5%AE%89%E8%A3%85"><span class="toc-number">1.4.</span> <span class="toc-text">OpenStack架构和部署安装</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#OpenStack%E6%9E%B6%E6%9E%84"><span class="toc-number">1.4.1.</span> <span class="toc-text">OpenStack架构</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#KVM-Citrix%E6%9E%B6%E6%9E%84"><span class="toc-number">1.5.</span> <span class="toc-text">KVM, Citrix架构</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#KVM%E6%9E%B6%E6%9E%84"><span class="toc-number">1.5.1.</span> <span class="toc-text">KVM架构</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Citrix%E6%9E%B6%E6%9E%84"><span class="toc-number">1.5.2.</span> <span class="toc-text">Citrix架构</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%AC%E6%9C%89%E4%BA%91%E5%AE%89%E5%85%A8%E9%A3%8E%E9%99%A9%E5%8F%8A%E9%98%B2%E6%8A%A4"><span class="toc-number">1.6.</span> <span class="toc-text">公有云安全风险及防护</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%89%A9%E7%90%86%E5%B1%82%E5%AE%89%E5%85%A8"><span class="toc-number">1.6.1.</span> <span class="toc-text">物理层安全</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%99%9A%E6%8B%9F%E5%B1%82%E5%AE%89%E5%85%A8"><span class="toc-number">1.6.2.</span> <span class="toc-text">虚拟层安全</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9C%8D%E5%8A%A1%E5%B1%82%E5%AE%89%E5%85%A8"><span class="toc-number">1.6.3.</span> <span class="toc-text">服务层安全</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%8B%92%E7%BB%9D%E6%9C%8D%E5%8A%A1%E6%94%BB%E5%87%BB"><span class="toc-number">1.6.3.1.</span> <span class="toc-text">拒绝服务攻击</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E4%BE%A7%E4%BF%A1%E9%81%93%E6%94%BB%E5%87%BB"><span class="toc-number">1.6.3.2.</span> <span class="toc-text">侧信道攻击</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#SQL-%E6%B3%A8%E5%85%A5%E6%94%BB%E5%87%BB"><span class="toc-number">1.6.3.3.</span> <span class="toc-text">SQL 注入攻击</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E8%B7%A8%E7%AB%99%E8%84%9A%E6%9C%AC%E5%AE%89%E5%85%A8%E6%94%BB%E5%87%BB%E5%8F%8A%E7%BD%91%E7%BB%9C%E5%97%85%E6%8E%A2"><span class="toc-number">1.6.3.4.</span> <span class="toc-text">跨站脚本安全攻击及网络嗅探</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E4%B8%AD%E9%97%B4%E4%BA%BA%E5%AE%89%E5%85%A8%E6%94%BB%E5%87%BB"><span class="toc-number">1.6.3.5.</span> <span class="toc-text">中间人安全攻击</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%85%AC%E6%9C%89%E4%BA%91%E5%AE%89%E5%85%A8%E9%98%B2%E8%8C%83%E6%8E%AA%E6%96%BD"><span class="toc-number">1.6.4.</span> <span class="toc-text">公有云安全防范措施</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E8%BE%B9%E7%95%8C%E9%98%B2%E6%8A%A4"><span class="toc-number">1.6.4.1.</span> <span class="toc-text">边界防护</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%B9%B3%E5%8F%B0%E5%AE%89%E5%85%A8"><span class="toc-number">1.6.4.2.</span> <span class="toc-text">平台安全</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93%E5%AE%89%E5%85%A8"><span class="toc-number">1.6.4.3.</span> <span class="toc-text">数据库安全</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E8%84%86%E5%BC%B1%E7%82%B9%E6%89%AB%E6%8F%8F"><span class="toc-number">1.6.4.4.</span> <span class="toc-text">脆弱点扫描</span></a></li></ol></li></ol></li></ol></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+
+  
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">Categories</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/spring官方文档/" title="spring官方文档">spring官方文档<sup>8</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>54</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/linux/" title="linux">linux<sup>34</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/centos/" title="centos">centos<sup>19</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/springboot/" title="springboot">springboot<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/ubuntu/" title="ubuntu">ubuntu<sup>9</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/hadoop/" title="hadoop">hadoop<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/spring/" title="spring">spring<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/nginx/" title="nginx">nginx<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/spark/" title="spark">spark<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/mybatis/" title="mybatis">mybatis<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/mysql/" title="mysql">mysql<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/算法/" title="算法">算法<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/git/" title="git">git<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/maven/" title="maven">maven<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/hdfs/" title="hdfs">hdfs<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/dubbo/" title="dubbo">dubbo<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/kafka/" title="kafka">kafka<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Hbase/" title="Hbase">Hbase<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/sql/" title="sql">sql<sup>2</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="http://majorkevin.xyz/blog/" target="_blank" title="朋友的博客">朋友的博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+  <div class="weiboshow">
+  <p class="asidetitle">Weibo</p>
+    <iframe width="100%" height="119" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=119&fansRow=2&ptype=1&speed=0&skin=9&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=&verifier=&dpc=1"></iframe>
+</div>
+
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> Hello ,I&#39;m dxysun. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2020 
+		
+		<a href="/about" target="_blank" title="dxysun">dxysun</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?e6d1f421bbc9962127a50488f9ed37d1";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

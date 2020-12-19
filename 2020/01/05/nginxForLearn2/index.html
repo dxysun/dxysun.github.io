@@ -1,0 +1,638 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>nginx学习之应用实践 | 迎着朝阳的博客</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="dxysun">
+    
+
+    
+    <meta name="description" content="nginx相关实践应用">
+<meta property="og:type" content="article">
+<meta property="og:title" content="nginx学习之应用实践">
+<meta property="og:url" content="https://github.com/dxysun/2020/01/05/nginxForLearn2/index.html">
+<meta property="og:site_name" content="迎着朝阳的博客">
+<meta property="og:description" content="nginx相关实践应用">
+<meta property="og:locale">
+<meta property="article:published_time" content="2020-01-05T09:44:02.000Z">
+<meta property="article:modified_time" content="2020-01-05T10:31:14.000Z">
+<meta property="article:author" content="dxysun">
+<meta property="article:tag" content="nginx">
+<meta name="twitter:card" content="summary">
+
+    
+    <link rel="alternative" href="/atom.xml" title="迎着朝阳的博客" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    
+<link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/%02.css">
+<link rel="stylesheet" href="/.css">
+
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="迎着朝阳的博客" title="迎着朝阳的博客"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="迎着朝阳的博客">迎着朝阳的博客</a></h1>
+				<h2 class="blog-motto"></h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">主页</a></li>
+					
+						<li><a href="/archives">归档</a></li>
+					
+						<li><a href="/about">关于</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:github.com/dxysun">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2020/01/05/nginxForLearn2/" title="nginx学习之应用实践" itemprop="url">nginx学习之应用实践</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="dxysun" target="_blank" itemprop="author">dxysun</a>
+		
+  <p class="article-time">
+    <time datetime="2020-01-05T09:44:02.000Z" itemprop="datePublished"> Published 2020-01-05</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86"><span class="toc-number">1.</span> <span class="toc-text">反向代理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1"><span class="toc-number">2.</span> <span class="toc-text">负载均衡</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#upstream"><span class="toc-number">2.1.</span> <span class="toc-text">upstream</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B6%E4%BB%96%E9%85%8D%E7%BD%AE%E4%BF%A1%E6%81%AF"><span class="toc-number">3.</span> <span class="toc-text">其他配置信息</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#proxy-next-upstream"><span class="toc-number">3.1.</span> <span class="toc-text">proxy_next_upstream</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#proxy-connect-timeout"><span class="toc-number">3.2.</span> <span class="toc-text">proxy_connect_timeout</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#proxy-send-timeout"><span class="toc-number">3.3.</span> <span class="toc-text">proxy_send_timeout</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#proxy-read-timeout"><span class="toc-number">3.4.</span> <span class="toc-text">proxy_read_timeout</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#proxy-upstream-fail-timeout"><span class="toc-number">3.5.</span> <span class="toc-text">proxy_upstream_fail_timeout</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#nginx%E5%8A%A8%E9%9D%99%E5%88%86%E7%A6%BB"><span class="toc-number">4.</span> <span class="toc-text">nginx动静分离</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%9D%99%E6%80%81%E8%B5%84%E6%BA%90%E7%9A%84%E7%B1%BB%E5%9E%8B"><span class="toc-number">4.1.</span> <span class="toc-text">静态资源的类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8A%A8%E9%9D%99%E5%88%86%E7%A6%BB%E7%9A%84%E5%A5%BD%E5%A4%84"><span class="toc-number">4.2.</span> <span class="toc-text">动静分离的好处</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BC%93%E5%AD%98"><span class="toc-number">4.3.</span> <span class="toc-text">缓存</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#nginx%E7%BC%93%E5%AD%98%E9%85%8D%E7%BD%AE"><span class="toc-number">4.4.</span> <span class="toc-text">nginx缓存配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8E%8B%E7%BC%A9"><span class="toc-number">4.5.</span> <span class="toc-text">压缩</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%98%B2%E7%9B%97%E9%93%BE"><span class="toc-number">5.</span> <span class="toc-text">防盗链</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%98%B2%E7%9B%97%E9%93%BE%E9%85%8D%E7%BD%AE"><span class="toc-number">5.1.</span> <span class="toc-text">防盗链配置</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B7%A8%E5%9F%9F%E8%AE%BF%E9%97%AE"><span class="toc-number">6.</span> <span class="toc-text">跨域访问</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A7%A3%E5%86%B3%E5%8A%9E%E6%B3%95"><span class="toc-number">6.1.</span> <span class="toc-text">解决办法</span></a></li></ol></li></ol>
+		
+		</div>
+		
+		<p>nginx相关实践应用</p>
+<a id="more"></a>
+
+<h2 id="反向代理"><a href="#反向代理" class="headerlink" title="反向代理"></a>反向代理</h2><p>nginx反向代理的指令不需要新增额外的模块，默认自带proxy_pass指令，只需要修改配置文件就可以实现反向代理。<br>proxy_pass 既可以是ip地址，也可以是域名，同时还可以指定端口。<br>示例配置</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">    listen 80;</span><br><span class="line">    server_name localhost;</span><br><span class="line">    location &#x2F; &#123;</span><br><span class="line">        proxy_pass http:&#x2F;&#x2F;192.168.11.161:8080;  # 代理服务地址</span><br><span class="line">        proxy_set_header Host $host;</span><br><span class="line">        proxy_set_header X-Real-IP $remote_addr;</span><br><span class="line">        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="负载均衡"><a href="#负载均衡" class="headerlink" title="负载均衡"></a>负载均衡</h2><p>网络负载均衡的原理是利用一定的分配策略将网络负载平衡地分摊到网络集群的各个操作单元上，使得单个重负载任务能够分担到多个单元上并行处理，使得大量并发访问或数据流量分担到多个单元上分别处理，从而减少用户的等待响应时间。</p>
+<h3 id="upstream"><a href="#upstream" class="headerlink" title="upstream"></a>upstream</h3><p>upstream 是Nginx的HTTP Upstream模块，这个模块通过一个简单的调度算法来实现客户端IP到后端服务器的负载均衡<br>语法：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">upstream &#123;</span><br><span class="line">    server address [paramters];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>address 反向服务地址加端口</p>
+</blockquote>
+<p>upstream 参数</p>
+<table>
+<thead>
+<tr>
+<th align="center">参数</th>
+<th align="center">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">weight</td>
+<td align="center">权重</td>
+</tr>
+<tr>
+<td align="center">max_fails</td>
+<td align="center">失败多少次 认为主机已挂掉则，踢出</td>
+</tr>
+<tr>
+<td align="center">fail_timeout</td>
+<td align="center">踢出后重新探测时间</td>
+</tr>
+<tr>
+<td align="center">backup</td>
+<td align="center">备用服务</td>
+</tr>
+<tr>
+<td align="center">max_conns</td>
+<td align="center">允许最大连接数</td>
+</tr>
+<tr>
+<td align="center">slow_start</td>
+<td align="center">当节点恢复，不立即加入</td>
+</tr>
+</tbody></table>
+<p>示例</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">upstream tomcat &#123;</span><br><span class="line">    server 192.168.11.161:8080 max_fails&#x3D;2 fail_timeout&#x3D;60s;</span><br><span class="line">    server 192.168.11.159:8080;</span><br><span class="line">    ip_hash;  # 负载均衡算法</span><br><span class="line">&#125;</span><br><span class="line">server &#123;</span><br><span class="line">    listen 80;</span><br><span class="line">    server_name localhost;</span><br><span class="line">    location &#x2F; &#123;</span><br><span class="line">        proxy_pass http:&#x2F;&#x2F;tomcat;</span><br><span class="line">        proxy_set_header Host $host;</span><br><span class="line">        proxy_set_header X-Real-IP $remote_addr;</span><br><span class="line">        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;</span><br><span class="line">        proxy_next_upstream error timeout http_500 http_503;</span><br><span class="line">        proxy_connect_timeout 60s;</span><br><span class="line">        proxy_send_timeout 60s;</span><br><span class="line">        proxy_read_timeout 60s;</span><br><span class="line">        add_header &#39;Access-Control-Allow-Origin&#39; &#39;*&#39;;</span><br><span class="line">        add_header &#39;Access-Control-Allow-Methods&#39; &#39;GET,POST,DELETE&#39;;</span><br><span class="line">        add_header &#39;Aceess-Control-Allow-Header&#39; &#39;Content-Type,*&#39;;</span><br><span class="line">    &#125;</span><br><span class="line">    location ~ .*\.(js|css|png|svg|ico|jpg)$ &#123;</span><br><span class="line">        valid_referers none blocked 192.168.11.160;</span><br><span class="line">        if ($invalid_referer) &#123;</span><br><span class="line">            return 404;</span><br><span class="line">        &#125;</span><br><span class="line">        root static-resource;</span><br><span class="line">        expires 1d;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>负载均衡策略或者算法<br>轮询算法（默认）， 如果后端服务器宕机以后，会自动踢出<br>ip_hash 根据请求的ip地址进行hash<br>权重轮询</p>
+</blockquote>
+<h2 id="其他配置信息"><a href="#其他配置信息" class="headerlink" title="其他配置信息"></a>其他配置信息</h2><h3 id="proxy-next-upstream"><a href="#proxy-next-upstream" class="headerlink" title="proxy_next_upstream"></a>proxy_next_upstream</h3><p>语法：<code>proxy_next_upstream [error | timeout | invalid_header | http_500 | http_502 | http_503 | http_504 |chttp_404 | off ];</code><br>默认：<code>proxy_next_upstream error timeout</code>;<br>配置块：<code>http、server、location</code></p>
+<p>这个配置表示当向一台上有服务器转发请求出现错误的时候，继续换一台上游服务器来处理这个请求。默认情况下，上游服务器一旦开始发送响应数据，Nginx反向代理服务器会立刻把应答包转发给客户端。因此，一旦Nginx开始向客户端发送响应包，如果中途出现错误也不允许切换到下一个上有服务器继续处理的。这样做的目的是保证客户端只收到来自同一个上游服务器的应答。</p>
+<h3 id="proxy-connect-timeout"><a href="#proxy-connect-timeout" class="headerlink" title="proxy_connect_timeout"></a>proxy_connect_timeout</h3><p>语法: <code>proxy_connect_timeout time</code>;<br>默认: <code>proxy_connect_timeout 60s</code>;<br>范围: <code>http, server, location</code></p>
+<p>用于设置nginx与upstream server的连接超时时间，比如我们直接在location中设置proxy_connect_timeout 1ms， 1ms很短，如果无法在指定时间建立连接，就会报错。</p>
+<h3 id="proxy-send-timeout"><a href="#proxy-send-timeout" class="headerlink" title="proxy_send_timeout"></a>proxy_send_timeout</h3><p>向后端写数据的超时时间，两次写操作的时间间隔如果大于这个值，也就是过了指定时间后端还没有收到数据，连接会被关闭</p>
+<h3 id="proxy-read-timeout"><a href="#proxy-read-timeout" class="headerlink" title="proxy_read_timeout"></a>proxy_read_timeout</h3><p>从后端读取数据的超时时间，两次读取操作的时间间隔如果大于这个值，那么nginx和后端的链接会被关闭，如果一个请求的处理时间比较长，可以把这个值设置得大一些</p>
+<h3 id="proxy-upstream-fail-timeout"><a href="#proxy-upstream-fail-timeout" class="headerlink" title="proxy_upstream_fail_timeout"></a>proxy_upstream_fail_timeout</h3><p>设置了某一个upstream后端失败了指定次数（max_fails）后，在fail_timeout时间内不再去请求它,默认为10秒<br>语法 <code>server address [fail_timeout=30s]</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">upstream backend &#123; #服务器集群名字</span><br><span class="line">    server 192.168.218.129:8080 weight&#x3D;1 max_fails&#x3D;2 fail_timeout&#x3D;600s;</span><br><span class="line">    server 192.168.218.131:8080 weight&#x3D;1 max_fails&#x3D;2 fail_timeout&#x3D;600s;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="nginx动静分离"><a href="#nginx动静分离" class="headerlink" title="nginx动静分离"></a>nginx动静分离</h2><p>动静分离<br>必须依赖服务器生存的称为动，不需要依赖容器的比如css/js或者图片等，这类就叫静</p>
+<h3 id="静态资源的类型"><a href="#静态资源的类型" class="headerlink" title="静态资源的类型"></a>静态资源的类型</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br></pre></td><td class="code"><pre><span class="line">types &#123;</span><br><span class="line">text&#x2F;html html htm shtml;</span><br><span class="line">text&#x2F;css css;</span><br><span class="line">text&#x2F;xml xml;</span><br><span class="line">image&#x2F;gif gif;</span><br><span class="line">image&#x2F;jpeg jpeg jpg;</span><br><span class="line">application&#x2F;javascript js;</span><br><span class="line">application&#x2F;atom+xml atom;</span><br><span class="line">application&#x2F;rss+xml rss;</span><br><span class="line">text&#x2F;mathml mml;</span><br><span class="line">text&#x2F;plain txt;</span><br><span class="line">text&#x2F;vnd.sun.j2me.app-descriptor jad;</span><br><span class="line">text&#x2F;vnd.wap.wml wml;</span><br><span class="line">text&#x2F;x-component htc;</span><br><span class="line">image&#x2F;png png;</span><br><span class="line">image&#x2F;svg+xml svg svgz;</span><br><span class="line">image&#x2F;tiff tif tiff;</span><br><span class="line">image&#x2F;vnd.wap.wbmp wbmp;</span><br><span class="line">image&#x2F;webp webp;</span><br><span class="line">image&#x2F;x-icon ico;</span><br><span class="line">image&#x2F;x-jng jng;</span><br><span class="line">image&#x2F;x-ms-bmp bmp;</span><br><span class="line">application&#x2F;font-woff woff;</span><br><span class="line">application&#x2F;java-archive jar war ear;</span><br><span class="line">application&#x2F;json json;</span><br><span class="line">application&#x2F;mac-binhex40 hqx;</span><br><span class="line">application&#x2F;msword doc;</span><br><span class="line">application&#x2F;pdf pdf;</span><br><span class="line">application&#x2F;postscript ps eps ai;</span><br><span class="line">application&#x2F;rtf rtf;</span><br><span class="line">application&#x2F;vnd.apple.mpegurl m3u8;</span><br><span class="line">application&#x2F;vnd.google-earth.kml+xml kml;</span><br><span class="line">application&#x2F;vnd.google-earth.kmz kmz;</span><br><span class="line">application&#x2F;vnd.ms-excel xls;</span><br><span class="line">application&#x2F;vnd.ms-fontobject eot;</span><br><span class="line">application&#x2F;vnd.ms-powerpoint ppt;</span><br><span class="line">application&#x2F;vnd.oasis.opendocument.graphics odg;</span><br><span class="line">application&#x2F;vnd.oasis.opendocument.presentation odp;</span><br><span class="line">application&#x2F;vnd.oasis.opendocument.spreadsheet ods;</span><br><span class="line">application&#x2F;vnd.oasis.opendocument.text odt;</span><br><span class="line">application&#x2F;vnd.openxmlformats-officedocument.presentationml.presentation pptx;</span><br><span class="line">application&#x2F;vnd.openxmlformats-officedocument.spreadsheetml.sheet xlsx;</span><br><span class="line">application&#x2F;vnd.openxmlformats-officedocument.wordprocessingml.document docx;</span><br><span class="line">application&#x2F;vnd.wap.wmlc wmlc;</span><br><span class="line">application&#x2F;x-7z-compressed 7z;</span><br><span class="line">application&#x2F;x-cocoa cco;</span><br><span class="line">application&#x2F;x-java-archive-diff jardiff;</span><br><span class="line">application&#x2F;x-java-jnlp-file jnlp;</span><br><span class="line">application&#x2F;x-makeself run;</span><br><span class="line">application&#x2F;x-perl pl pm;</span><br><span class="line">application&#x2F;x-pilot prc pdb;</span><br><span class="line">application&#x2F;x-rar-compressed rar;</span><br><span class="line">application&#x2F;x-redhat-package-manager rpm;</span><br><span class="line">application&#x2F;x-sea sea;</span><br><span class="line">application&#x2F;x-shockwave-flash swf;</span><br><span class="line">application&#x2F;x-stuffit sit;</span><br><span class="line">application&#x2F;x-tcl tcl tk;</span><br><span class="line">application&#x2F;x-x509-ca-cert der pem crt;</span><br><span class="line">application&#x2F;x-xpinstall xpi;</span><br><span class="line">application&#x2F;xhtml+xml xhtml;</span><br><span class="line">application&#x2F;xspf+xml xspf;</span><br><span class="line">application&#x2F;zip zip;</span><br><span class="line">application&#x2F;octet-stream bin exe dll;</span><br><span class="line">application&#x2F;octet-stream deb;</span><br><span class="line">application&#x2F;octet-stream dmg;</span><br><span class="line">application&#x2F;octet-stream iso img;</span><br><span class="line">application&#x2F;octet-stream msi msp msm;</span><br><span class="line">audio&#x2F;midi mid midi kar;</span><br><span class="line">audio&#x2F;mpeg mp3;</span><br><span class="line">audio&#x2F;ogg ogg;</span><br><span class="line">audio&#x2F;x-m4a m4a;</span><br><span class="line">audio&#x2F;x-realaudio ra;</span><br><span class="line">video&#x2F;3gpp 3gpp 3gp;</span><br><span class="line">video&#x2F;mp2t ts;</span><br><span class="line">video&#x2F;mp4 mp4;</span><br><span class="line">video&#x2F;mpeg mpeg mpg;</span><br><span class="line">video&#x2F;quicktime mov;</span><br><span class="line">video&#x2F;webm webm;</span><br><span class="line">video&#x2F;x-flv flv;</span><br><span class="line">video&#x2F;x-m4v m4v;</span><br><span class="line">video&#x2F;x-mng mng;</span><br><span class="line">video&#x2F;x-ms-asf asx asf;</span><br><span class="line">video&#x2F;x-ms-wmv wmv;</span><br><span class="line">video&#x2F;x-msvideo avi;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>在Nginx的conf目录下，有一个mime.types文件<br>用户访问一个网站，然后从服务器端获取相应的资源通过浏览器进行解析渲染最后展示给用户，而服务端可以返回各种类型的内容，比如xml、jpg、png、gif、flash、MP4、html、css等等，那么浏览器就是根据mime-type来决定用什么形式来展示的服务器返回的资源给到浏览器时，会把媒体类型告知浏览器，这个告知的标识就是Content-Type，比如ContentType:text/html。</p>
+</blockquote>
+<h3 id="动静分离的好处"><a href="#动静分离的好处" class="headerlink" title="动静分离的好处"></a>动静分离的好处</h3><ul>
+<li>Nginx本身就是一个高性能的静态web服务器；</li>
+<li>其实静态文件有一个特点就是基本上变化不大，所以动静分离以后可以对静态文件进行缓存、或者压缩提高网站性能</li>
+</ul>
+<h3 id="缓存"><a href="#缓存" class="headerlink" title="缓存"></a>缓存</h3><p>当一个客户端请求web服务器, 请求的内容可以从以下几个地方获取：服务器、浏览器缓存中或缓存服务器中。这取决于服务器端输出的页面信息</p>
+<p>浏览器缓存将文件保存在客户端，好的缓存策略可以减少对网络带宽的占用，可以提高访问速度，提高用户的体验，还可以减轻服务器的负担nginx缓存配置</p>
+<h3 id="nginx缓存配置"><a href="#nginx缓存配置" class="headerlink" title="nginx缓存配置"></a>nginx缓存配置</h3><p>nginx可以通过expires设置缓存，比如可以针对图片做缓存，因为图片这类信息基本上不会改变。<br>在location中设置expires<br>格式：<code>expires 30s|m|h|d</code><br>示例</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">location ~ .*.(jpg|jpeg|gif|bmp|png|js|css|ico)$ &#123;</span><br><span class="line">    root static;</span><br><span class="line">    expires 1d;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="压缩"><a href="#压缩" class="headerlink" title="压缩"></a>压缩</h3><p>一个网站一定会包含很多的静态文件，比如图片、脚本、样式等等，而这些css/js可能本身会比较大，那么在网络传输的时候就会比较慢，从而导致网站的渲染速度。因此Nginx中提供了一种Gzip的压缩优化手段，可以对后端的文件进行压缩传输，压缩以后的好处在于能够降低文件的大小来提高传输效率。</p>
+<p>配置</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">gzip on|off 是否开启gzip压缩</span><br><span class="line">gzip_buffers 4 16k #设置gzip申请内存的大小，作用是按指定大小的倍数申请内存空间。4 16k代表按照原始数据大小以16k为单位的4倍申请内存。</span><br><span class="line">gzip_comp_level[1-9] 压缩级别， 级别越高，压缩越小，但是会占用CPU资源</span><br><span class="line">gzip_disable #正则匹配UA 表示什么样的浏览器不进行gzip</span><br><span class="line">gzip_min_length #开始压缩的最小长度（小于多少就不做压缩），可以指定单位，比如 1k</span><br><span class="line">gzip_http_version 1.0|1.1 表示开始压缩的http协议版本</span><br><span class="line">gzip_proxied （nginx 做前端代理时启用该选项，表示无论后端服务器的headers头返回什么信息，都无条件启用压缩）</span><br><span class="line">gzip_type text&#x2F;pliain,application&#x2F;xml 对那些类型的文件做压缩 （conf&#x2F;mime.conf）</span><br><span class="line">gzip_vary on|off 是否传输gzip压缩标识; 启用应答头&quot;Vary: Accept-Encoding&quot;;给代理服务器用的，有的浏览器支持压缩，有的不支持，所以避免浪费不支持的也压缩，所以根据客户端的HTTP头来判断，是否需要压缩</span><br></pre></td></tr></table></figure>
+<p>示例</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">http &#123;</span><br><span class="line">    include mime.types;</span><br><span class="line">    default_type application&#x2F;octet-stream;</span><br><span class="line">    #log_format main &#39;$remote_addr - $remote_user [$time_local] &quot;$request&quot; &#39;</span><br><span class="line">                    # &#39;$status $body_bytes_sent &quot;$http_referer&quot; &#39;</span><br><span class="line">                    # &#39;&quot;$http_user_agent&quot; &quot;$http_x_forwarded_for&quot;&#39;;</span><br><span class="line">    #access_log logs&#x2F;access.log main;</span><br><span class="line">    sendfile on;</span><br><span class="line">    #tcp_nopush on;</span><br><span class="line">    keepalive_timeout 60;</span><br><span class="line">    include extra&#x2F;*.conf;</span><br><span class="line">    gzip on;</span><br><span class="line">    gzip_min_length 5k;</span><br><span class="line">    gzip_comp_level 3;</span><br><span class="line">    gzip_types application&#x2F;javascript image&#x2F;jpeg image&#x2F;svg+xml;</span><br><span class="line">    gzip_buffers 4 32k;</span><br><span class="line">    gzip_vary on;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="防盗链"><a href="#防盗链" class="headerlink" title="防盗链"></a>防盗链</h2><p>一个网站上会有很多的图片，如果你不希望其他网站直接用你的图片地址访问自己的图片，或者希望对图片有版权保护。再或者不希望被第三方调用造成服务器的负载以及消耗比较多的流量问题，那么防盗链就是你必须要做的</p>
+<h3 id="防盗链配置"><a href="#防盗链配置" class="headerlink" title="防盗链配置"></a>防盗链配置</h3><p>语法: <code>valid_referers none | blocked | server_names | string ...</code>;<br>配置块: <code>server, location</code></p>
+<p><code>Referer</code>请求头为指定值时，内嵌变量$invalid_referer被设置为空字符串，否则这个变量会被置成“1”。查找匹配时不区分大小写，其中none表示缺少referer请求头、blocked表示请求头存在，但是它的值被防火墙或者代理服务器删除、server_names表示referer请求头包含指定的虚拟主机名</p>
+<p>示例代码</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">location ~ .*\.(js|css|png|svg|ico|jpg)$ &#123;</span><br><span class="line">    valid_referers none blocked 192.168.11.160;</span><br><span class="line">    if ($invalid_referer) &#123;</span><br><span class="line">        return 404;</span><br><span class="line">    &#125;</span><br><span class="line">    root static-resource;</span><br><span class="line">    expires 1d;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="跨域访问"><a href="#跨域访问" class="headerlink" title="跨域访问"></a>跨域访问</h2><p>如果两个节点的协议、域名、端口、子域名不同，那么进行的操作都是跨域的，浏览器为了安全问题都是限制跨域访问，所以跨域其实是浏览器本身的限制。</p>
+<h3 id="解决办法"><a href="#解决办法" class="headerlink" title="解决办法"></a>解决办法</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">server&#123;</span><br><span class="line">    listen 80;</span><br><span class="line">    server_name localhost;</span><br><span class="line">    location &#x2F; &#123;</span><br><span class="line">        proxy_pass http:&#x2F;&#x2F;192.168.11.154:8080;</span><br><span class="line">        proxy_set_header Host $host;</span><br><span class="line">        proxy_set_header X-Real-IP $remote_addr;</span><br><span class="line">        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;</span><br><span class="line">        proxy_send_timeout 60s;</span><br><span class="line">        proxy_read_timeout 60s;</span><br><span class="line">        proxy_connect_timeout 60s;</span><br><span class="line">        # 解决跨域问题</span><br><span class="line">        add_header &#39;Access-Control-Allow-Origin&#39; &#39;*&#39;;  #允许来自所有的访问地址</span><br><span class="line">        add_header &#39;Access-Control-Allow-Methods&#39; &#39;GET,PUT,POST,DELETE,OPTIONS&#39;; #支持的请求方式</span><br><span class="line">        add_header &#39;Access-Control-Allow-Header&#39; &#39;Content-Type,*&#39;; #支持的媒体类型</span><br><span class="line">    &#125;</span><br><span class="line">    location ~ .*\.(gif|jpg|ico|png|css|svg|js)$ &#123;</span><br><span class="line">        root static;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+
+
+
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/nginx/">nginx</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://github.com/dxysun/2020/01/05/nginxForLearn2/" data-title="nginx学习之应用实践 | 迎着朝阳的博客" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2020/02/22/javaForDubbo1/" title="Dubbo学习笔记之基本使用">
+  <strong>上一篇：</strong><br/>
+  <span>
+  Dubbo学习笔记之基本使用</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2020/01/04/nginxForLearn1/"  title="nginx学习之安装和配置">
+ <strong>下一篇：</strong><br/> 
+ <span>nginx学习之安装和配置
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86"><span class="toc-number">1.</span> <span class="toc-text">反向代理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1"><span class="toc-number">2.</span> <span class="toc-text">负载均衡</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#upstream"><span class="toc-number">2.1.</span> <span class="toc-text">upstream</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B6%E4%BB%96%E9%85%8D%E7%BD%AE%E4%BF%A1%E6%81%AF"><span class="toc-number">3.</span> <span class="toc-text">其他配置信息</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#proxy-next-upstream"><span class="toc-number">3.1.</span> <span class="toc-text">proxy_next_upstream</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#proxy-connect-timeout"><span class="toc-number">3.2.</span> <span class="toc-text">proxy_connect_timeout</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#proxy-send-timeout"><span class="toc-number">3.3.</span> <span class="toc-text">proxy_send_timeout</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#proxy-read-timeout"><span class="toc-number">3.4.</span> <span class="toc-text">proxy_read_timeout</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#proxy-upstream-fail-timeout"><span class="toc-number">3.5.</span> <span class="toc-text">proxy_upstream_fail_timeout</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#nginx%E5%8A%A8%E9%9D%99%E5%88%86%E7%A6%BB"><span class="toc-number">4.</span> <span class="toc-text">nginx动静分离</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%9D%99%E6%80%81%E8%B5%84%E6%BA%90%E7%9A%84%E7%B1%BB%E5%9E%8B"><span class="toc-number">4.1.</span> <span class="toc-text">静态资源的类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8A%A8%E9%9D%99%E5%88%86%E7%A6%BB%E7%9A%84%E5%A5%BD%E5%A4%84"><span class="toc-number">4.2.</span> <span class="toc-text">动静分离的好处</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BC%93%E5%AD%98"><span class="toc-number">4.3.</span> <span class="toc-text">缓存</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#nginx%E7%BC%93%E5%AD%98%E9%85%8D%E7%BD%AE"><span class="toc-number">4.4.</span> <span class="toc-text">nginx缓存配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8E%8B%E7%BC%A9"><span class="toc-number">4.5.</span> <span class="toc-text">压缩</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%98%B2%E7%9B%97%E9%93%BE"><span class="toc-number">5.</span> <span class="toc-text">防盗链</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%98%B2%E7%9B%97%E9%93%BE%E9%85%8D%E7%BD%AE"><span class="toc-number">5.1.</span> <span class="toc-text">防盗链配置</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B7%A8%E5%9F%9F%E8%AE%BF%E9%97%AE"><span class="toc-number">6.</span> <span class="toc-text">跨域访问</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A7%A3%E5%86%B3%E5%8A%9E%E6%B3%95"><span class="toc-number">6.1.</span> <span class="toc-text">解决办法</span></a></li></ol></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+
+  
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">Categories</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/spring官方文档/" title="spring官方文档">spring官方文档<sup>8</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>54</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/linux/" title="linux">linux<sup>34</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/centos/" title="centos">centos<sup>19</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/springboot/" title="springboot">springboot<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/ubuntu/" title="ubuntu">ubuntu<sup>9</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/hadoop/" title="hadoop">hadoop<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/spring/" title="spring">spring<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/nginx/" title="nginx">nginx<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/spark/" title="spark">spark<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/mybatis/" title="mybatis">mybatis<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/mysql/" title="mysql">mysql<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/算法/" title="算法">算法<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/git/" title="git">git<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/maven/" title="maven">maven<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/hdfs/" title="hdfs">hdfs<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/dubbo/" title="dubbo">dubbo<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/kafka/" title="kafka">kafka<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Hbase/" title="Hbase">Hbase<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/sql/" title="sql">sql<sup>2</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="http://majorkevin.xyz/blog/" target="_blank" title="朋友的博客">朋友的博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+  <div class="weiboshow">
+  <p class="asidetitle">Weibo</p>
+    <iframe width="100%" height="119" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=119&fansRow=2&ptype=1&speed=0&skin=9&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=&verifier=&dpc=1"></iframe>
+</div>
+
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> Hello ,I&#39;m dxysun. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2020 
+		
+		<a href="/about" target="_blank" title="dxysun">dxysun</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?e6d1f421bbc9962127a50488f9ed37d1";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

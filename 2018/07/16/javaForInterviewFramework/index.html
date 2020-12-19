@@ -1,0 +1,659 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>java面试题之框架篇 | 迎着朝阳的博客</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="dxysun">
+    
+
+    
+    <meta name="description" content="总结一下java面试题-框架篇">
+<meta property="og:type" content="article">
+<meta property="og:title" content="java面试题之框架篇">
+<meta property="og:url" content="https://github.com/dxysun/2018/07/16/javaForInterviewFramework/index.html">
+<meta property="og:site_name" content="迎着朝阳的博客">
+<meta property="og:description" content="总结一下java面试题-框架篇">
+<meta property="og:locale">
+<meta property="article:published_time" content="2018-07-16T08:47:53.000Z">
+<meta property="article:modified_time" content="2018-07-16T10:52:12.000Z">
+<meta property="article:author" content="dxysun">
+<meta property="article:tag" content="java">
+<meta name="twitter:card" content="summary">
+
+    
+    <link rel="alternative" href="/atom.xml" title="迎着朝阳的博客" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    
+<link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/%02.css">
+<link rel="stylesheet" href="/.css">
+
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="迎着朝阳的博客" title="迎着朝阳的博客"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="迎着朝阳的博客">迎着朝阳的博客</a></h1>
+				<h2 class="blog-motto"></h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">主页</a></li>
+					
+						<li><a href="/archives">归档</a></li>
+					
+						<li><a href="/about">关于</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:github.com/dxysun">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/07/16/javaForInterviewFramework/" title="java面试题之框架篇" itemprop="url">java面试题之框架篇</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="dxysun" target="_blank" itemprop="author">dxysun</a>
+		
+  <p class="article-time">
+    <time datetime="2018-07-16T08:47:53.000Z" itemprop="datePublished"> Published 2018-07-16</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B0%88%E8%B0%88%E4%BD%A0%E5%AF%B9Hibernate%E7%9A%84%E7%90%86%E8%A7%A3%E3%80%82"><span class="toc-number">1.</span> <span class="toc-text">谈谈你对Hibernate的理解。</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B0%88%E8%B0%88%E4%BD%A0%E5%AF%B9Spring%E7%9A%84%E7%90%86%E8%A7%A3%E3%80%82"><span class="toc-number">2.</span> <span class="toc-text">谈谈你对Spring的理解。</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#MyBatis%E4%B8%8EHibernate%E6%9C%89%E4%BB%80%E4%B9%88%E4%B8%8D%E5%90%8C"><span class="toc-number">3.</span> <span class="toc-text">MyBatis与Hibernate有什么不同?</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9C%A8hibernate%E8%BF%9B%E8%A1%8C%E5%A4%9A%E8%A1%A8%E6%9F%A5%E8%AF%A2%E6%AF%8F%E4%B8%AA%E8%A1%A8%E4%B8%AD%E5%90%84%E5%8F%96%E5%87%A0%E4%B8%AA%E5%AD%97%E6%AE%B5%EF%BC%8C%E4%B9%9F%E5%B0%B1%E6%98%AF%E8%AF%B4%E6%9F%A5%E8%AF%A2%E5%87%BA%E6%9D%A5%E7%9A%84%E7%BB%93%E6%9E%9C%E9%9B%86%E6%B2%A1%E6%9C%89%E4%B8%80%E4%B8%AA%E5%AE%9E%E4%BD%93%E7%B1%BB%E4%B8%8E%E4%B9%8B%E5%AF%B9%E5%BA%94%E5%A6%82%E4%BD%95%E8%A7%A3%E5%86%B3%EF%BC%9F"><span class="toc-number">4.</span> <span class="toc-text">在hibernate进行多表查询每个表中各取几个字段，也就是说查询出来的结果集没有一个实体类与之对应如何解决？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%8B%E7%BB%8D%E4%B8%80%E4%B8%8BHibernate%E7%9A%84%E4%BA%8C%E7%BA%A7%E7%BC%93%E5%AD%98"><span class="toc-number">5.</span> <span class="toc-text">介绍一下Hibernate的二级缓存</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#JDO%E6%98%AF%E4%BB%80%E4%B9%88"><span class="toc-number">6.</span> <span class="toc-text">JDO是什么?</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Hibernate%E7%9A%84%E4%B8%80%E5%AF%B9%E5%A4%9A%E5%92%8C%E5%A4%9A%E5%AF%B9%E4%B8%80%E5%8F%8C%E5%90%91%E5%85%B3%E8%81%94%E7%9A%84%E5%8C%BA%E5%88%AB%EF%BC%9F%EF%BC%9F"><span class="toc-number">7.</span> <span class="toc-text">Hibernate的一对多和多对一双向关联的区别？？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Hibernate%E6%98%AF%E5%A6%82%E4%BD%95%E5%BB%B6%E8%BF%9F%E5%8A%A0%E8%BD%BD"><span class="toc-number">8.</span> <span class="toc-text">Hibernate是如何延迟加载?</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8Spring%E6%A1%86%E6%9E%B6%E7%9A%84%E5%A5%BD%E5%A4%84%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="toc-number">9.</span> <span class="toc-text">使用Spring框架的好处是什么？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ApplicationContext%E9%80%9A%E5%B8%B8%E7%9A%84%E5%AE%9E%E7%8E%B0%E6%98%AF%E4%BB%80%E4%B9%88"><span class="toc-number">10.</span> <span class="toc-text">ApplicationContext通常的实现是什么?</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AFSpring%E7%9A%84%E4%BE%9D%E8%B5%96%E6%B3%A8%E5%85%A5%EF%BC%9F%E6%9C%89%E5%93%AA%E4%BA%9B%E6%96%B9%E6%B3%95%E8%BF%9B%E8%A1%8C%E4%BE%9D%E8%B5%96%E6%B3%A8%E5%85%A5"><span class="toc-number">11.</span> <span class="toc-text">什么是Spring的依赖注入？有哪些方法进行依赖注入</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AFSpring-beans"><span class="toc-number">12.</span> <span class="toc-text">什么是Spring beans?</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A7%A3%E9%87%8ASpring%E6%94%AF%E6%8C%81%E7%9A%84%E5%87%A0%E7%A7%8Dbean%E7%9A%84%E4%BD%9C%E7%94%A8%E5%9F%9F%E3%80%82"><span class="toc-number">13.</span> <span class="toc-text">解释Spring支持的几种bean的作用域。</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A7%A3%E9%87%8ASpring%E6%A1%86%E6%9E%B6%E4%B8%ADbean%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E3%80%82"><span class="toc-number">14.</span> <span class="toc-text">解释Spring框架中bean的生命周期。</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9C%A8-Spring%E4%B8%AD%E5%A6%82%E4%BD%95%E6%B3%A8%E5%85%A5%E4%B8%80%E4%B8%AAjava%E9%9B%86%E5%90%88%EF%BC%9F"><span class="toc-number">15.</span> <span class="toc-text">在 Spring中如何注入一个java集合？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A7%A3%E9%87%8A%E4%B8%8D%E5%90%8C%E6%96%B9%E5%BC%8F%E7%9A%84%E8%87%AA%E5%8A%A8%E8%A3%85%E9%85%8D-%E3%80%82"><span class="toc-number">16.</span> <span class="toc-text">解释不同方式的自动装配 。</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Spring%E6%A1%86%E6%9E%B6%E7%9A%84%E4%BA%8B%E5%8A%A1%E7%AE%A1%E7%90%86%E6%9C%89%E5%93%AA%E4%BA%9B%E4%BC%98%E7%82%B9%EF%BC%9F"><span class="toc-number">17.</span> <span class="toc-text">Spring框架的事务管理有哪些优点？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E5%9F%BA%E4%BA%8EJava%E7%9A%84Spring%E6%B3%A8%E8%A7%A3%E9%85%8D%E7%BD%AE-%E7%BB%99%E4%B8%80%E4%BA%9B%E6%B3%A8%E8%A7%A3%E7%9A%84%E4%BE%8B%E5%AD%90"><span class="toc-number">18.</span> <span class="toc-text">什么是基于Java的Spring注解配置? 给一些注解的例子.</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AFORM%EF%BC%9F"><span class="toc-number">19.</span> <span class="toc-text">什么是ORM？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Hibernate%E4%B8%ADSessionFactory%E6%98%AF%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8%E7%9A%84%E5%90%97%EF%BC%9FSession%E6%98%AF%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8%E7%9A%84%E5%90%97%EF%BC%88%E4%B8%A4%E4%B8%AA%E7%BA%BF%E7%A8%8B%E8%83%BD%E5%A4%9F%E5%85%B1%E4%BA%AB%E5%90%8C%E4%B8%80%E4%B8%AASession%E5%90%97%EF%BC%89%EF%BC%9F"><span class="toc-number">20.</span> <span class="toc-text">Hibernate中SessionFactory是线程安全的吗？Session是线程安全的吗（两个线程能够共享同一个Session吗）？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Session%E7%9A%84save-%E3%80%81update-%E3%80%81merge-%E3%80%81lock-%E3%80%81saveOrUpdate-%E5%92%8Cpersist-%E6%96%B9%E6%B3%95%E5%88%86%E5%88%AB%E6%98%AF%E5%81%9A%E4%BB%80%E4%B9%88%E7%9A%84%EF%BC%9F%E6%9C%89%E4%BB%80%E4%B9%88%E5%8C%BA%E5%88%AB%EF%BC%9F"><span class="toc-number">21.</span> <span class="toc-text">Session的save()、update()、merge()、lock()、saveOrUpdate()和persist()方法分别是做什么的？有什么区别？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%98%90%E8%BF%B0Session%E5%8A%A0%E8%BD%BD%E5%AE%9E%E4%BD%93%E5%AF%B9%E8%B1%A1%E7%9A%84%E8%BF%87%E7%A8%8B%E3%80%82"><span class="toc-number">22.</span> <span class="toc-text">阐述Session加载实体对象的过程。</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#MyBatis%E4%B8%AD%E4%BD%BF%E7%94%A8-%E5%92%8C-%E4%B9%A6%E5%86%99%E5%8D%A0%E4%BD%8D%E7%AC%A6%E6%9C%89%E4%BB%80%E4%B9%88%E5%8C%BA%E5%88%AB%EF%BC%9F"><span class="toc-number">23.</span> <span class="toc-text">MyBatis中使用#和$书写占位符有什么区别？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A7%A3%E9%87%8A%E4%B8%80%E4%B8%8BMyBatis%E4%B8%AD%E5%91%BD%E5%90%8D%E7%A9%BA%E9%97%B4%EF%BC%88namespace%EF%BC%89%E7%9A%84%E4%BD%9C%E7%94%A8%E3%80%82"><span class="toc-number">24.</span> <span class="toc-text">解释一下MyBatis中命名空间（namespace）的作用。</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#MyBatis%E4%B8%AD%E7%9A%84%E5%8A%A8%E6%80%81SQL%E6%98%AF%E4%BB%80%E4%B9%88%E6%84%8F%E6%80%9D%EF%BC%9F"><span class="toc-number">25.</span> <span class="toc-text">MyBatis中的动态SQL是什么意思？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#JDBC%E7%BC%96%E7%A8%8B%E6%9C%89%E5%93%AA%E4%BA%9B%E4%B8%8D%E8%B6%B3%E4%B9%8B%E5%A4%84%EF%BC%8CMyBatis%E6%98%AF%E5%A6%82%E4%BD%95%E8%A7%A3%E5%86%B3%E8%BF%99%E4%BA%9B%E9%97%AE%E9%A2%98%E7%9A%84%EF%BC%9F"><span class="toc-number">26.</span> <span class="toc-text">JDBC编程有哪些不足之处，MyBatis是如何解决这些问题的？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#MyBatis%E4%B8%8EHibernate%E6%9C%89%E5%93%AA%E4%BA%9B%E4%B8%8D%E5%90%8C%EF%BC%9F"><span class="toc-number">27.</span> <span class="toc-text">MyBatis与Hibernate有哪些不同？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AE%80%E5%8D%95%E7%9A%84%E8%AF%B4%E4%B8%80%E4%B8%8BMyBatis%E7%9A%84%E4%B8%80%E7%BA%A7%E7%BC%93%E5%AD%98%E5%92%8C%E4%BA%8C%E7%BA%A7%E7%BC%93%E5%AD%98%EF%BC%9F"><span class="toc-number">28.</span> <span class="toc-text">简单的说一下MyBatis的一级缓存和二级缓存？</span></a></li></ol>
+		
+		</div>
+		
+		<p>总结一下java面试题-框架篇</p>
+<a id="more"></a>
+<h3 id="谈谈你对Hibernate的理解。"><a href="#谈谈你对Hibernate的理解。" class="headerlink" title="谈谈你对Hibernate的理解。"></a>谈谈你对Hibernate的理解。</h3><p>1.面向对象设计的软件内部运行过程可以理解成就是在不断创建各种新对象、建立对象之间的关系，调用对象的方法来改变各个对象的状态和对象消亡的过程，不管程序运行的过程和操作怎么样，本质上都是要得到一个结果，程序上一个时刻和下一个时刻的运行结果的差异就表现在内存中的对象状态发生了变化。</p>
+<p>2.为了在关机和内存空间不够的状况下，保持程序的运行状态，需要将内存中的对象状态保存到持久化设备和从持久化设备中恢复出对象的状态，通常都是保存到关系数据库来保存大量对象信息。从Java程序的运行功能上来讲，保存对象状态的功能相比系统运行的其他功能来说，应该是一个很不起眼的附属功能，java采用jdbc来实现这个功能，这个不起眼的功能却要编写大量的代码，而做的事情仅仅是保存对象和恢复对象，并且那些大量的jdbc代码并没有什么技术含量，基本上是采用一套例行公事的标准代码模板来编写，是一种苦活和重复性的工作。</p>
+<p>3.通过数据库保存java程序运行时产生的对象和恢复对象，其实就是实现了java对象与关系数据库记录的映射关系，称为ORM（即Object RelationMapping），人们可以通过封装JDBC代码来实现了这种功能，封装出来的产品称之为ORM框架，Hibernate就是其中的一种流行ORM框架。使用Hibernate框架，不用写JDBC代码，仅仅是调用一个save方法，就可以将对象保存到关系数据库中，仅仅是调用一个get方法，就可以从数据库中加载出一个对象。</p>
+<p>4.使用Hibernate的基本流程是：配置Configuration对象、产生SessionFactory、创建session对象，启动事务，完成CRUD操作，提交事务，关闭session。</p>
+<p>5.使用Hibernate时，先要配置hibernate.cfg.xml文件，其中配置数据库连接信息和方言等，还要为每个实体配置相应的hbm.xml文件，hibernate.cfg.xml文件中需要登记每个hbm.xml文件。</p>
+<p>6.在应用Hibernate时，重点要了解Session的缓存原理，级联，延迟加载和hql查询。</p>
+<h3 id="谈谈你对Spring的理解。"><a href="#谈谈你对Spring的理解。" class="headerlink" title="谈谈你对Spring的理解。"></a>谈谈你对Spring的理解。</h3><p>1.Spring是一个开源框架，它实现了工厂模式的工厂类（在这里有必要解释清楚什么是工厂模式），这个类名为BeanFactory（实际上是一个接口），在程序中通常BeanFactory的子类ApplicationContext。Spring相当于一个大的工厂类，在其配置文件中通过<bean>元素配置用于创建实例对象的类名和实例对象的属性。</p>
+<p>2.Spring提供了对IOC良好支持，IOC是一种编程思想，是一种架构艺术，利用这种思想可以很好地实现模块之间的解耦，IOC也称为DI（Depency Injection）。</p>
+<p>3.Spring提供了对AOP技术的良好封装， AOP称为面向切面编程，就是系统中有很多各不相干的类的方法，在这些众多方法中要加入某种系统功能的代码，例如，加入日志，加入权限判断，加入异常处理，这种应用称为AOP。</p>
+<p>实现AOP功能采用的是代理技术，客户端程序不再调用目标，而调用代理类，代理类与目标类对外具有相同的方法声明，有两种方式可以实现相同的方法声明，一是实现相同的接口，二是作为目标的子类。</p>
+<p>在JDK中采用Proxy类产生动态代理的方式为某个接口生成实现类，如果要为某个类生成子类，则可以用CGLIB。在生成的代理类的方法中加入系统功能和调用目标类的相应方法，系统功能的代理以Advice对象进行提供，显然要创建出代理对象，至少需要目标类和Advice类。spring提供了这种支持，只需要在spring配置文件中配置这两个元素即可实现代理和aop功能。</p>
+<h3 id="MyBatis与Hibernate有什么不同"><a href="#MyBatis与Hibernate有什么不同" class="headerlink" title="MyBatis与Hibernate有什么不同?"></a>MyBatis与Hibernate有什么不同?</h3><p>相同点：屏蔽jdbc api的底层访问细节，使用我们不用与jdbc api打交道，就可以访问数据。</p>
+<p>jdbc api编程流程固定，还将sql语句与java代码混杂在了一起，经常需要拼凑sql语句，细节很繁琐。</p>
+<p>ibatis的好处：屏蔽jdbc api的底层访问细节；将sql语句与java代码进行分离;提供了将结果集自动封装称为实体对象和对象的集合的功能，queryForList返回对象集合，用queryForObject返回单个对象；提供了自动将实体对象的属性传递给sql语句的参数。</p>
+<p>Hibernate是一个全自动的orm映射工具，它可以自动生成sql语句,ibatis需要我们自己在xml配置文件中写sql语句，是半自动化的，hibernate要比Mybatis功能负责和强大很多。因为hibernate自动生成sql语句，我们无法控制该语句，我们就无法去写特定的高效率的sql。对于一些不太复杂的sql查询，hibernate可以很好帮我们完成，但是，对于特别复杂的查询，hibernate就很难适应了，这时候用MyBatis就是不错的选择，因为MyBatis还是由我们自己写sql语句。</p>
+<h3 id="在hibernate进行多表查询每个表中各取几个字段，也就是说查询出来的结果集没有一个实体类与之对应如何解决？"><a href="#在hibernate进行多表查询每个表中各取几个字段，也就是说查询出来的结果集没有一个实体类与之对应如何解决？" class="headerlink" title="在hibernate进行多表查询每个表中各取几个字段，也就是说查询出来的结果集没有一个实体类与之对应如何解决？"></a>在hibernate进行多表查询每个表中各取几个字段，也就是说查询出来的结果集没有一个实体类与之对应如何解决？</h3><p>解决方案一,：按照Object[]数据取出数据，然后自己组bean</p>
+<p>解决方案二：对每个表的bean写构造函数，比如表一要查出field1,field2两个字段，那么有一个构造函数就是Bean(type1filed1,type2</p>
+<p>field2) ，然后在hql里面就可以直接生成这个bean了。</p>
+<h3 id="介绍一下Hibernate的二级缓存"><a href="#介绍一下Hibernate的二级缓存" class="headerlink" title="介绍一下Hibernate的二级缓存"></a>介绍一下Hibernate的二级缓存</h3><p>按照以下思路来回答：</p>
+<p>（1）首先说清楚什么是缓存</p>
+<p>（2）再说有了hibernate的Session就是一级缓存，即有了一级缓存，为什么还要有二级缓存</p>
+<p>（3）最后再说如何配置Hibernate的二级缓存。</p>
+<p>1，缓存就是把以前从数据库中查询出来和使用过的对象保存在内存中（一个数据结构中），这个数据结构通常是或类似HashMap，当以后要使用某个对象时，先查询缓存中是否有这个对象，如果有则使用缓存中的对象，如果没有则去查询数据库，并将查询出来的对象保存在缓存中，以便下次使用。</p>
+<p>2，Hibernate的Session就是一种缓存，我们通常将之称为Hibernate的一级缓存，当想使用session从数据库中查询出一个对象时，Session也是先从自己内部查看是否存在这个对象，存在则直接返回，不存在才去访问数据库，并将查询的结果保存在自己内部。</p>
+<p>由于Session代表一次会话过程，一个Session与一个数据库连接相关连，所以Session最好不要长时间保持打开，通常仅用于一个事务当中，在事务结束时就应关闭。并且Session是线程不安全的，被多个线程共享时容易出现问题。通常只有那种全局意义上的缓存才是真正的缓存应用，才有较大的缓存价值，因此，Hibernate的Session这一级缓存的缓存作用并不明显，应用价值不大。Hibernate的二级缓存就是要为Hibernate配置一种全局缓存，让多个线程和多个事务都可以共享这个缓存。我们希望的是一个人使用过，其他人也可以使用，session没有这种效果。</p>
+<p>3，二级缓存是独立于Hibernate的软件部件，属于第三方的产品，多个厂商和组织都提供有缓存产品，例如，EHCache和OSCache等等。在Hibernate中使用二级缓存，首先就要在hibernate.cfg.xml配置文件中配置使用哪个厂家的缓存产品，接着需要配置该缓存产品自己的配置文件，最后要配置Hibernate中的哪些实体对象要纳入到二级缓存的管理中。明白了二级缓存原理和有了这个思路后，很容易配置起Hibernate的二级缓存。</p>
+<p>扩展知识：一个SessionFactory可以关联一个二级缓存，也即一个二级缓存只能负责缓存一个数据库中的数据，当使用Hibernate的二级缓存后，注意不要有其他的应用或SessionFactory来更改当前数据库中的数据，这样缓存的数据就会与数据库中的实际数据不一致。</p>
+<h3 id="JDO是什么"><a href="#JDO是什么" class="headerlink" title="JDO是什么?"></a>JDO是什么?</h3><p>JDO是Java对象持久化的新的规范，为java data object的简称,也是一个用于存取某种数据仓库中的对象的标准化API。JDO提供了透明的对象存储，因此对开发人员来说，存储数据对象完全不需要额外的代码（如JDBC API的使用）。这些繁琐的例行工作已经转移到JDO产品提供商身上，使开发人员解脱出来，从而集中时间和精力在业务逻辑上。另外，JDO很灵活，因为它可以在任何数据底层上运行。</p>
+<p>比较：JDBC只是面向关系数据库（RDBMS）JDO更通用，提供到任何数据底层的存储功能，比如关系数据库、文件、XML以及对象数据库（ODBMS）等等，使得应用可移植性更强。</p>
+<h3 id="Hibernate的一对多和多对一双向关联的区别？？"><a href="#Hibernate的一对多和多对一双向关联的区别？？" class="headerlink" title="Hibernate的一对多和多对一双向关联的区别？？"></a>Hibernate的一对多和多对一双向关联的区别？？</h3><p>一对多关联映射和多对一关联映射实现的基本原理都是一样的，既是在多的一端加入一个外键指向一的一端外键，而主要的区别就是维护端不同。<br>它们的区别在于维护的关系不同：<br>一对多关联映射是指在加载一的一端数据的同时加载多的一端的数据多对一关联映射是指在加载多的一端数据的同时加载一的一端的数据。</p>
+<h3 id="Hibernate是如何延迟加载"><a href="#Hibernate是如何延迟加载" class="headerlink" title="Hibernate是如何延迟加载?"></a>Hibernate是如何延迟加载?</h3><p>1.Hibernate2延迟加载实现：a)实体对象 b)集合（Collection）</p>
+<p>2.Hibernate3 提供了属性的延迟加载功能 当Hibernate在查询数据的时候，数据并没有存在与内存中，当程序真正对数据的操作时，对象才存在于内存中，就实现了延迟加载，节省了服务器的内存开销，从而提高了服务器的性能。</p>
+<h3 id="使用Spring框架的好处是什么？"><a href="#使用Spring框架的好处是什么？" class="headerlink" title="使用Spring框架的好处是什么？"></a>使用Spring框架的好处是什么？</h3><p>轻量：Spring 是轻量的，基本的版本大约2MB。</p>
+<p>控制反转：Spring通过控制反转实现了松散耦合，对象们给出它们的依赖，而不是创建或查找依赖的对象们。</p>
+<p>面向切面的编程(AOP)：Spring支持面向切面的编程，并且把应用业务逻辑和系统服务分开。</p>
+<p>容器：Spring 包含并管理应用中对象的生命周期和配置。</p>
+<p>MVC框架：Spring的WEB框架是个精心设计的框架，是Web框架的一个很好的替代品。</p>
+<p>事务管理：Spring 提供一个持续的事务管理接口，可以扩展到上至本地事务下至全局事务（JTA）。</p>
+<p>异常处理：Spring 提供方便的API把具体技术相关的异常（比如由JDBC，Hibernate or JDO抛出的）转化为一致的unchecked 异常。</p>
+<h3 id="ApplicationContext通常的实现是什么"><a href="#ApplicationContext通常的实现是什么" class="headerlink" title="ApplicationContext通常的实现是什么?"></a>ApplicationContext通常的实现是什么?</h3><p>FileSystemXmlApplicationContext ：此容器从一个XML文件中加载beans的定义，XML Bean 配置文件的全路径名必须提供给它的构造函数。</p>
+<p>ClassPathXmlApplicationContext：此容器也从一个XML文件中加载beans的定义，这里，你需要正确设置classpath因为这个容器将在classpath里找bean配置。</p>
+<p>WebXmlApplicationContext：此容器加载一个XML文件，此文件定义了一个WEB应用的所有bean。</p>
+<h3 id="什么是Spring的依赖注入？有哪些方法进行依赖注入"><a href="#什么是Spring的依赖注入？有哪些方法进行依赖注入" class="headerlink" title="什么是Spring的依赖注入？有哪些方法进行依赖注入"></a>什么是Spring的依赖注入？有哪些方法进行依赖注入</h3><p>依赖注入，是IOC的一个方面，是个通常的概念，它有多种解释。这概念是说你不用创建对象，而只需要描述它如何被创建。你不在代码里直接组装你的组件和服务，但是要在配置文件里描述哪些组件需要哪些服务，之后一个容器（IOC容器）负责把他们组装起来。</p>
+<p>构造器依赖注入：构造器依赖注入通过容器触发一个类的构造器来实现的，该类有一系列参数，每个参数代表一个对其他类的依赖。</p>
+<p>Setter方法注入：Setter方法注入是容器通过调用无参构造器或无参static工厂 方法实例化bean之后，调用该bean的setter方法，即实现了基于setter的依赖注入。</p>
+<h3 id="什么是Spring-beans"><a href="#什么是Spring-beans" class="headerlink" title="什么是Spring beans?"></a>什么是Spring beans?</h3><p>Spring beans 是那些形成Spring应用的主干的java对象。它们被Spring IOC容器初始化，装配，和管理。这些beans通过容器中配置的元数据创建。比如，以XML文件中<bean/> 的形式定义。</p>
+<p>Spring 框架定义的beans都是单件beans。在bean tag中有个属性”singleton”，如果它被赋为TRUE，bean 就是单件，否则就是一个 prototype bean。默认是TRUE，所以所有在Spring框架中的beans 缺省都是单件。</p>
+<h3 id="解释Spring支持的几种bean的作用域。"><a href="#解释Spring支持的几种bean的作用域。" class="headerlink" title="解释Spring支持的几种bean的作用域。"></a>解释Spring支持的几种bean的作用域。</h3><p>Spring框架支持以下五种bean的作用域：</p>
+<p>singleton : bean在每个Spring ioc 容器中只有一个实例。</p>
+<p>prototype：一个bean的定义可以有多个实例。</p>
+<p>request：每次http请求都会创建一个bean，该作用域仅在基于web的Spring ApplicationContext情形下有效。</p>
+<p>session：在一个HTTP Session中，一个bean定义对应一个实例。该作用域仅在基于web的Spring ApplicationContext情形下有效。</p>
+<p>global-session：在一个全局的HTTP Session中，一个bean定义对应一个实例。该作用域仅在基于web的Spring ApplicationContext情形下有效。</p>
+<p>缺省的Spring bean 的作用域是Singleton.</p>
+<h3 id="解释Spring框架中bean的生命周期。"><a href="#解释Spring框架中bean的生命周期。" class="headerlink" title="解释Spring框架中bean的生命周期。"></a>解释Spring框架中bean的生命周期。</h3><p>1，Spring容器 从XML 文件中读取bean的定义，并实例化bean。</p>
+<p>2，Spring根据bean的定义填充所有的属性。</p>
+<p>3，如果bean实现了BeanNameAware 接口，Spring 传递bean 的ID 到 setBeanName方法。</p>
+<p>4，如果Bean 实现了 BeanFactoryAware 接口， Spring传递beanfactory 给setBeanFactory 方法。</p>
+<p>5，如果有任何与bean相关联的BeanPostProcessors，Spring会在postProcesserBeforeInitialization()方法内调用它们。</p>
+<p>6，如果bean实现IntializingBean了，调用它的afterPropertySet方法，如果bean声明了初始化方法，调用此初始化方法。</p>
+<p>7，如果有BeanPostProcessors 和bean 关联，这些bean的postProcessAfterInitialization() 方法将被调用。</p>
+<p>8，如果bean实现了 DisposableBean，它将调用destroy()方法。</p>
+<h3 id="在-Spring中如何注入一个java集合？"><a href="#在-Spring中如何注入一个java集合？" class="headerlink" title="在 Spring中如何注入一个java集合？"></a>在 Spring中如何注入一个java集合？</h3><p>Spring提供以下几种集合的配置元素：</p>
+<p><list>类型用于注入一列值，允许有相同的值。</p>
+<p><set> 类型用于注入一组值，不允许有相同的值。</p>
+<p><map> 类型用于注入一组键值对，键和值都可以为任意类型。</p>
+<p><props>类型用于注入一组键值对，键和值都只能为String类型。</p>
+<h3 id="解释不同方式的自动装配-。"><a href="#解释不同方式的自动装配-。" class="headerlink" title="解释不同方式的自动装配 。"></a>解释不同方式的自动装配 。</h3><p>有五种自动装配的方式，用来指导Spring容器用自动装配方式进行依赖注入。</p>
+<p>no：默认的方式是不进行自动装配，通过显式设置ref 属性来进行装配。</p>
+<p>byName：通过参数名 自动装配，Spring容器在配置文件中发现bean的autowire属性被设置成byname，之后容器试图匹配、装配和该bean的属性具有相同名字的bean。</p>
+<p>byType:：通过参数类型自动装配，Spring容器在配置文件中发现bean的autowire属性被设置成byType，之后容器试图匹配、装配和该bean的属性具有相同类型的bean。如果有多个bean符合条件，则抛出错误。</p>
+<p>constructor：这个方式类似于byType， 但是要提供给构造器参数，如果没有确定的带参数的构造器参数类型，将会抛出异常。</p>
+<p>autodetect：首先尝试使用constructor来自动装配，如果无法工作，则使用byType方式。</p>
+<h3 id="Spring框架的事务管理有哪些优点？"><a href="#Spring框架的事务管理有哪些优点？" class="headerlink" title="Spring框架的事务管理有哪些优点？"></a>Spring框架的事务管理有哪些优点？</h3><p>它为不同的事务API  如 JTA，JDBC，Hibernate，JPA 和JDO，提供一个不变的编程模式。</p>
+<p>它为编程式事务管理提供了一套简单的API而不是一些复杂的事务API如</p>
+<p>它支持声明式事务管理。</p>
+<p>它和Spring各种数据访问抽象层很好得集成。</p>
+<h3 id="什么是基于Java的Spring注解配置-给一些注解的例子"><a href="#什么是基于Java的Spring注解配置-给一些注解的例子" class="headerlink" title="什么是基于Java的Spring注解配置? 给一些注解的例子."></a>什么是基于Java的Spring注解配置? 给一些注解的例子.</h3><p>基于Java的配置，允许你在少量的Java注解的帮助下，进行你的大部分Spring配置而非通过XML文件。</p>
+<p>以@Configuration 注解为例，它用来标记类可以当做一个bean的定义，被Spring IOC容器使用。另一个例子是@Bean注解，它表示此方法将要返回一个对象，作为一个bean注册进Spring应用上下文。</p>
+<h3 id="什么是ORM？"><a href="#什么是ORM？" class="headerlink" title="什么是ORM？"></a>什么是ORM？</h3><p>对象关系映射（Object-Relational Mapping，简称ORM）是一种为了解决程序的面向对象模型与数据库的关系模型互不匹配问题的技术；</p>
+<p>简单的说，ORM是通过使用描述对象和数据库之间映射的元数据（在Java中可以用XML或者是注解），将程序中的对象自动持久化到关系数据库中或者将关系数据库表中的行转换成Java对象，其本质上就是将数据从一种形式转换到另外一种形式。</p>
+<h3 id="Hibernate中SessionFactory是线程安全的吗？Session是线程安全的吗（两个线程能够共享同一个Session吗）？"><a href="#Hibernate中SessionFactory是线程安全的吗？Session是线程安全的吗（两个线程能够共享同一个Session吗）？" class="headerlink" title="Hibernate中SessionFactory是线程安全的吗？Session是线程安全的吗（两个线程能够共享同一个Session吗）？"></a>Hibernate中SessionFactory是线程安全的吗？Session是线程安全的吗（两个线程能够共享同一个Session吗）？</h3><p>SessionFactory对应Hibernate的一个数据存储的概念，它是线程安全的，可以被多个线程并发访问。SessionFactory一般只会在启动的时候构建。对于应用程序，最好将SessionFactory通过单例模式进行封装以便于访问。</p>
+<p>Session是一个轻量级非线程安全的对象（线程间不能共享session），它表示与数据库进行交互的一个工作单元。Session是由SessionFactory创建的，在任务完成之后它会被关闭。Session是持久层服务对外提供的主要接口。</p>
+<p>Session会延迟获取数据库连接（也就是在需要的时候才会获取）。为了避免创建太多的session，可以使用ThreadLocal将session和当前线程绑定在一起，这样可以让同一个线程获得的总是同一个session。Hibernate 3中SessionFactory的getCurrentSession()方法就可以做到。</p>
+<h3 id="Session的save-、update-、merge-、lock-、saveOrUpdate-和persist-方法分别是做什么的？有什么区别？"><a href="#Session的save-、update-、merge-、lock-、saveOrUpdate-和persist-方法分别是做什么的？有什么区别？" class="headerlink" title="Session的save()、update()、merge()、lock()、saveOrUpdate()和persist()方法分别是做什么的？有什么区别？"></a>Session的save()、update()、merge()、lock()、saveOrUpdate()和persist()方法分别是做什么的？有什么区别？</h3><p>Hibernate的对象有三种状态：瞬时态（transient）、持久态（persistent）和游离态（detached）。</p>
+<p>瞬时态的实例可以通过调用save()、persist()或者saveOrUpdate()方法变成持久态；</p>
+<p>游离态的实例可以通过调用 update()、saveOrUpdate()、lock()或者replicate()变成持久态。save()和persist()将会引发SQL的INSERT语句，而update()或merge()会引发UPDATE语句。</p>
+<p>save()和update()的区别在于一个是将瞬时态对象变成持久态，一个是将游离态对象变为持久态。merge()方法可以完成save()和update()方法的功能，它的意图是将新的状态合并到已有的持久化对象上或创建新的持久化对象。</p>
+<p>对于persist()方法，按照官方文档的说明：</p>
+<p>1、persist()方法把一个瞬时态的实例持久化，但是并不保证标识符被立刻填入到持久化实例中，标识符的填入可能被推迟到flush的时间；</p>
+<p>2、persist()方法保证当它在一个事务外部被调用的时候并不触发一个INSERT语句，当需要封装一个长会话流程的时候，persist()方法是很有必要的；</p>
+<p>3、save()方法不保证第2条，它要返回标识符，所以它会立即执行INSERT语句，不管是在事务内部还是外部。至于lock()方法和update()方法的区别，update()方法是把一个已经更改过的脱管状态的对象变成持久状态；lock()方法是把一个没有更改过的脱管状态的对象变成持久状态。</p>
+<h3 id="阐述Session加载实体对象的过程。"><a href="#阐述Session加载实体对象的过程。" class="headerlink" title="阐述Session加载实体对象的过程。"></a>阐述Session加载实体对象的过程。</h3><p>1、Session在调用数据库查询功能之前，首先会在一级缓存中通过实体类型和主键进行查找，如果一级缓存查找命中且数据状态合法，则直接返回；<br>2、如果一级缓存没有命中，接下来Session会在当前NonExists记录（相当于一个查询黑名单，如果出现重复的无效查询可以迅速做出判断，从而提升性能）中进行查找，如果NonExists中存在同样的查询条件，则返回null；<br>3、如果一级缓存查询失败查询二级缓存，如果二级缓存命中直接返回；<br>4、如果之前的查询都未命中，则发出SQL语句，如果查询未发现对应记录则将此次查询添加到Session的NonExists中加以记录，并返回null；<br>5、根据映射配置和SQL语句得到ResultSet，并创建对应的实体对象；<br>6、将对象纳入Session（一级缓存）的管理；<br>7、如果有对应的拦截器，则执行拦截器的onLoad方法；<br>8、如果开启并设置了要使用二级缓存，则将数据对象纳入二级缓存；<br>9、返回数据对象。</p>
+<h3 id="MyBatis中使用-和-书写占位符有什么区别？"><a href="#MyBatis中使用-和-书写占位符有什么区别？" class="headerlink" title="MyBatis中使用#和$书写占位符有什么区别？"></a>MyBatis中使用#和$书写占位符有什么区别？</h3><p># 将传入的数据都当成一个字符串，会对传入的数据自动加上引号；</p>
+<p>$将传入的数据直接显示生成在SQL中。</p>
+<p>注意：使用$占位符可能会导致SQL注射攻击，能用#的地方就不要使用$，写order by子句的时候应该用$而不是#。</p>
+<h3 id="解释一下MyBatis中命名空间（namespace）的作用。"><a href="#解释一下MyBatis中命名空间（namespace）的作用。" class="headerlink" title="解释一下MyBatis中命名空间（namespace）的作用。"></a>解释一下MyBatis中命名空间（namespace）的作用。</h3><p>在大型项目中，可能存在大量的SQL语句，这时候为每个SQL语句起一个唯一的标识（ID）就变得并不容易了。为了解决这个问题，在MyBatis中，可以为每个映射文件起一个唯一的命名空间，这样定义在这个映射文件中的每个SQL语句就成了定义在这个命名空间中的一个ID。只要我们能够保证每个命名空间中这个ID是唯一的，即使在不同映射文件中的语句ID相同，也不会再产生冲突了。</p>
+<h3 id="MyBatis中的动态SQL是什么意思？"><a href="#MyBatis中的动态SQL是什么意思？" class="headerlink" title="MyBatis中的动态SQL是什么意思？"></a>MyBatis中的动态SQL是什么意思？</h3><p>对于一些复杂的查询，我们可能会指定多个查询条件，但是这些条件可能存在也可能不存在，如果不使用持久层框架我们可能需要自己拼装SQL语句，不过MyBatis提供了动态SQL的功能来解决这个问题。MyBatis中用于实现动态SQL的元素主要有：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">– if    – choose &#x2F; when &#x2F; otherwise    – trim    – where    – set     – foreach</span><br></pre></td></tr></table></figure>
+<p>用法举例：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">select</span> <span class="attr">id</span>=<span class="string">&quot;foo&quot;</span> <span class="attr">parameterType</span>=<span class="string">&quot;Blog&quot;</span> <span class="attr">resultType</span>=<span class="string">&quot;Blog&quot;</span>&gt;</span>        </span><br><span class="line">select * from t_blog where 1 = 1</span><br><span class="line">     <span class="tag">&lt;<span class="name">if</span> <span class="attr">test</span>=<span class="string">&quot;title != null&quot;</span>&gt;</span>            </span><br><span class="line">        and title = #&#123;title&#125;</span><br><span class="line">     <span class="tag">&lt;/<span class="name">if</span>&gt;</span></span><br><span class="line">     <span class="tag">&lt;<span class="name">if</span> <span class="attr">test</span>=<span class="string">&quot;content != null&quot;</span>&gt;</span>            </span><br><span class="line">        and content = #&#123;content&#125;</span><br><span class="line">     <span class="tag">&lt;/<span class="name">if</span>&gt;</span></span><br><span class="line">     <span class="tag">&lt;<span class="name">if</span> <span class="attr">test</span>=<span class="string">&quot;owner != null&quot;</span>&gt;</span>            </span><br><span class="line">        and owner = #&#123;owner&#125;</span><br><span class="line">     <span class="tag">&lt;/<span class="name">if</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">select</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h3 id="JDBC编程有哪些不足之处，MyBatis是如何解决这些问题的？"><a href="#JDBC编程有哪些不足之处，MyBatis是如何解决这些问题的？" class="headerlink" title="JDBC编程有哪些不足之处，MyBatis是如何解决这些问题的？"></a>JDBC编程有哪些不足之处，MyBatis是如何解决这些问题的？</h3><p>1、JDBC：数据库链接创建、释放频繁造成系统资源浪费从而影响系统性能，如果使用数据库链接池可解决此问题。</p>
+<p>MyBatis：在SqlMapConfig.xml中配置数据链接池，使用连接池管理数据库链接。</p>
+<p>2、JDBC：Sql语句写在代码中造成代码不易维护，实际应用sql变化的可能较大，sql变动需要改变java代码。</p>
+<p>MyBatis：将Sql语句配置在XXXXmapper.xml文件中与java代码分离。</p>
+<p>3、JDBC：向sql语句传参数麻烦，因为sql语句的where条件不一定，可能多也可能少，占位符需要和参数一一对应。</p>
+<p>MyBatis： Mybatis自动将java对象映射至sql语句。</p>
+<p>4，JDBC：对结果集解析麻烦，sql变化导致解析代码变化，且解析前需要遍历，如果能将数据库记录封装成pojo对象解析比较方便。</p>
+<p>MyBatis：Mybatis自动将sql执行结果映射至java对象</p>
+<h3 id="MyBatis与Hibernate有哪些不同？"><a href="#MyBatis与Hibernate有哪些不同？" class="headerlink" title="MyBatis与Hibernate有哪些不同？"></a>MyBatis与Hibernate有哪些不同？</h3><p>1、Mybatis和hibernate不同，它不完全是一个ORM框架，因为MyBatis需要程序员自己编写Sql语句，不过mybatis可以通过XML或注解方式灵活配置要运行的sql语句，并将java对象和sql语句映射生成最终执行的sql，最后将sql执行的结果再映射生成java对象。<br>2、Mybatis学习门槛低，简单易学，程序员直接编写原生态sql，可严格控制sql执行性能，灵活度高，非常适合对关系数据模型要求不高的软件开发，例如互联网软件、企业运营类软件等，因为这类软件需求变化频繁，一但需求变化要求成果输出迅速。但是灵活的前提是mybatis无法做到数据库无关性，如果需要实现支持多种数据库的软件则需要自定义多套sql映射文件，工作量大。<br>3、Hibernate对象/关系映射能力强，数据库无关性好，对于关系模型要求高的软件（例如需求固定的定制化软件）如果用hibernate开发可以节省很多代码，提高效率。但是Hibernate的缺点是学习门槛高，要精通门槛更高，而且怎么设计O/R映射，在性能和对象模型之间如何权衡，以及怎样用好Hibernate需要具有很强的经验和能力才行。<br>总之，按照用户的需求在有限的资源环境下只要能做出维护性、扩展性良好的软件架构都是好架构，所以框架只有适合才是最好。</p>
+<h3 id="简单的说一下MyBatis的一级缓存和二级缓存？"><a href="#简单的说一下MyBatis的一级缓存和二级缓存？" class="headerlink" title="简单的说一下MyBatis的一级缓存和二级缓存？"></a>简单的说一下MyBatis的一级缓存和二级缓存？</h3><p>Mybatis首先去缓存中查询结果集，如果没有则查询数据库，如果有则从缓存取出返回结果集就不走数据库。Mybatis内部存储缓存使用一个HashMap，key为hashCode+sqlId+Sql语句。value为从查询出来映射生成的java对象<br>Mybatis的二级缓存即查询缓存，它的作用域是一个mapper的namespace，即在同一个namespace中查询sql可以从缓存中获取数据。二级缓存是可以跨SqlSession的。</p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/java/">java</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://github.com/dxysun/2018/07/16/javaForInterviewFramework/" data-title="java面试题之框架篇 | 迎着朝阳的博客" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2018/07/16/javaForInterviewSQL/" title="java面试题之数据库篇">
+  <strong>上一篇：</strong><br/>
+  <span>
+  java面试题之数据库篇</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/07/16/algorithmTwoTreeInterview/"  title="算法学习之常见的二叉树算法题">
+ <strong>下一篇：</strong><br/> 
+ <span>算法学习之常见的二叉树算法题
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B0%88%E8%B0%88%E4%BD%A0%E5%AF%B9Hibernate%E7%9A%84%E7%90%86%E8%A7%A3%E3%80%82"><span class="toc-number">1.</span> <span class="toc-text">谈谈你对Hibernate的理解。</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B0%88%E8%B0%88%E4%BD%A0%E5%AF%B9Spring%E7%9A%84%E7%90%86%E8%A7%A3%E3%80%82"><span class="toc-number">2.</span> <span class="toc-text">谈谈你对Spring的理解。</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#MyBatis%E4%B8%8EHibernate%E6%9C%89%E4%BB%80%E4%B9%88%E4%B8%8D%E5%90%8C"><span class="toc-number">3.</span> <span class="toc-text">MyBatis与Hibernate有什么不同?</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9C%A8hibernate%E8%BF%9B%E8%A1%8C%E5%A4%9A%E8%A1%A8%E6%9F%A5%E8%AF%A2%E6%AF%8F%E4%B8%AA%E8%A1%A8%E4%B8%AD%E5%90%84%E5%8F%96%E5%87%A0%E4%B8%AA%E5%AD%97%E6%AE%B5%EF%BC%8C%E4%B9%9F%E5%B0%B1%E6%98%AF%E8%AF%B4%E6%9F%A5%E8%AF%A2%E5%87%BA%E6%9D%A5%E7%9A%84%E7%BB%93%E6%9E%9C%E9%9B%86%E6%B2%A1%E6%9C%89%E4%B8%80%E4%B8%AA%E5%AE%9E%E4%BD%93%E7%B1%BB%E4%B8%8E%E4%B9%8B%E5%AF%B9%E5%BA%94%E5%A6%82%E4%BD%95%E8%A7%A3%E5%86%B3%EF%BC%9F"><span class="toc-number">4.</span> <span class="toc-text">在hibernate进行多表查询每个表中各取几个字段，也就是说查询出来的结果集没有一个实体类与之对应如何解决？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%8B%E7%BB%8D%E4%B8%80%E4%B8%8BHibernate%E7%9A%84%E4%BA%8C%E7%BA%A7%E7%BC%93%E5%AD%98"><span class="toc-number">5.</span> <span class="toc-text">介绍一下Hibernate的二级缓存</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#JDO%E6%98%AF%E4%BB%80%E4%B9%88"><span class="toc-number">6.</span> <span class="toc-text">JDO是什么?</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Hibernate%E7%9A%84%E4%B8%80%E5%AF%B9%E5%A4%9A%E5%92%8C%E5%A4%9A%E5%AF%B9%E4%B8%80%E5%8F%8C%E5%90%91%E5%85%B3%E8%81%94%E7%9A%84%E5%8C%BA%E5%88%AB%EF%BC%9F%EF%BC%9F"><span class="toc-number">7.</span> <span class="toc-text">Hibernate的一对多和多对一双向关联的区别？？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Hibernate%E6%98%AF%E5%A6%82%E4%BD%95%E5%BB%B6%E8%BF%9F%E5%8A%A0%E8%BD%BD"><span class="toc-number">8.</span> <span class="toc-text">Hibernate是如何延迟加载?</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8Spring%E6%A1%86%E6%9E%B6%E7%9A%84%E5%A5%BD%E5%A4%84%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="toc-number">9.</span> <span class="toc-text">使用Spring框架的好处是什么？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ApplicationContext%E9%80%9A%E5%B8%B8%E7%9A%84%E5%AE%9E%E7%8E%B0%E6%98%AF%E4%BB%80%E4%B9%88"><span class="toc-number">10.</span> <span class="toc-text">ApplicationContext通常的实现是什么?</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AFSpring%E7%9A%84%E4%BE%9D%E8%B5%96%E6%B3%A8%E5%85%A5%EF%BC%9F%E6%9C%89%E5%93%AA%E4%BA%9B%E6%96%B9%E6%B3%95%E8%BF%9B%E8%A1%8C%E4%BE%9D%E8%B5%96%E6%B3%A8%E5%85%A5"><span class="toc-number">11.</span> <span class="toc-text">什么是Spring的依赖注入？有哪些方法进行依赖注入</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AFSpring-beans"><span class="toc-number">12.</span> <span class="toc-text">什么是Spring beans?</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A7%A3%E9%87%8ASpring%E6%94%AF%E6%8C%81%E7%9A%84%E5%87%A0%E7%A7%8Dbean%E7%9A%84%E4%BD%9C%E7%94%A8%E5%9F%9F%E3%80%82"><span class="toc-number">13.</span> <span class="toc-text">解释Spring支持的几种bean的作用域。</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A7%A3%E9%87%8ASpring%E6%A1%86%E6%9E%B6%E4%B8%ADbean%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E3%80%82"><span class="toc-number">14.</span> <span class="toc-text">解释Spring框架中bean的生命周期。</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9C%A8-Spring%E4%B8%AD%E5%A6%82%E4%BD%95%E6%B3%A8%E5%85%A5%E4%B8%80%E4%B8%AAjava%E9%9B%86%E5%90%88%EF%BC%9F"><span class="toc-number">15.</span> <span class="toc-text">在 Spring中如何注入一个java集合？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A7%A3%E9%87%8A%E4%B8%8D%E5%90%8C%E6%96%B9%E5%BC%8F%E7%9A%84%E8%87%AA%E5%8A%A8%E8%A3%85%E9%85%8D-%E3%80%82"><span class="toc-number">16.</span> <span class="toc-text">解释不同方式的自动装配 。</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Spring%E6%A1%86%E6%9E%B6%E7%9A%84%E4%BA%8B%E5%8A%A1%E7%AE%A1%E7%90%86%E6%9C%89%E5%93%AA%E4%BA%9B%E4%BC%98%E7%82%B9%EF%BC%9F"><span class="toc-number">17.</span> <span class="toc-text">Spring框架的事务管理有哪些优点？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E5%9F%BA%E4%BA%8EJava%E7%9A%84Spring%E6%B3%A8%E8%A7%A3%E9%85%8D%E7%BD%AE-%E7%BB%99%E4%B8%80%E4%BA%9B%E6%B3%A8%E8%A7%A3%E7%9A%84%E4%BE%8B%E5%AD%90"><span class="toc-number">18.</span> <span class="toc-text">什么是基于Java的Spring注解配置? 给一些注解的例子.</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AFORM%EF%BC%9F"><span class="toc-number">19.</span> <span class="toc-text">什么是ORM？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Hibernate%E4%B8%ADSessionFactory%E6%98%AF%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8%E7%9A%84%E5%90%97%EF%BC%9FSession%E6%98%AF%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8%E7%9A%84%E5%90%97%EF%BC%88%E4%B8%A4%E4%B8%AA%E7%BA%BF%E7%A8%8B%E8%83%BD%E5%A4%9F%E5%85%B1%E4%BA%AB%E5%90%8C%E4%B8%80%E4%B8%AASession%E5%90%97%EF%BC%89%EF%BC%9F"><span class="toc-number">20.</span> <span class="toc-text">Hibernate中SessionFactory是线程安全的吗？Session是线程安全的吗（两个线程能够共享同一个Session吗）？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Session%E7%9A%84save-%E3%80%81update-%E3%80%81merge-%E3%80%81lock-%E3%80%81saveOrUpdate-%E5%92%8Cpersist-%E6%96%B9%E6%B3%95%E5%88%86%E5%88%AB%E6%98%AF%E5%81%9A%E4%BB%80%E4%B9%88%E7%9A%84%EF%BC%9F%E6%9C%89%E4%BB%80%E4%B9%88%E5%8C%BA%E5%88%AB%EF%BC%9F"><span class="toc-number">21.</span> <span class="toc-text">Session的save()、update()、merge()、lock()、saveOrUpdate()和persist()方法分别是做什么的？有什么区别？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%98%90%E8%BF%B0Session%E5%8A%A0%E8%BD%BD%E5%AE%9E%E4%BD%93%E5%AF%B9%E8%B1%A1%E7%9A%84%E8%BF%87%E7%A8%8B%E3%80%82"><span class="toc-number">22.</span> <span class="toc-text">阐述Session加载实体对象的过程。</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#MyBatis%E4%B8%AD%E4%BD%BF%E7%94%A8-%E5%92%8C-%E4%B9%A6%E5%86%99%E5%8D%A0%E4%BD%8D%E7%AC%A6%E6%9C%89%E4%BB%80%E4%B9%88%E5%8C%BA%E5%88%AB%EF%BC%9F"><span class="toc-number">23.</span> <span class="toc-text">MyBatis中使用#和$书写占位符有什么区别？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A7%A3%E9%87%8A%E4%B8%80%E4%B8%8BMyBatis%E4%B8%AD%E5%91%BD%E5%90%8D%E7%A9%BA%E9%97%B4%EF%BC%88namespace%EF%BC%89%E7%9A%84%E4%BD%9C%E7%94%A8%E3%80%82"><span class="toc-number">24.</span> <span class="toc-text">解释一下MyBatis中命名空间（namespace）的作用。</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#MyBatis%E4%B8%AD%E7%9A%84%E5%8A%A8%E6%80%81SQL%E6%98%AF%E4%BB%80%E4%B9%88%E6%84%8F%E6%80%9D%EF%BC%9F"><span class="toc-number">25.</span> <span class="toc-text">MyBatis中的动态SQL是什么意思？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#JDBC%E7%BC%96%E7%A8%8B%E6%9C%89%E5%93%AA%E4%BA%9B%E4%B8%8D%E8%B6%B3%E4%B9%8B%E5%A4%84%EF%BC%8CMyBatis%E6%98%AF%E5%A6%82%E4%BD%95%E8%A7%A3%E5%86%B3%E8%BF%99%E4%BA%9B%E9%97%AE%E9%A2%98%E7%9A%84%EF%BC%9F"><span class="toc-number">26.</span> <span class="toc-text">JDBC编程有哪些不足之处，MyBatis是如何解决这些问题的？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#MyBatis%E4%B8%8EHibernate%E6%9C%89%E5%93%AA%E4%BA%9B%E4%B8%8D%E5%90%8C%EF%BC%9F"><span class="toc-number">27.</span> <span class="toc-text">MyBatis与Hibernate有哪些不同？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AE%80%E5%8D%95%E7%9A%84%E8%AF%B4%E4%B8%80%E4%B8%8BMyBatis%E7%9A%84%E4%B8%80%E7%BA%A7%E7%BC%93%E5%AD%98%E5%92%8C%E4%BA%8C%E7%BA%A7%E7%BC%93%E5%AD%98%EF%BC%9F"><span class="toc-number">28.</span> <span class="toc-text">简单的说一下MyBatis的一级缓存和二级缓存？</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+
+  
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">Categories</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/spring官方文档/" title="spring官方文档">spring官方文档<sup>8</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>54</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/linux/" title="linux">linux<sup>34</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/centos/" title="centos">centos<sup>19</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/springboot/" title="springboot">springboot<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/ubuntu/" title="ubuntu">ubuntu<sup>9</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/hadoop/" title="hadoop">hadoop<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/spring/" title="spring">spring<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/nginx/" title="nginx">nginx<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/spark/" title="spark">spark<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/mybatis/" title="mybatis">mybatis<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/mysql/" title="mysql">mysql<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/算法/" title="算法">算法<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/git/" title="git">git<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/maven/" title="maven">maven<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/hdfs/" title="hdfs">hdfs<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/dubbo/" title="dubbo">dubbo<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/kafka/" title="kafka">kafka<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Hbase/" title="Hbase">Hbase<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/sql/" title="sql">sql<sup>2</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="http://majorkevin.xyz/blog/" target="_blank" title="朋友的博客">朋友的博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+  <div class="weiboshow">
+  <p class="asidetitle">Weibo</p>
+    <iframe width="100%" height="119" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=119&fansRow=2&ptype=1&speed=0&skin=9&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=&verifier=&dpc=1"></iframe>
+</div>
+
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> Hello ,I&#39;m dxysun. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2020 
+		
+		<a href="/about" target="_blank" title="dxysun">dxysun</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?e6d1f421bbc9962127a50488f9ed37d1";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

@@ -1,0 +1,631 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>kafka学习笔记（二） | 迎着朝阳的博客</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="dxysun">
+    
+
+    
+    <meta name="description" content="kafka学习笔记（二）">
+<meta property="og:type" content="article">
+<meta property="og:title" content="kafka学习笔记（二）">
+<meta property="og:url" content="https://github.com/dxysun/2019/10/27/javaForKafka2/index.html">
+<meta property="og:site_name" content="迎着朝阳的博客">
+<meta property="og:description" content="kafka学习笔记（二）">
+<meta property="og:locale">
+<meta property="og:image" content="https://blog-dxysun.nos-eastchina1.126.net/topic.png">
+<meta property="og:image" content="https://blog-dxysun.nos-eastchina1.126.net/partition.png">
+<meta property="og:image" content="https://blog-dxysun.nos-eastchina1.126.net/infowrite.png">
+<meta property="og:image" content="https://blog-dxysun.nos-eastchina1.126.net/kafka-index.png">
+<meta property="article:published_time" content="2019-10-27T07:47:22.000Z">
+<meta property="article:modified_time" content="2019-11-03T07:13:34.000Z">
+<meta property="article:author" content="dxysun">
+<meta property="article:tag" content="java">
+<meta property="article:tag" content="kafka">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blog-dxysun.nos-eastchina1.126.net/topic.png">
+
+    
+    <link rel="alternative" href="/atom.xml" title="迎着朝阳的博客" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    
+<link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/%02.css">
+<link rel="stylesheet" href="/.css">
+
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="迎着朝阳的博客" title="迎着朝阳的博客"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="迎着朝阳的博客">迎着朝阳的博客</a></h1>
+				<h2 class="blog-motto"></h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">主页</a></li>
+					
+						<li><a href="/archives">归档</a></li>
+					
+						<li><a href="/about">关于</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:github.com/dxysun">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2019/10/27/javaForKafka2/" title="kafka学习笔记（二）" itemprop="url">kafka学习笔记（二）</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="dxysun" target="_blank" itemprop="author">dxysun</a>
+		
+  <p class="article-time">
+    <time datetime="2019-10-27T07:47:22.000Z" itemprop="datePublished"> Published 2019-10-27</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5"><span class="toc-number">1.</span> <span class="toc-text">核心概念</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Topic"><span class="toc-number">1.1.</span> <span class="toc-text">Topic</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Partition"><span class="toc-number">1.2.</span> <span class="toc-text">Partition</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Topic-amp-Partition-%E7%9A%84%E5%AD%98%E5%82%A8"><span class="toc-number">1.3.</span> <span class="toc-text">Topic&amp;Partition 的存储</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Broker"><span class="toc-number">1.4.</span> <span class="toc-text">Broker</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%B6%88%E6%81%AF%E5%88%86%E5%8F%91"><span class="toc-number">2.</span> <span class="toc-text">消息分发</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#kafka-%E6%B6%88%E6%81%AF%E5%88%86%E5%8F%91%E7%AD%96%E7%95%A5"><span class="toc-number">2.1.</span> <span class="toc-text">kafka 消息分发策略</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B6%88%E6%81%AF%E9%BB%98%E8%AE%A4%E7%9A%84%E5%88%86%E5%8F%91%E6%9C%BA%E5%88%B6"><span class="toc-number">2.2.</span> <span class="toc-text">消息默认的分发机制</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%B6%88%E6%81%AF%E7%9A%84%E6%B6%88%E8%B4%B9%E5%8E%9F%E7%90%86"><span class="toc-number">3.</span> <span class="toc-text">消息的消费原理</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Consumer-Group"><span class="toc-number">3.1.</span> <span class="toc-text">Consumer Group</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%86%E5%8C%BA%E5%88%86%E9%85%8D%E7%AD%96%E7%95%A5"><span class="toc-number">3.2.</span> <span class="toc-text">分区分配策略</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Range-strategy%EF%BC%88%E8%8C%83%E5%9B%B4%E5%88%86%E5%8C%BA%EF%BC%89"><span class="toc-number">3.2.1.</span> <span class="toc-text">Range strategy（范围分区）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#RoundRobin-strategy%EF%BC%88%E8%BD%AE%E8%AF%A2%E5%88%86%E5%8C%BA%EF%BC%89"><span class="toc-number">3.2.2.</span> <span class="toc-text">RoundRobin strategy（轮询分区）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%86%E5%8C%BA%E7%AD%96%E7%95%A5%E8%A7%A6%E5%8F%91"><span class="toc-number">3.2.3.</span> <span class="toc-text">分区策略触发</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Rebalance%E7%9A%84%E6%89%A7%E8%A1%8C-%E4%BB%A5%E5%8F%8A%E7%AE%A1%E7%90%86consumer%E7%9A%84group"><span class="toc-number">3.2.4.</span> <span class="toc-text">Rebalance的执行 以及管理consumer的group</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%A1%AE%E5%AE%9A-coordinator"><span class="toc-number">3.2.4.1.</span> <span class="toc-text">确定 coordinator</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#JoinGroup-%E7%9A%84%E8%BF%87%E7%A8%8B"><span class="toc-number">3.2.4.2.</span> <span class="toc-text">JoinGroup 的过程</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BF%9D%E5%AD%98%E6%B6%88%E8%B4%B9%E7%AB%AF%E7%9A%84%E6%B6%88%E8%B4%B9%E4%BD%8D%E7%BD%AE"><span class="toc-number">3.3.</span> <span class="toc-text">保存消费端的消费位置</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#offset"><span class="toc-number">3.3.1.</span> <span class="toc-text">offset</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#offset-%E4%BF%9D%E5%AD%98%E4%BD%8D%E7%BD%AE"><span class="toc-number">3.3.2.</span> <span class="toc-text">offset 保存位置</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%B6%88%E6%81%AF%E7%9A%84%E5%AD%98%E5%82%A8"><span class="toc-number">4.</span> <span class="toc-text">消息的存储</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B6%88%E6%81%AF%E7%9A%84%E4%BF%9D%E5%AD%98%E8%B7%AF%E5%BE%84"><span class="toc-number">4.1.</span> <span class="toc-text">消息的保存路径</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%9A%E4%B8%AA%E5%88%86%E5%8C%BA%E5%9C%A8%E9%9B%86%E7%BE%A4%E4%B8%AD%E7%9A%84%E5%88%86%E9%85%8D"><span class="toc-number">4.2.</span> <span class="toc-text">多个分区在集群中的分配</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B6%88%E6%81%AF%E5%86%99%E5%85%A5%E7%9A%84%E6%80%A7%E8%83%BD"><span class="toc-number">4.3.</span> <span class="toc-text">消息写入的性能</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%9B%B6%E6%8B%B7%E8%B4%9D"><span class="toc-number">4.3.1.</span> <span class="toc-text">零拷贝</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B6%88%E6%81%AF%E7%9A%84%E5%AD%98%E5%82%A8%E5%8E%9F%E7%90%86"><span class="toc-number">4.4.</span> <span class="toc-text">消息的存储原理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B6%88%E6%81%AF%E7%9A%84%E6%96%87%E4%BB%B6%E5%AD%98%E5%82%A8%E6%9C%BA%E5%88%B6"><span class="toc-number">4.4.1.</span> <span class="toc-text">消息的文件存储机制</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#LogSegment"><span class="toc-number">4.4.1.1.</span> <span class="toc-text">LogSegment</span></a></li></ol></li></ol></li></ol></li></ol>
+		
+		</div>
+		
+		<p>kafka学习笔记（二）</p>
+<a id="more"></a>
+
+<h1 id="核心概念"><a href="#核心概念" class="headerlink" title="核心概念"></a>核心概念</h1><h2 id="Topic"><a href="#Topic" class="headerlink" title="Topic"></a>Topic</h2><p>在 kafka 中，topic 是一个存储消息的逻辑概念，可以认为是一个消息集合。每条消息发送到 kafka 集群的消息都有<br>一个类别，这个类别就是Topic。物理上来说，不同的 topic 的消息是分开存储的，每个 topic 可以有多个生产者向它发送消息，也可以有多<br>个消费者去消费其中的消息。如图所示<br><img src="https://blog-dxysun.nos-eastchina1.126.net/topic.png" alt="topic"></p>
+<h2 id="Partition"><a href="#Partition" class="headerlink" title="Partition"></a>Partition</h2><p>每个 topic 可以划分多个分区（每个 Topic 至少有一个分区），同一 topic 下的不同分区包含的消息是不同的。每个<br>消息在被添加到分区时，都会被分配一个 offset（称之为偏移量），它是消息在此分区中的唯一编号，kafka 通过 offset<br>保证消息在分区内的顺序，offset 的顺序性不跨分区，即 kafka只保证在同一个分区内的消息是有序的，同一个Topic的多个分区内的消息，kafka不保证其顺序性。<br><img src="https://blog-dxysun.nos-eastchina1.126.net/partition.png" alt="part"></p>
+<h2 id="Topic-amp-Partition-的存储"><a href="#Topic-amp-Partition-的存储" class="headerlink" title="Topic&amp;Partition 的存储"></a>Topic&amp;Partition 的存储</h2><p>Partition 是以文件的形式存储在文件系统中，比如创建一个名为 firstTopic 的 topic，其中有 3 个 partition，那么在<br>kafka 的数据目录（/tmp/kafka-log）中就有 3 个目录，firstTopic-0~2，命名规则是<code>&lt;topic_name&gt;-&lt;partition_id&gt;</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bin&#x2F;kafka-topics.sh --create --zookeeper 127.0.0.1:2181 --replication-factor 1 --partitions 3 --topic firstTopic</span><br></pre></td></tr></table></figure>
+<h2 id="Broker"><a href="#Broker" class="headerlink" title="Broker"></a>Broker</h2><p>一个单独的Kafka server就是一个Broker。Broker的主要工作就是接受生产者发过来的消息，分配offset，之后保存到磁盘中；同时接受消费者、其他Broker的请求，根据请求类型进行相应处理并返回响应。<br>在一般的生产环境中，一个Broker独占一台物理服务器。</p>
+<h1 id="消息分发"><a href="#消息分发" class="headerlink" title="消息分发"></a>消息分发</h1><h2 id="kafka-消息分发策略"><a href="#kafka-消息分发策略" class="headerlink" title="kafka 消息分发策略"></a>kafka 消息分发策略</h2><p>消息是 kafka 中最基本的数据单元，在 kafka 中，一条消息由 key、value 两部分构成，在发送一条消息时，我们可以指定这个 key，那么 producer 会根据 key 和 partition 机<br>制来判断当前这条消息应该发送并存储到哪个 partition 中。我们可以根据需要进行扩展 producer 的 partition 机制。</p>
+<h2 id="消息默认的分发机制"><a href="#消息默认的分发机制" class="headerlink" title="消息默认的分发机制"></a>消息默认的分发机制</h2><p>默认情况下，kafka 采用的是 hash 取模的分区算法。如果Key 为 null，则会随机分配一个分区。这个随机是在这个参<br>数”metadata.max.age.ms”的时间范围内随机选择一个。对于这个时间段内，如果 key 为 null，则只会发送到唯一的分区。<br>这个值默认情况下是 10 分钟更新一次。<br>Metadata是Topic/Partition 和 broker 的映射关系，每一个 topic 的每一个 partition，需要知道对应的 broker 列表是什么，leader是谁，follower 是谁。<br>这些信息都是存储在 Metadata 这个类里面。</p>
+<p>消费端消费是也可以指定分区，这样它就不会接收其他分区的数据</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//消费指定的0号分区</span></span><br><span class="line">TopicPartition topicPartition = <span class="keyword">new</span> TopicPartition(topic,<span class="number">0</span>);</span><br></pre></td></tr></table></figure>
+<h1 id="消息的消费原理"><a href="#消息的消费原理" class="headerlink" title="消息的消费原理"></a>消息的消费原理</h1><h2 id="Consumer-Group"><a href="#Consumer-Group" class="headerlink" title="Consumer Group"></a>Consumer Group</h2><p>在实际生产过程中，每个 topic 都会有多个 partitions，多个 partitions 的好处在于，一方面能够对 broker 上的数据进行分片有效减少了消息的容量从而提升 io 性能。另外一方面，为了提高消费端的消费能力，一般会通过多个consumer 去消费同一个 topic ，也就是消费端的负载均衡机制。<br>在多个 partition 以及多个 consumer 的情况下，消费者是如何消费消息的，kafka存在 Consumer group消费组的概念 ，也就是 group.id 一样的consumer ，这些consumer属于一个消费组，一个consumer只能属于一个消费组，消费组保证其订阅的Topic的每个分区只被分配给该消费组下的一个消费者消费。如果不同的消费组订阅了同一个Topic，消费组之间互不干扰。<br>如果要实现一个消息可以被多个消费者同时消费（广播）的效果，则将每个消费者放入单独的一个Consumer group消费组中。<br>如果要实现一个消息只被一个消费者消费（独占）的效果，则将所有的消费者放入一个Consumer group消费组中。</p>
+<h2 id="分区分配策略"><a href="#分区分配策略" class="headerlink" title="分区分配策略"></a>分区分配策略</h2><p>同一个Consumer group中的消费者对于一个topic中的多个 partition，存在一定的分区分配策略。<br>在 kafka 中，存在两种分区分配策略，一种是 Range（范围分区，默认）、另一种是 RoundRobin（轮询）。 通过partition.assignment.strategy 这个参数来设置。</p>
+<h3 id="Range-strategy（范围分区）"><a href="#Range-strategy（范围分区）" class="headerlink" title="Range strategy（范围分区）"></a>Range strategy（范围分区）</h3><p>Range 策略是对每个Topic而言的，首先对同一个Topic里面的分区按照序号进行排序，并对消费者按照字母顺序进行排序。假设有10个分区，3个消费者，排完序的分区将会是 0, 1, 2, 3, 4, 5, 6, 7, 8, 9；消费者线程排完序将会是C1-0, C2-0, C3-0。然后将 partitions 的个数除于消费者线程的总数来决定每个消费者线程消费几个分区。如果除不尽，那么前面几个消费者线程将会多消费一个分区。在例子里面，有10个分区，3个消费者线程，10/3=3，而且除不尽，那么消费者线程 C1-0 将会多消费一个分区，所以最后分区分配的结果看起来是这样的：<br>C1-0 将消费 0, 1, 2, 3 分区<br>C2-0 将消费 4, 5, 6 分区<br>C3-0 将消费 7, 8, 9 分区</p>
+<p>假如有11个分区，那么最后分区分配的结果看起来是这样的：<br>C1-0 将消费 0, 1, 2, 3 分区<br>C2-0 将消费 4, 5, 6, 7 分区<br>C3-0 将消费 8, 9, 10 分区</p>
+<p>假如有 2 个Topic(T1 和 T2)，分别有 10 个分区，那么最后分区分配的结果看起来是这样的：<br>C1-0 将消费 T1 Topic的 0, 1, 2, 3 分区以及 T2 Topic的 0,1, 2, 3 分区<br>C2-0 将消费 T1 Topic的 4, 5, 6 分区以及 T2 Topic的 4, 5,6 分区<br>C3-0 将消费 T1 Topic的 7, 8, 9 分区以及 T2 Topic的 7, 8,9 分区</p>
+<p>可以看出，C1-0 消费者线程比其他消费者线程多消费了2个分区，这就是Range strategy的一个很明显的弊端</p>
+<h3 id="RoundRobin-strategy（轮询分区）"><a href="#RoundRobin-strategy（轮询分区）" class="headerlink" title="RoundRobin strategy（轮询分区）"></a>RoundRobin strategy（轮询分区）</h3><p>轮询分区策略是把所有 partition 和所有 consumer 线程都列出来，然后按照 hashcode 进行排序。最后通过轮询算法分配 partition 给消费线程。如果所有 consumer 实例的订阅是相同的，那么 partition 会均匀分布。<br>例如Topic T1有10个分区，4个消费者，假如按照 hashCode 排序完的 topic partitions 组依次为 T1-0, T1-1, T1-2, T1-3, T1-4, T1-5, T1-6, T1-7, T1-8, T1-9，消费者线程排序为 C1-0, C2-0, C3-0, C4-0，最后分区分配的结果为：<br>C1-0 将消费 T1-0, T1-4, T1-8 分区；<br>C2-0 将消费 T1-1, T1-5, T1-9 分区；<br>C3-0 将消费 T1-2, T1-6 分区；<br>C4-0 将消费 T1-3, T1-7 分区；</p>
+<p>使用轮询分区策略必须满足两个条件</p>
+<ol>
+<li>同一个Consumer Group里面的所有消费者的num.streams必须相等</li>
+<li>每个消费者订阅的主题必须是相同的</li>
+</ol>
+<h3 id="分区策略触发"><a href="#分区策略触发" class="headerlink" title="分区策略触发"></a>分区策略触发</h3><p>当出现以下几种情况时，kafka 会进行一次分区分配操作，也就是 kafka consumer 的 rebalance</p>
+<ol>
+<li>同一个 consumer group 内新增了消费者</li>
+<li>消费者离开当前所属的 consumer group，比如主动停机或者宕机</li>
+<li>topic 新增了分区（也就是分区数量发生了变化）</li>
+</ol>
+<p>kafka consuemr 的 rebalance 机制规定了一个 consumer group 下的所有 consumer 如何达成一致来分配订阅 topic 的每个分区。而具体如何执行分区策略，就是上述提到的两种内置的分区策略。而 kafka 对于分配策略这块，提供了可插拔的实现方式，也就是说，除了这两种之外，还可以创建自己的分配机制。</p>
+<h3 id="Rebalance的执行-以及管理consumer的group"><a href="#Rebalance的执行-以及管理consumer的group" class="headerlink" title="Rebalance的执行 以及管理consumer的group"></a>Rebalance的执行 以及管理consumer的group</h3><p>Kafka 提供了一个角色：coordinator 来执行对于consumer group的管理，当consumer group 的第一个consumer启动的时候，它会去和broker确定谁是它们组的coordinator，之后该group内的所有成员都会和该coordinator进行协调通信。</p>
+<h4 id="确定-coordinator"><a href="#确定-coordinator" class="headerlink" title="确定 coordinator"></a>确定 coordinator</h4><p>consumer group如何确定自己的 coordinator, 消费者向kafka集群中的任意一个broker发送一个GroupCoordinatorRequest 请求，服务端会返回一个负载最小的broker节点的id，并将该broker设置为coordinator。</p>
+<h4 id="JoinGroup-的过程"><a href="#JoinGroup-的过程" class="headerlink" title="JoinGroup 的过程"></a>JoinGroup 的过程</h4><p>在 rebalance 之前，需要保证 coordinator 是已经确定好了的，整个rebalance的过程分为两个步骤，Join 和 Sync<br>join: 表示加入到 consumer group 中，在这一步中，所有的成员都会向 coordinator 发送 joinGroup 的请求。一旦所有成员都发送了 joinGroup 请求，那么 coordinator 会选择一个consumer担任leader 角色，并把组成员信息和订阅信息发送消费者</p>
+<p>syn：完成分区分配之后，就进入了Synchronizing Group State阶段，主要逻辑是向 GroupCoordinator 发送SyncGroupRequest 请求，并且处理 SyncGroupResponse 响应，简单来说，就是leader将消费者对应的 partition 分配方案通过coordinator同步给consumer group中的所有consumer</p>
+<p>每个消费者都会向coordinator 发送sync group请求，不过只有leader节点会发送分配方案，其他消费者只是打打酱油而已。当leader把方案发给 coordinator 以后，coordinator 会把结果设置到 SyncGroupResponse中。<br>这样所有成员都知道自己应该消费哪个分区。</p>
+<p>consumer group 的分区分配方案是在客户端执行的，Kafka将这个权利下放给客户端主要是因为这样做可以有更好的灵活性。</p>
+<h2 id="保存消费端的消费位置"><a href="#保存消费端的消费位置" class="headerlink" title="保存消费端的消费位置"></a>保存消费端的消费位置</h2><h3 id="offset"><a href="#offset" class="headerlink" title="offset"></a>offset</h3><p>每个topic可以划分多个分区（每个Topic至少有一个分区），同一topic下的不同分区包含的消息是不同的。每个消息在被添加到分区时，都会被分配一个offset（称之为偏移量），它是消息在此分区中的唯一编号，kafka 通过 offset 保证消息在分区内的顺序，offset的顺序不跨分区，即kafka 只保证在同一个分区内的消息是有序的；对于应用层的消费来说，每次消费一个消息并且提交以后，会保存当前消费到的最近的一个 offset。</p>
+<h3 id="offset-保存位置"><a href="#offset-保存位置" class="headerlink" title="offset 保存位置"></a>offset 保存位置</h3><p>在 kafka 中，提供了一个__consumer_offsets_* 的一个topic，把 offset信息写入到这个topic中。<br>__consumer_offsets保存了每个consumer group某一时刻提交的offset信息。 __consumer_offsets 默认有50 个分区。 </p>
+<p>可以根据groupid确定consumer_group保存在哪个分区中，计算公式<code>Math.abs(&quot;groupid&quot;.hashCode())%groupMetadataTopicPartitionCount</code>，默认情况下groupMetadataTopicPartitionCount有50个分区</p>
+<h1 id="消息的存储"><a href="#消息的存储" class="headerlink" title="消息的存储"></a>消息的存储</h1><h2 id="消息的保存路径"><a href="#消息的保存路径" class="headerlink" title="消息的保存路径"></a>消息的保存路径</h2><p>kafka 是使用日志文件的方式来保存生产者和发送者的消息，每条消息都有一个offset值来表示它在分区中的偏移量。Kafka 中存储的一般都是海量的消息数据，为了避免日志文件过大，Log 并不是直接对应在一个磁盘上的日志文件，而是对应磁盘上的一个目录，这个目录的明明规则是<code>(topic_name)_(partition_id)</code><br>比如创建一个名为 firstTopic 的 topic，其中有 3 个 partition，那么在 kafka 的数据目录（/tmp/kafka-log）中就有 3 个目录，firstTopic-0~2</p>
+<h2 id="多个分区在集群中的分配"><a href="#多个分区在集群中的分配" class="headerlink" title="多个分区在集群中的分配"></a>多个分区在集群中的分配</h2><p>如果对于一个 topic，在集群中创建多个partition，那么partition是如何分布的</p>
+<ol>
+<li>将所有 N 个Broker 和待分配的 i 个Partition排序</li>
+<li>将第 i 个Partition分配到第(i mod n)个Broker上</li>
+</ol>
+<h2 id="消息写入的性能"><a href="#消息写入的性能" class="headerlink" title="消息写入的性能"></a>消息写入的性能</h2><p>现在大部分企业仍然用的是机械结构的磁盘，如果把消息以随机的方式写入到磁盘，那么磁盘首先要做的就是寻址，也就是定位到数据所在的物理地址，在磁盘上就要找到对应的柱面、磁头以及对应的扇区；这个过程相对内存来说会消耗大量时间，为了规避随机读写带来的时间消耗，kafka 采用顺序写的方式存储数据。即使是这样，但是频繁的 I/O 操作仍然会造成磁盘的性能瓶颈，所以 kafka 还有一个性能策略</p>
+<h3 id="零拷贝"><a href="#零拷贝" class="headerlink" title="零拷贝"></a>零拷贝</h3><p>消息从发送到落地保存，broker 维护的消息日志本身就是文件目录，每个文件都是二进制保存，生产者和消费者使用相同的格式来处理。在消费者获取消息时，服务器先从硬盘读取数据到内存，然后把内存中的数据原封不动的通过 socket 发送给消费者，这个操作上经历了很多步骤。<br><img src="https://blog-dxysun.nos-eastchina1.126.net/infowrite.png" alt="info"></p>
+<ul>
+<li>操作系统将数据从磁盘读入到内核空间的页缓存</li>
+<li>应用程序将数据从内核空间读入到用户空间缓存中</li>
+<li>应用程序将数据写回到内核空间到 socket 缓存中</li>
+<li>操作系统将数据从 socket 缓冲区复制到网卡缓冲区，以便将数据经网络发出</li>
+</ul>
+<p>这个过程涉及到 4 次上下文切换以及 4 次数据复制，并且有两次复制操作是由 CPU 完成。但是这个过程中，数据完全没有进行变化，仅仅是从磁盘复制到网卡缓冲区。<br>通过”零拷贝”技术，可以去掉这些没必要的数据复制操作，同时也会减少上下文切换次数。现代的 unix 操作系统提供一个优化的代码路径，用于将数据从页缓存传输到 socket;<br>在 Linux 中，是通过 sendfile 系统调用来完成的。Java 提供了访问这个系统调用的方法<code>FileChannel.transferTo API</code><br>使用 sendfile，只需要一次拷贝就行，允许操作系统将数据直接从页缓存发送到网络上。所以在这个优化的路径中，只有最后一步将数据拷贝到网卡缓存中是需要的。</p>
+<h2 id="消息的存储原理"><a href="#消息的存储原理" class="headerlink" title="消息的存储原理"></a>消息的存储原理</h2><h3 id="消息的文件存储机制"><a href="#消息的文件存储机制" class="headerlink" title="消息的文件存储机制"></a>消息的文件存储机制</h3><p>kafka 是通过分段的方式将 Log 分为多个 LogSegment，LogSegment 是一个逻辑上的概念，一个 LogSegment 对应磁盘上的一个日志文件和一个索引文件，其中日志文件是用来记录消息的，索引文件是用来保存消息的索引。</p>
+<h4 id="LogSegment"><a href="#LogSegment" class="headerlink" title="LogSegment"></a>LogSegment</h4><p>kafka 以 segment 为单位又把 partition 进行细分。每个 partition 相当于一个巨型文件被平均分配到多个大小相等的segment数据文件中<br>（每个 segment 文件中的消息不一定相等），这种特性方便已经被消费的消息的清理，提高磁盘的利用率。</p>
+<blockquote>
+<p>log.segment.bytes=107370 (设置分段大小),默认是1GB，</p>
+</blockquote>
+<p>segment file 由 2 大部分组成，分别为 index file 和 data file，此 2 个文件一一对应，成对出现，后缀”.index”和”.log”分别表示为 segment 索引文件、数据文件。<br>segment 文件命名规则：partion 全局的第一个 segment从 0 开始，后续每个 segment 文件名为上一个 segment文件最后一条消息的 offset 值进行递增。<br>数值最大为 64 位long 大小，20 位数字字符长度，没有数字用 0 填充<br>通过下面这条命令可以看到 kafka 消息日志的内容</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sh kafka-run-class.sh kafka.tools.DumpLogSegments --files &#x2F;tmp&#x2F;kafka-logs&#x2F;test0&#x2F;00000000000000000000.log --print-data-log</span><br></pre></td></tr></table></figure>
+<p>segment 中 index 和 log 的对应关系</p>
+<p>为了提高查找消息的性能，为每一个日志文件添加 2 个索引索引文件：OffsetIndex 和 TimeIndex，分别对应*.index以及*.timeindex,TimeIndex 索引文件格式：它是映射时间戳和相对 offset<br>例如下图所示<br><img src="https://blog-dxysun.nos-eastchina1.126.net/kafka-index.png" alt="index"><br>如图所示，index 中存储了索引以及物理偏移量。 log 存储了消息的内容。索引文件的元数据执行对应数据文件中message 的物理偏移地址。举个简单的案例来说，以[4053,80899]为例，在 log 文件中，对应的是第4053条记录，物理偏移量（position）为 80899. position 是ByteBuffer的指针位置</p>
+<p>在 partition 中通过 offset 查找 message</p>
+<ol>
+<li>根据 offset 的值，查找 segment 段中的 index 索引文件。由于索引文件命名是以上一个文件的最后一个offset 进行命名的，所以，使用二分查找算法能够根据offset 快速定位到指定的索引文件</li>
+<li>找到索引文件后，根据 offset 进行定位，找到索引文件中的符合范围的索引。（kafka 采用稀疏索引的方式来提高查找性能）</li>
+<li>得到 position 以后，再到对应的 log 文件中，从 position 出发开始查找 offset 对应的消息，将每条消息的offset与目标 offset 进行比较，直到找到消息<blockquote>
+<p>例如，要查找 offset=2490 这条消息，那么先找到00000000000000000000.index, 然后找到[2487,49111]这个索引，再到 log 文件中，根据 49111 这个 position 开始查找，比较每条消息的 offset 是否大于等于 2490，最后查找到对应的消息以后返回。</p>
+</blockquote>
+</li>
+</ol>
+<p>Log 文件的消息内容分析</p>
+<p>前面通过kafka提供的命令，可以查看二进制的日志文件信息，一条消息，会包含很多的字段。<br>例如</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">offset: 5371 position: 102124 CreateTime: 1531477349286 isvalid: true keysize: -1 valuesize: 12 magic: 2 compresscodec: NONE producerId: -1 producerEpoch: -1 sequence: -1 isTransactional: false headerKeys: [] payload: message_5371</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>createTime 表示创建时间、keysize 和 valuesize 表示 key 和 value 的大小、 compresscodec表示压缩编码、payload表示消息的具体内容</p>
+</blockquote>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/java/">java</a><a href="/tags/kafka/">kafka</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://github.com/dxysun/2019/10/27/javaForKafka2/" data-title="kafka学习笔记（二） | 迎着朝阳的博客" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2019/10/27/javaForKafka3/" title="kafka学习笔记（三）">
+  <strong>上一篇：</strong><br/>
+  <span>
+  kafka学习笔记（三）</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2019/10/19/javaForKafka/"  title="kafka学习笔记（一）">
+ <strong>下一篇：</strong><br/> 
+ <span>kafka学习笔记（一）
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5"><span class="toc-number">1.</span> <span class="toc-text">核心概念</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Topic"><span class="toc-number">1.1.</span> <span class="toc-text">Topic</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Partition"><span class="toc-number">1.2.</span> <span class="toc-text">Partition</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Topic-amp-Partition-%E7%9A%84%E5%AD%98%E5%82%A8"><span class="toc-number">1.3.</span> <span class="toc-text">Topic&amp;Partition 的存储</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Broker"><span class="toc-number">1.4.</span> <span class="toc-text">Broker</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%B6%88%E6%81%AF%E5%88%86%E5%8F%91"><span class="toc-number">2.</span> <span class="toc-text">消息分发</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#kafka-%E6%B6%88%E6%81%AF%E5%88%86%E5%8F%91%E7%AD%96%E7%95%A5"><span class="toc-number">2.1.</span> <span class="toc-text">kafka 消息分发策略</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B6%88%E6%81%AF%E9%BB%98%E8%AE%A4%E7%9A%84%E5%88%86%E5%8F%91%E6%9C%BA%E5%88%B6"><span class="toc-number">2.2.</span> <span class="toc-text">消息默认的分发机制</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%B6%88%E6%81%AF%E7%9A%84%E6%B6%88%E8%B4%B9%E5%8E%9F%E7%90%86"><span class="toc-number">3.</span> <span class="toc-text">消息的消费原理</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Consumer-Group"><span class="toc-number">3.1.</span> <span class="toc-text">Consumer Group</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%86%E5%8C%BA%E5%88%86%E9%85%8D%E7%AD%96%E7%95%A5"><span class="toc-number">3.2.</span> <span class="toc-text">分区分配策略</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Range-strategy%EF%BC%88%E8%8C%83%E5%9B%B4%E5%88%86%E5%8C%BA%EF%BC%89"><span class="toc-number">3.2.1.</span> <span class="toc-text">Range strategy（范围分区）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#RoundRobin-strategy%EF%BC%88%E8%BD%AE%E8%AF%A2%E5%88%86%E5%8C%BA%EF%BC%89"><span class="toc-number">3.2.2.</span> <span class="toc-text">RoundRobin strategy（轮询分区）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%86%E5%8C%BA%E7%AD%96%E7%95%A5%E8%A7%A6%E5%8F%91"><span class="toc-number">3.2.3.</span> <span class="toc-text">分区策略触发</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Rebalance%E7%9A%84%E6%89%A7%E8%A1%8C-%E4%BB%A5%E5%8F%8A%E7%AE%A1%E7%90%86consumer%E7%9A%84group"><span class="toc-number">3.2.4.</span> <span class="toc-text">Rebalance的执行 以及管理consumer的group</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%A1%AE%E5%AE%9A-coordinator"><span class="toc-number">3.2.4.1.</span> <span class="toc-text">确定 coordinator</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#JoinGroup-%E7%9A%84%E8%BF%87%E7%A8%8B"><span class="toc-number">3.2.4.2.</span> <span class="toc-text">JoinGroup 的过程</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BF%9D%E5%AD%98%E6%B6%88%E8%B4%B9%E7%AB%AF%E7%9A%84%E6%B6%88%E8%B4%B9%E4%BD%8D%E7%BD%AE"><span class="toc-number">3.3.</span> <span class="toc-text">保存消费端的消费位置</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#offset"><span class="toc-number">3.3.1.</span> <span class="toc-text">offset</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#offset-%E4%BF%9D%E5%AD%98%E4%BD%8D%E7%BD%AE"><span class="toc-number">3.3.2.</span> <span class="toc-text">offset 保存位置</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%B6%88%E6%81%AF%E7%9A%84%E5%AD%98%E5%82%A8"><span class="toc-number">4.</span> <span class="toc-text">消息的存储</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B6%88%E6%81%AF%E7%9A%84%E4%BF%9D%E5%AD%98%E8%B7%AF%E5%BE%84"><span class="toc-number">4.1.</span> <span class="toc-text">消息的保存路径</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%9A%E4%B8%AA%E5%88%86%E5%8C%BA%E5%9C%A8%E9%9B%86%E7%BE%A4%E4%B8%AD%E7%9A%84%E5%88%86%E9%85%8D"><span class="toc-number">4.2.</span> <span class="toc-text">多个分区在集群中的分配</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B6%88%E6%81%AF%E5%86%99%E5%85%A5%E7%9A%84%E6%80%A7%E8%83%BD"><span class="toc-number">4.3.</span> <span class="toc-text">消息写入的性能</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%9B%B6%E6%8B%B7%E8%B4%9D"><span class="toc-number">4.3.1.</span> <span class="toc-text">零拷贝</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B6%88%E6%81%AF%E7%9A%84%E5%AD%98%E5%82%A8%E5%8E%9F%E7%90%86"><span class="toc-number">4.4.</span> <span class="toc-text">消息的存储原理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B6%88%E6%81%AF%E7%9A%84%E6%96%87%E4%BB%B6%E5%AD%98%E5%82%A8%E6%9C%BA%E5%88%B6"><span class="toc-number">4.4.1.</span> <span class="toc-text">消息的文件存储机制</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#LogSegment"><span class="toc-number">4.4.1.1.</span> <span class="toc-text">LogSegment</span></a></li></ol></li></ol></li></ol></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+
+  
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">Categories</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/spring官方文档/" title="spring官方文档">spring官方文档<sup>8</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>54</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/linux/" title="linux">linux<sup>34</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/centos/" title="centos">centos<sup>19</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/springboot/" title="springboot">springboot<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/ubuntu/" title="ubuntu">ubuntu<sup>9</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/hadoop/" title="hadoop">hadoop<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/spring/" title="spring">spring<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/nginx/" title="nginx">nginx<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/spark/" title="spark">spark<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/mybatis/" title="mybatis">mybatis<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/mysql/" title="mysql">mysql<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/算法/" title="算法">算法<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/git/" title="git">git<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/maven/" title="maven">maven<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/hdfs/" title="hdfs">hdfs<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/dubbo/" title="dubbo">dubbo<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/kafka/" title="kafka">kafka<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Hbase/" title="Hbase">Hbase<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/sql/" title="sql">sql<sup>2</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="http://majorkevin.xyz/blog/" target="_blank" title="朋友的博客">朋友的博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+  <div class="weiboshow">
+  <p class="asidetitle">Weibo</p>
+    <iframe width="100%" height="119" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=119&fansRow=2&ptype=1&speed=0&skin=9&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=&verifier=&dpc=1"></iframe>
+</div>
+
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> Hello ,I&#39;m dxysun. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2020 
+		
+		<a href="/about" target="_blank" title="dxysun">dxysun</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?e6d1f421bbc9962127a50488f9ed37d1";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

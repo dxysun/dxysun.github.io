@@ -1,0 +1,580 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>深度学习 GPU环境 Ubuntu 16.04 + Nvidia GTX 1060 + Python 3.5 + CUDA 9.0 + cuDNN 7.1 + TensorFlow 1.6 环境配置 | 迎着朝阳的博客</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="dxysun">
+    
+
+    
+    <meta name="description" content="接上篇ubuntu16.04安装nvidia驱动">
+<meta property="og:type" content="article">
+<meta property="og:title" content="深度学习 GPU环境 Ubuntu 16.04 + Nvidia GTX 1060 + Python 3.5 + CUDA 9.0 + cuDNN 7.1 + TensorFlow 1.6 环境配置">
+<meta property="og:url" content="https://github.com/dxysun/2018/04/03/ubuntuForDeeplearning/index.html">
+<meta property="og:site_name" content="迎着朝阳的博客">
+<meta property="og:description" content="接上篇ubuntu16.04安装nvidia驱动">
+<meta property="og:locale">
+<meta property="article:published_time" content="2018-04-03T02:44:37.000Z">
+<meta property="article:modified_time" content="2018-10-11T08:37:38.000Z">
+<meta property="article:author" content="dxysun">
+<meta property="article:tag" content="linux">
+<meta property="article:tag" content="ubuntu">
+<meta property="article:tag" content="tensorflow">
+<meta name="twitter:card" content="summary">
+
+    
+    <link rel="alternative" href="/atom.xml" title="迎着朝阳的博客" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    
+<link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/%02.css">
+<link rel="stylesheet" href="/.css">
+
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="迎着朝阳的博客" title="迎着朝阳的博客"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="迎着朝阳的博客">迎着朝阳的博客</a></h1>
+				<h2 class="blog-motto"></h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">主页</a></li>
+					
+						<li><a href="/archives">归档</a></li>
+					
+						<li><a href="/about">关于</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:github.com/dxysun">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/04/03/ubuntuForDeeplearning/" title="深度学习 GPU环境 Ubuntu 16.04 + Nvidia GTX 1060 + Python 3.5 + CUDA 9.0 + cuDNN 7.1 + TensorFlow 1.6 环境配置" itemprop="url">深度学习 GPU环境 Ubuntu 16.04 + Nvidia GTX 1060 + Python 3.5 + CUDA 9.0 + cuDNN 7.1 + TensorFlow 1.6 环境配置</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="dxysun" target="_blank" itemprop="author">dxysun</a>
+		
+  <p class="article-time">
+    <time datetime="2018-04-03T02:44:37.000Z" itemprop="datePublished"> Published 2018-04-03</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8E%A5%E4%B8%8A%E7%AF%87ubuntu16-04%E5%AE%89%E8%A3%85nvidia%E9%A9%B1%E5%8A%A8"><span class="toc-number">1.</span> <span class="toc-text">接上篇ubuntu16.04安装nvidia驱动</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E8%A3%85CUDA-9-0"><span class="toc-number">2.</span> <span class="toc-text">安装CUDA 9.0</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E8%A3%85cuDNN-7-1"><span class="toc-number">3.</span> <span class="toc-text">安装cuDNN 7.1</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E8%A3%85TensorFlow-1-6"><span class="toc-number">4.</span> <span class="toc-text">安装TensorFlow 1.6</span></a></li></ol>
+		
+		</div>
+		
+		<h2 id="接上篇ubuntu16-04安装nvidia驱动"><a href="#接上篇ubuntu16-04安装nvidia驱动" class="headerlink" title="接上篇ubuntu16.04安装nvidia驱动"></a>接上篇ubuntu16.04安装nvidia驱动</h2><a id="more"></a>
+<p>按照上篇教程已经把nvidia驱动安装好</p>
+<h2 id="安装CUDA-9-0"><a href="#安装CUDA-9-0" class="headerlink" title="安装CUDA 9.0"></a>安装CUDA 9.0</h2><p>如果存在之前的旧版本，可以选择先卸载，以免和新的 CUDA 版本产生冲突，在 /usr/local/cuda/bin 目录下有一个uninstallcuda*.pl 文件，可以直接运行卸载，命令如下： </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo .&#x2F;uninstall_cuda_*.pl</span><br></pre></td></tr></table></figure>
+<p>这样即可将 CUDA 全部卸载。<br>接下来我们再下载 CUDA 9.0，注意 TensorFlow 1.5 和 1.6 版本依然只是兼容 CUDA 9.0，没有兼容 CUDA 9.1，所以不要下载 9.1，CUDA 9.0 的下载地址是：<a target="_blank" rel="noopener" href="https://developer.nvidia.com/cuda-90-download-archive">https://developer.nvidia.com/cuda-90-download-archive</a> ，然后依次勾选好系统的版本<br>这里我们选择 Linux-x86_64-Ubuntu-16.04-runfile 的配置，然后点击 Base Installer 部分的 Download 按钮，下载 CUDA 9.0 安装包。<br>对应的下载命令是：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget https:&#x2F;&#x2F;developer.nvidia.com&#x2F;compute&#x2F;cuda&#x2F;9.0&#x2F;Prod&#x2F;local_installers&#x2F;cuda_9.0.176_384.81_linux-run</span><br></pre></td></tr></table></figure>
+<p>执行此命令，等待下载完成即可。<br>接下来执行安装，运行如下命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo  .&#x2F;cuda_9.0.176_384.81_linux-run</span><br></pre></td></tr></table></figure>
+<p>安装过程需要输入一些确认选项，过程如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">Description</span><br><span class="line"> </span><br><span class="line">The NVIDIA CUDA Toolkit provides command-line and graphical</span><br><span class="line">tools for building, debugging and optimizing the performance</span><br><span class="line">Do you accept the previously read EULA?</span><br><span class="line">accept&#x2F;decline&#x2F;quit: accept</span><br><span class="line"> </span><br><span class="line">Install NVIDIA Accelerated Graphics Driver for Linux-x86_64 384.81?</span><br><span class="line">(y)es&#x2F;(n)o&#x2F;(q)uit: n</span><br><span class="line"> </span><br><span class="line">Install the CUDA 9.0 Toolkit?</span><br><span class="line">(y)es&#x2F;(n)o&#x2F;(q)uit: y</span><br><span class="line"> </span><br><span class="line">Enter Toolkit Location</span><br><span class="line"> [ default is &#x2F;usr&#x2F;local&#x2F;cuda-9.0 ]: </span><br><span class="line"> </span><br><span class="line">Do you want to install a symbolic link at &#x2F;usr&#x2F;local&#x2F;cuda?</span><br><span class="line">(y)es&#x2F;(n)o&#x2F;(q)uit: y</span><br><span class="line"> </span><br><span class="line">Install the CUDA 9.0 Samples?</span><br><span class="line">(y)es&#x2F;(n)o&#x2F;(q)uit: y</span><br><span class="line"> </span><br><span class="line">Enter CUDA Samples Location</span><br><span class="line"> [ default is &#x2F;home&#x2F;cqc ]: </span><br><span class="line"> </span><br><span class="line">Installing the CUDA Toolkit in &#x2F;usr&#x2F;local&#x2F;cuda-9.0 ...</span><br></pre></td></tr></table></figure>
+<p>最后如果出现这样的提示，就证明 CUDA 安装好了：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">Driver:   Not Selected</span><br><span class="line">Toolkit:  Installed in &#x2F;usr&#x2F;local&#x2F;cuda-9.0</span><br><span class="line">Samples:  Installed in &#x2F;home&#x2F;cqc, but missing recommended libraries</span><br><span class="line"> </span><br><span class="line">Please make sure that</span><br><span class="line"> -   PATH includes &#x2F;usr&#x2F;local&#x2F;cuda-9.0&#x2F;bin</span><br><span class="line"> -   LD_LIBRARY_PATH includes &#x2F;usr&#x2F;local&#x2F;cuda-9.0&#x2F;lib64, or, add &#x2F;usr&#x2F;local&#x2F;cuda-9.0&#x2F;lib64 to &#x2F;etc&#x2F;ld.so.conf and run ldconfig as root</span><br><span class="line"> </span><br><span class="line">To uninstall the CUDA Toolkit, run the uninstall script in &#x2F;usr&#x2F;local&#x2F;cuda-9.0&#x2F;bin</span><br><span class="line"> </span><br><span class="line">Please see CUDA_Installation_Guide_Linux.pdf in &#x2F;usr&#x2F;local&#x2F;cuda-9.0&#x2F;doc&#x2F;pdf for detailed information on setting up CUDA.</span><br><span class="line"> </span><br><span class="line">***WARNING: Incomplete installation! This installation did not install the CUDA Driver. A driver of version at least 384.00 is required for CUDA 9.0 functionality to work.</span><br><span class="line">To install the driver using this installer, run the following command, replacing &lt;CudaInstaller&gt; with the name of this run file:</span><br><span class="line">    sudo &lt;CudaInstaller&gt;.run -silent -driver</span><br></pre></td></tr></table></figure>
+<p>然后我们需要配置一下环境变量，更改 ~/.bashrc 文件，添加如下几行：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">export PATH&#x3D;&#x2F;usr&#x2F;local&#x2F;cuda&#x2F;bin$&#123;PATH:+:$&#123;PATH&#125;&#125;</span><br><span class="line">export LD_LIBRARY_PATH&#x3D;&#x2F;usr&#x2F;local&#x2F;cuda&#x2F;lib64$&#123;LD_LIBRARY_PATH:+:$&#123;LD_LIBRARY_PATH&#125;&#125;</span><br><span class="line">export CUDA_HOME&#x3D;&#x2F;usr&#x2F;local&#x2F;cuda</span><br></pre></td></tr></table></figure>
+<p>修改完毕之后执行一下使其生效：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">source ~&#x2F;.bashrc</span><br></pre></td></tr></table></figure>
+<p>这时我们输出 CUDA_HOME、LD_LIBRARY_PATH 就可以看到对应的输出了：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">echo $CUDA_HOME</span><br><span class="line">&#x2F;usr&#x2F;local&#x2F;cuda</span><br><span class="line">echo $LD_LIBRARY_PATH</span><br><span class="line">&#x2F;usr&#x2F;local&#x2F;cuda&#x2F;lib64</span><br></pre></td></tr></table></figure>
+<p>这样就代表环境变量生效了，CUDA 安装完成。</p>
+<h2 id="安装cuDNN-7-1"><a href="#安装cuDNN-7-1" class="headerlink" title="安装cuDNN 7.1"></a>安装cuDNN 7.1</h2><p>cuDNN 的全称是 The NVIDIA CUDA® Deep Neural Network library，是专门用来对深度学习加速的库，它支持 Caffe2, MATLAB, Microsoft Cognitive Toolkit, TensorFlow, Theano 及 PyTorch 等深度学习的加速优化，目前最新版本是 cuDNN 7.1，接下来我们来看下它的安装方式。<br>下载链接：<a target="_blank" rel="noopener" href="https://developer.nvidia.com/rdp/cudnn-download">https://developer.nvidia.com/rdp/cudnn-download</a> ，需要注册之后才能打开，这里我们选择 cuDNN v7.1.1 (Feb 28, 2018), for CUDA 9.0，然后选择 cuDNN v7.1.1 Library for Linux</p>
+<p>下载下来之后解压安装即可，但是在这里我下载下来之后后缀名不是.tgz，直接暴力改名，把后缀名改成了.tgz</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">mv cudnn-9.0-linux-x64-v7.1.solitairetheme8 cudnn-9.0-linux-x64-v7.1.tgz</span><br><span class="line">tar -zxf cudnn-9.0-linux-x64-v7.1.tgz</span><br><span class="line">sudo cp cuda&#x2F;include&#x2F;cudnn.h &#x2F;usr&#x2F;local&#x2F;cuda&#x2F;include&#x2F;</span><br><span class="line">sudo cp cuda&#x2F;lib64&#x2F;libcudnn* &#x2F;usr&#x2F;local&#x2F;cuda&#x2F;lib64&#x2F; -d</span><br><span class="line">sudo chmod a+r &#x2F;usr&#x2F;local&#x2F;cuda&#x2F;include&#x2F;cudnn.h</span><br><span class="line">sudo chmod a+r &#x2F;usr&#x2F;local&#x2F;cuda&#x2F;lib64&#x2F;libcudnn*</span><br></pre></td></tr></table></figure>
+<p>执行完如上命令之后，cuDNN 就安装好了，这时我们可以发现在 /usr/local/cuda/include 目录下就多了 cudnn.h 头文件。</p>
+<h2 id="安装TensorFlow-1-6"><a href="#安装TensorFlow-1-6" class="headerlink" title="安装TensorFlow 1.6"></a>安装TensorFlow 1.6</h2><p>我使用的是ubuntu16.04自带的python3.5，刚开始时可能pip没有安装，执行如下命令安装pip</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt install python3-pip</span><br></pre></td></tr></table></figure>
+<p>然后pip换清华镜像源，参考我之前的一篇博客<br>接下来我们直接安装 TensorFlow 1.6 即可，TensorFlow 1.6 版本针对 CUDA 9 和 cuDNN 7 做了优化，可以预构建二进制文件。<br>这里需要安装的是 TensorFlow 的 GPU 版本，命令如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip3 install tensorflow-gpu&#x3D;&#x3D;1.6.0</span><br></pre></td></tr></table></figure>
+<p>安装完成之后验证一下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; import tensorflow as tf</span><br><span class="line">&gt;&gt;&gt; hello &#x3D; tf.constant(&#39;Hello, TensorFlow!&#39;)</span><br><span class="line">&gt;&gt;&gt; sess &#x3D; tf.Session()</span><br><span class="line">&gt;&gt;&gt; print(sess.run(hello))</span><br><span class="line">b&#39;Hello, TensorFlow!&#39;</span><br></pre></td></tr></table></figure>
+<p>中间输出如下信息说明安装成功</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">2018-04-03 10:26:04.737972: I tensorflow&#x2F;core&#x2F;platform&#x2F;cpu_feature_guard.cc:140] Your CPU supports instructions that this TensorFlow binary was not compiled to use: AVX2 FMA</span><br><span class="line">2018-04-03 10:26:04.974013: I tensorflow&#x2F;stream_executor&#x2F;cuda&#x2F;cuda_gpu_executor.cc:898] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero</span><br><span class="line">2018-04-03 10:26:04.974426: I tensorflow&#x2F;core&#x2F;common_runtime&#x2F;gpu&#x2F;gpu_device.cc:1212] Found device 0 with properties: </span><br><span class="line">name: GeForce GTX 1060 6GB major: 6 minor: 1 memoryClockRate(GHz): 1.7715</span><br><span class="line">pciBusID: 0000:06:00.0</span><br><span class="line">totalMemory: 5.93GiB freeMemory: 5.75GiB</span><br><span class="line">2018-04-03 10:26:04.974440: I tensorflow&#x2F;core&#x2F;common_runtime&#x2F;gpu&#x2F;gpu_device.cc:1312] Adding visible gpu devices: 0</span><br><span class="line">2018-04-03 10:26:05.219382: I tensorflow&#x2F;core&#x2F;common_runtime&#x2F;gpu&#x2F;gpu_device.cc:993] Creating TensorFlow device (&#x2F;job:localhost&#x2F;replica:0&#x2F;task:0&#x2F;device:GPU:0 with 5534 MB memory) -&gt; physical GPU (device: 0, name: GeForce GTX 1060 6GB, pci bus id: 0000:06:00.0, compute capability: 6.1)</span><br></pre></td></tr></table></figure>
+<p>至此，全部环境配置都成功</p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/linux/">linux</a><a href="/tags/ubuntu/">ubuntu</a><a href="/tags/tensorflow/">tensorflow</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://github.com/dxysun/2018/04/03/ubuntuForDeeplearning/" data-title="深度学习 GPU环境 Ubuntu 16.04 + Nvidia GTX 1060 + Python 3.5 + CUDA 9.0 + cuDNN 7.1 + TensorFlow 1.6 环境配置 | 迎着朝阳的博客" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2018/04/07/gitTutorial/" title="git学习笔记之基本操作">
+  <strong>上一篇：</strong><br/>
+  <span>
+  git学习笔记之基本操作</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/04/02/centos7ForEnv/"  title="centos7设置、查看、删除环境变量的方法">
+ <strong>下一篇：</strong><br/> 
+ <span>centos7设置、查看、删除环境变量的方法
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8E%A5%E4%B8%8A%E7%AF%87ubuntu16-04%E5%AE%89%E8%A3%85nvidia%E9%A9%B1%E5%8A%A8"><span class="toc-number">1.</span> <span class="toc-text">接上篇ubuntu16.04安装nvidia驱动</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E8%A3%85CUDA-9-0"><span class="toc-number">2.</span> <span class="toc-text">安装CUDA 9.0</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E8%A3%85cuDNN-7-1"><span class="toc-number">3.</span> <span class="toc-text">安装cuDNN 7.1</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E8%A3%85TensorFlow-1-6"><span class="toc-number">4.</span> <span class="toc-text">安装TensorFlow 1.6</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+
+  
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">Categories</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/spring官方文档/" title="spring官方文档">spring官方文档<sup>8</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>54</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/linux/" title="linux">linux<sup>34</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/centos/" title="centos">centos<sup>19</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/springboot/" title="springboot">springboot<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/ubuntu/" title="ubuntu">ubuntu<sup>9</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/hadoop/" title="hadoop">hadoop<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/spring/" title="spring">spring<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/nginx/" title="nginx">nginx<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/spark/" title="spark">spark<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/mybatis/" title="mybatis">mybatis<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/mysql/" title="mysql">mysql<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/算法/" title="算法">算法<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/git/" title="git">git<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/maven/" title="maven">maven<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/hdfs/" title="hdfs">hdfs<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/dubbo/" title="dubbo">dubbo<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/kafka/" title="kafka">kafka<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Hbase/" title="Hbase">Hbase<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/sql/" title="sql">sql<sup>2</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="http://majorkevin.xyz/blog/" target="_blank" title="朋友的博客">朋友的博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+  <div class="weiboshow">
+  <p class="asidetitle">Weibo</p>
+    <iframe width="100%" height="119" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=119&fansRow=2&ptype=1&speed=0&skin=9&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=&verifier=&dpc=1"></iframe>
+</div>
+
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> Hello ,I&#39;m dxysun. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2020 
+		
+		<a href="/about" target="_blank" title="dxysun">dxysun</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?e6d1f421bbc9962127a50488f9ed37d1";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

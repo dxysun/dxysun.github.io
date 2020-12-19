@@ -1,0 +1,593 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>java面试题之数据库篇 | 迎着朝阳的博客</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="dxysun">
+    
+
+    
+    <meta name="description" content="总结一下java面试题-数据库篇">
+<meta property="og:type" content="article">
+<meta property="og:title" content="java面试题之数据库篇">
+<meta property="og:url" content="https://github.com/dxysun/2018/07/16/javaForInterviewSQL/index.html">
+<meta property="og:site_name" content="迎着朝阳的博客">
+<meta property="og:description" content="总结一下java面试题-数据库篇">
+<meta property="og:locale">
+<meta property="article:published_time" content="2018-07-16T10:49:33.000Z">
+<meta property="article:modified_time" content="2018-07-16T11:20:54.000Z">
+<meta property="article:author" content="dxysun">
+<meta property="article:tag" content="java">
+<meta name="twitter:card" content="summary">
+
+    
+    <link rel="alternative" href="/atom.xml" title="迎着朝阳的博客" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    
+<link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/%02.css">
+<link rel="stylesheet" href="/.css">
+
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="迎着朝阳的博客" title="迎着朝阳的博客"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="迎着朝阳的博客">迎着朝阳的博客</a></h1>
+				<h2 class="blog-motto"></h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">主页</a></li>
+					
+						<li><a href="/archives">归档</a></li>
+					
+						<li><a href="/about">关于</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:github.com/dxysun">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/07/16/javaForInterviewSQL/" title="java面试题之数据库篇" itemprop="url">java面试题之数据库篇</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="dxysun" target="_blank" itemprop="author">dxysun</a>
+		
+  <p class="article-time">
+    <time datetime="2018-07-16T10:49:33.000Z" itemprop="datePublished"> Published 2018-07-16</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9F%A5%E8%AF%A2%E8%AF%BE%E7%A8%8B1%E7%9A%84%E6%88%90%E7%BB%A9%E6%AF%94%E8%AF%BE%E7%A8%8B2%E7%9A%84%E6%88%90%E7%BB%A9%E9%AB%98%E7%9A%84%E6%89%80%E6%9C%89%E5%AD%A6%E7%94%9F%E7%9A%84%E5%AD%A6%E5%8F%B7"><span class="toc-number">1.</span> <span class="toc-text">查询课程1的成绩比课程2的成绩高的所有学生的学号</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9F%A5%E8%AF%A2%E5%B9%B3%E5%9D%87%E6%88%90%E7%BB%A9%E5%A4%A7%E4%BA%8E60%E5%88%86%E7%9A%84%E5%90%8C%E5%AD%A6%E7%9A%84%E5%AD%A6%E5%8F%B7%E5%92%8C%E5%B9%B3%E5%9D%87%E6%88%90%E7%BB%A9"><span class="toc-number">2.</span> <span class="toc-text">查询平均成绩大于60分的同学的学号和平均成绩</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9F%A5%E8%AF%A2%E6%89%80%E6%9C%89%E5%90%8C%E5%AD%A6%E7%9A%84%E5%AD%A6%E5%8F%B7%E3%80%81%E5%A7%93%E5%90%8D%E3%80%81%E9%80%89%E8%AF%BE%E6%95%B0%E3%80%81%E6%80%BB%E6%88%90%E7%BB%A9"><span class="toc-number">3.</span> <span class="toc-text">查询所有同学的学号、姓名、选课数、总成绩</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9F%A5%E8%AF%A2%E5%A7%93%E2%80%9C%E5%BC%A0%E2%80%9D%E7%9A%84%E8%80%81%E5%B8%88%E7%9A%84%E4%B8%AA%E6%95%B0"><span class="toc-number">4.</span> <span class="toc-text">查询姓“张”的老师的个数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9F%A5%E8%AF%A2%E6%B2%A1%E5%AD%A6%E8%BF%87%E2%80%9C%E5%BC%A0%E4%B8%89%E2%80%9D%E8%80%81%E5%B8%88%E8%AF%BE%E7%9A%84%E5%90%8C%E5%AD%A6%E7%9A%84%E5%AD%A6%E5%8F%B7%E3%80%81%E5%A7%93%E5%90%8D"><span class="toc-number">5.</span> <span class="toc-text">查询没学过“张三”老师课的同学的学号、姓名</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9F%A5%E8%AF%A2%E5%90%8C%E6%97%B6%E5%AD%A6%E8%BF%87%E8%AF%BE%E7%A8%8B1%E5%92%8C%E8%AF%BE%E7%A8%8B2%E7%9A%84%E5%90%8C%E5%AD%A6%E7%9A%84%E5%AD%A6%E5%8F%B7%E3%80%81%E5%A7%93%E5%90%8D"><span class="toc-number">6.</span> <span class="toc-text">查询同时学过课程1和课程2的同学的学号、姓名</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9F%A5%E8%AF%A2%E5%AD%A6%E8%BF%87%E2%80%9C%E6%9D%8E%E5%9B%9B%E2%80%9D%E8%80%81%E5%B8%88%E6%89%80%E6%95%99%E6%89%80%E6%9C%89%E8%AF%BE%E7%A8%8B%E7%9A%84%E6%89%80%E6%9C%89%E5%90%8C%E5%AD%A6%E7%9A%84%E5%AD%A6%E5%8F%B7%E3%80%81%E5%A7%93%E5%90%8D"><span class="toc-number">7.</span> <span class="toc-text">查询学过“李四”老师所教所有课程的所有同学的学号、姓名</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9F%A5%E8%AF%A2%E8%AF%BE%E7%A8%8B%E7%BC%96%E5%8F%B71%E7%9A%84%E6%88%90%E7%BB%A9%E6%AF%94%E8%AF%BE%E7%A8%8B%E7%BC%96%E5%8F%B72%E7%9A%84%E6%88%90%E7%BB%A9%E9%AB%98%E7%9A%84%E6%89%80%E6%9C%89%E5%90%8C%E5%AD%A6%E7%9A%84%E5%AD%A6%E5%8F%B7%E3%80%81%E5%A7%93%E5%90%8D"><span class="toc-number">8.</span> <span class="toc-text">查询课程编号1的成绩比课程编号2的成绩高的所有同学的学号、姓名</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9F%A5%E8%AF%A2%E6%89%80%E6%9C%89%E8%AF%BE%E7%A8%8B%E6%88%90%E7%BB%A9%E5%B0%8F%E4%BA%8E60%E5%88%86%E7%9A%84%E5%90%8C%E5%AD%A6%E7%9A%84%E5%AD%A6%E5%8F%B7%E3%80%81%E5%A7%93%E5%90%8D"><span class="toc-number">9.</span> <span class="toc-text">查询所有课程成绩小于60分的同学的学号、姓名</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9F%A5%E8%AF%A2%E8%87%B3%E5%B0%91%E6%9C%89%E4%B8%80%E9%97%A8%E8%AF%BE%E7%A8%8B%E4%B8%8E%E5%AD%A6%E5%8F%B7%E4%B8%BA1%E7%9A%84%E5%90%8C%E5%AD%A6%E6%89%80%E5%AD%A6%E8%AF%BE%E7%A8%8B%E7%9B%B8%E5%90%8C%E7%9A%84%E5%90%8C%E5%AD%A6%E7%9A%84%E5%AD%A6%E5%8F%B7%E5%92%8C%E5%A7%93%E5%90%8D"><span class="toc-number">10.</span> <span class="toc-text">查询至少有一门课程与学号为1的同学所学课程相同的同学的学号和姓名</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8A%8A%E2%80%9Csc%E2%80%9D%E8%A1%A8%E4%B8%AD%E2%80%9C%E7%8E%8B%E4%BA%94%E2%80%9D%E6%89%80%E6%95%99%E8%AF%BE%E7%9A%84%E6%88%90%E7%BB%A9%E9%83%BD%E6%9B%B4%E6%94%B9%E4%B8%BA%E6%AD%A4%E8%AF%BE%E7%A8%8B%E7%9A%84%E5%B9%B3%E5%9D%87%E6%88%90%E7%BB%A9"><span class="toc-number">11.</span> <span class="toc-text">把“sc”表中“王五”所教课的成绩都更改为此课程的平均成绩</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9F%A5%E8%AF%A2%E5%92%8C%E7%BC%96%E5%8F%B7%E4%B8%BA2%E7%9A%84%E5%90%8C%E5%AD%A6%E5%AD%A6%E4%B9%A0%E7%9A%84%E8%AF%BE%E7%A8%8B%E5%AE%8C%E5%85%A8%E7%9B%B8%E5%90%8C%E7%9A%84%E5%85%B6%E4%BB%96%E5%90%8C%E5%AD%A6%E5%AD%A6%E5%8F%B7%E5%92%8C%E5%A7%93%E5%90%8D"><span class="toc-number">12.</span> <span class="toc-text">查询和编号为2的同学学习的课程完全相同的其他同学学号和姓名</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%A0%E9%99%A4%E5%AD%A6%E4%B9%A0%E2%80%9C%E7%8E%8B%E4%BA%94%E2%80%9D%E8%80%81%E5%B8%88%E8%AF%BE%E7%9A%84sc%E8%A1%A8%E8%AE%B0%E5%BD%95"><span class="toc-number">13.</span> <span class="toc-text">删除学习“王五”老师课的sc表记录</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%90%91sc%E8%A1%A8%E4%B8%AD%E6%8F%92%E5%85%A5%E4%B8%80%E4%BA%9B%E8%AE%B0%E5%BD%95%EF%BC%8C%E8%BF%99%E4%BA%9B%E8%AE%B0%E5%BD%95%E8%A6%81%E6%B1%82%E7%AC%A6%E5%90%88%E4%BB%A5%E4%B8%8B%E6%9D%A1%E4%BB%B6%EF%BC%9A"><span class="toc-number">14.</span> <span class="toc-text">向sc表中插入一些记录，这些记录要求符合以下条件：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8C%89%E5%B9%B3%E5%9D%87%E5%88%86%E4%BB%8E%E9%AB%98%E5%88%B0%E4%BD%8E%E6%98%BE%E7%A4%BA%E6%89%80%E6%9C%89%E5%AD%A6%E7%94%9F%E7%9A%84%E5%A6%82%E4%B8%8B%E7%BB%9F%E8%AE%A1%E6%8A%A5%E8%A1%A8%EF%BC%9A"><span class="toc-number">15.</span> <span class="toc-text">按平均分从高到低显示所有学生的如下统计报表：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9F%A5%E8%AF%A2%E5%90%84%E7%A7%91%E6%88%90%E7%BB%A9%E6%9C%80%E9%AB%98%E5%88%86%E5%92%8C%E6%9C%80%E4%BD%8E%E5%88%86"><span class="toc-number">16.</span> <span class="toc-text">查询各科成绩最高分和最低分</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8C%89%E5%90%84%E7%A7%91%E5%B9%B3%E5%9D%87%E6%88%90%E7%BB%A9%E4%BB%8E%E4%BD%8E%E5%88%B0%E9%AB%98%E5%92%8C%E5%8F%8A%E6%A0%BC%E7%8E%87%E7%9A%84%E7%99%BE%E5%88%86%E6%95%B0%E4%BB%8E%E9%AB%98%E5%88%B0%E4%BD%8E%E9%A1%BA%E5%BA%8F"><span class="toc-number">17.</span> <span class="toc-text">按各科平均成绩从低到高和及格率的百分数从高到低顺序</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9F%A5%E8%AF%A2%E5%A6%82%E4%B8%8B%E8%AF%BE%E7%A8%8B%E5%B9%B3%E5%9D%87%E6%88%90%E7%BB%A9%E5%92%8C%E5%8F%8A%E6%A0%BC%E7%8E%87%E7%9A%84%E7%99%BE%E5%88%86%E6%95%B0-%E7%94%A8%E2%80%9D1%E8%A1%8C%E2%80%9D%E6%98%BE%E7%A4%BA"><span class="toc-number">18.</span> <span class="toc-text">查询如下课程平均成绩和及格率的百分数(用”1行”显示):</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9F%A5%E8%AF%A2%E4%B8%8D%E5%90%8C%E8%80%81%E5%B8%88%E6%89%80%E6%95%99%E4%B8%8D%E5%90%8C%E8%AF%BE%E7%A8%8B%E5%B9%B3%E5%9D%87%E5%88%86-%E4%BB%8E%E9%AB%98%E5%88%B0%E4%BD%8E%E6%98%BE%E7%A4%BA"><span class="toc-number">19.</span> <span class="toc-text">查询不同老师所教不同课程平均分, 从高到低显示</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9F%A5%E8%AF%A2%E5%A6%82%E4%B8%8B%E8%AF%BE%E7%A8%8B%E6%88%90%E7%BB%A9%E5%9D%87%E5%9C%A8%E7%AC%AC3%E5%90%8D%E5%88%B0%E7%AC%AC6%E5%90%8D%E4%B9%8B%E9%97%B4%E7%9A%84%E5%AD%A6%E7%94%9F%E7%9A%84%E6%88%90%E7%BB%A9%EF%BC%9A"><span class="toc-number">20.</span> <span class="toc-text">查询如下课程成绩均在第3名到第6名之间的学生的成绩：</span></a></li></ol>
+		
+		</div>
+		
+		<p>总结一下java面试题-数据库篇</p>
+<a id="more"></a>
+<p>收集一些常见类型的SQL语句，无论对于平常开发还是准备面试，都会有助益。<br>基本表结构</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">student(sno,sname,sage,ssex)学生表</span><br><span class="line">course(cno,cname,tno) 课程表</span><br><span class="line">sc(sno,cno,score) 成绩表</span><br><span class="line">teacher(tno,tname) 教师表</span><br></pre></td></tr></table></figure>
+<h3 id="查询课程1的成绩比课程2的成绩高的所有学生的学号"><a href="#查询课程1的成绩比课程2的成绩高的所有学生的学号" class="headerlink" title="查询课程1的成绩比课程2的成绩高的所有学生的学号"></a>查询课程1的成绩比课程2的成绩高的所有学生的学号</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> a.sno <span class="keyword">from</span></span><br><span class="line">(<span class="keyword">select</span> sno,score <span class="keyword">from</span> sc <span class="keyword">where</span> cno=<span class="number">1</span>) a,</span><br><span class="line">(<span class="keyword">select</span> sno,score <span class="keyword">from</span> sc <span class="keyword">where</span> cno=<span class="number">2</span>) b</span><br><span class="line"><span class="keyword">where</span> a.score&gt;b.score <span class="keyword">and</span> a.sno=b.sno</span><br></pre></td></tr></table></figure>
+<h3 id="查询平均成绩大于60分的同学的学号和平均成绩"><a href="#查询平均成绩大于60分的同学的学号和平均成绩" class="headerlink" title="查询平均成绩大于60分的同学的学号和平均成绩"></a>查询平均成绩大于60分的同学的学号和平均成绩</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> a.sno <span class="keyword">as</span> <span class="string">&quot;学号&quot;</span>, <span class="keyword">avg</span>(a.score) <span class="keyword">as</span> <span class="string">&quot;平均成绩&quot;</span></span><br><span class="line"><span class="keyword">from</span></span><br><span class="line">(<span class="keyword">select</span> sno,score <span class="keyword">from</span> sc) a</span><br><span class="line"><span class="keyword">group</span> <span class="keyword">by</span> sno <span class="keyword">having</span> <span class="keyword">avg</span>(a.score)&gt;<span class="number">60</span></span><br></pre></td></tr></table></figure>
+<h3 id="查询所有同学的学号、姓名、选课数、总成绩"><a href="#查询所有同学的学号、姓名、选课数、总成绩" class="headerlink" title="查询所有同学的学号、姓名、选课数、总成绩"></a>查询所有同学的学号、姓名、选课数、总成绩</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> a.sno <span class="keyword">as</span> 学号, b.sname <span class="keyword">as</span> 姓名,</span><br><span class="line"><span class="keyword">count</span>(a.cno) <span class="keyword">as</span> 选课数, <span class="keyword">sum</span>(a.score) <span class="keyword">as</span> 总成绩</span><br><span class="line"><span class="keyword">from</span> sc a, student b</span><br><span class="line"><span class="keyword">where</span> a.sno = b.sno</span><br><span class="line"><span class="keyword">group</span> <span class="keyword">by</span> a.sno, b.sname</span><br></pre></td></tr></table></figure>
+<p>或者</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> student.sno <span class="keyword">as</span> 学号, student.sname <span class="keyword">as</span> 姓名,</span><br><span class="line"><span class="keyword">count</span>(sc.cno) <span class="keyword">as</span> 选课数, <span class="keyword">sum</span>(score) <span class="keyword">as</span> 总成绩</span><br><span class="line"><span class="keyword">from</span> student <span class="keyword">left</span> <span class="keyword">Outer</span> <span class="keyword">join</span> sc <span class="keyword">on</span> student.sno = sc.sno</span><br><span class="line"><span class="keyword">group</span> <span class="keyword">by</span> student.sno, sname</span><br></pre></td></tr></table></figure>
+<h3 id="查询姓“张”的老师的个数"><a href="#查询姓“张”的老师的个数" class="headerlink" title="查询姓“张”的老师的个数"></a>查询姓“张”的老师的个数</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="keyword">count</span>(<span class="keyword">distinct</span>(tname)) <span class="keyword">from</span> teacher <span class="keyword">where</span> tname <span class="keyword">like</span> <span class="string">&#x27;张%‘</span></span><br></pre></td></tr></table></figure>
+<p>或者</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> tname <span class="keyword">as</span> <span class="string">&quot;姓名&quot;</span>, <span class="keyword">count</span>(<span class="keyword">distinct</span>(tname)) <span class="keyword">as</span> <span class="string">&quot;人数&quot;</span></span><br><span class="line"><span class="keyword">from</span> teacher</span><br><span class="line"><span class="keyword">where</span> tname <span class="keyword">like</span><span class="string">&#x27;张%&#x27;</span></span><br><span class="line"><span class="keyword">group</span> <span class="keyword">by</span> tname</span><br></pre></td></tr></table></figure>
+<h3 id="查询没学过“张三”老师课的同学的学号、姓名"><a href="#查询没学过“张三”老师课的同学的学号、姓名" class="headerlink" title="查询没学过“张三”老师课的同学的学号、姓名"></a>查询没学过“张三”老师课的同学的学号、姓名</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> student.sno,student.sname <span class="keyword">from</span> student</span><br><span class="line"><span class="keyword">where</span> sno <span class="keyword">not</span> <span class="keyword">in</span> (<span class="keyword">select</span> <span class="keyword">distinct</span>(sc.sno) <span class="keyword">from</span> sc,course,teacher</span><br><span class="line"><span class="keyword">where</span> sc.cno=course.cno <span class="keyword">and</span> teacher.tno=course.tno <span class="keyword">and</span> teacher.tname=<span class="string">&#x27;张三&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<h3 id="查询同时学过课程1和课程2的同学的学号、姓名"><a href="#查询同时学过课程1和课程2的同学的学号、姓名" class="headerlink" title="查询同时学过课程1和课程2的同学的学号、姓名"></a>查询同时学过课程1和课程2的同学的学号、姓名</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> sno, sname <span class="keyword">from</span> student</span><br><span class="line"><span class="keyword">where</span> sno <span class="keyword">in</span> (<span class="keyword">select</span> sno <span class="keyword">from</span> sc <span class="keyword">where</span> sc.cno = <span class="number">1</span>)</span><br><span class="line"><span class="keyword">and</span> sno <span class="keyword">in</span> (<span class="keyword">select</span> sno <span class="keyword">from</span> sc <span class="keyword">where</span> sc.cno = <span class="number">2</span>)</span><br></pre></td></tr></table></figure>
+<p>或者</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">selectc.sno, c.sname from</span><br><span class="line">(<span class="keyword">select</span> sno <span class="keyword">from</span> sc <span class="keyword">where</span> sc.cno = <span class="number">1</span>) a,</span><br><span class="line">(<span class="keyword">select</span> sno <span class="keyword">from</span> sc <span class="keyword">where</span> sc.cno = <span class="number">2</span>) b,</span><br><span class="line">student c</span><br><span class="line"><span class="keyword">where</span> a.sno = b.sno <span class="keyword">and</span> a.sno = c.sno</span><br></pre></td></tr></table></figure>
+<p>或者</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> student.sno,student.sname <span class="keyword">from</span> student,sc <span class="keyword">where</span> student.sno=sc.sno <span class="keyword">and</span> sc.cno=<span class="number">1</span></span><br><span class="line"><span class="keyword">and</span> <span class="keyword">exists</span>( <span class="keyword">select</span> * <span class="keyword">from</span> sc <span class="keyword">as</span> sc_2 <span class="keyword">where</span> sc_2.sno=sc.sno <span class="keyword">and</span> sc_2.cno=<span class="number">2</span>)</span><br></pre></td></tr></table></figure>
+<h3 id="查询学过“李四”老师所教所有课程的所有同学的学号、姓名"><a href="#查询学过“李四”老师所教所有课程的所有同学的学号、姓名" class="headerlink" title="查询学过“李四”老师所教所有课程的所有同学的学号、姓名"></a>查询学过“李四”老师所教所有课程的所有同学的学号、姓名</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> a.sno, a.sname <span class="keyword">from</span> student a, sc b</span><br><span class="line"><span class="keyword">where</span> a.sno = b.sno <span class="keyword">and</span> b.cno <span class="keyword">in</span></span><br><span class="line">(<span class="keyword">select</span> c.cno <span class="keyword">from</span> course c, teacher d <span class="keyword">where</span> c.tno = d.tno <span class="keyword">and</span> d.tname = <span class="string">&#x27;李四&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<p>或者</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> a.sno, a.sname <span class="keyword">from</span> student a, sc b,</span><br><span class="line">(<span class="keyword">select</span> c.cno <span class="keyword">from</span> course c, teacher d <span class="keyword">where</span> c.tno = d.tno <span class="keyword">and</span> d.tname = <span class="string">&#x27;李四&#x27;</span>) e</span><br><span class="line"><span class="keyword">where</span> a.sno = b.sno <span class="keyword">and</span> b.cno = e.cno</span><br></pre></td></tr></table></figure>
+<h3 id="查询课程编号1的成绩比课程编号2的成绩高的所有同学的学号、姓名"><a href="#查询课程编号1的成绩比课程编号2的成绩高的所有同学的学号、姓名" class="headerlink" title="查询课程编号1的成绩比课程编号2的成绩高的所有同学的学号、姓名"></a>查询课程编号1的成绩比课程编号2的成绩高的所有同学的学号、姓名</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> a.sno, a.sname <span class="keyword">from</span> student a,</span><br><span class="line">(<span class="keyword">select</span> sno, score <span class="keyword">from</span> sc <span class="keyword">where</span> cno = <span class="number">1</span>) b,</span><br><span class="line">(<span class="keyword">select</span> sno, score <span class="keyword">from</span> sc <span class="keyword">where</span> cno = <span class="number">2</span>) c</span><br><span class="line"><span class="keyword">where</span> b.score &gt; c.score <span class="keyword">and</span> b.sno = c.sno <span class="keyword">and</span> a.sno = b.sno</span><br></pre></td></tr></table></figure>
+<h3 id="查询所有课程成绩小于60分的同学的学号、姓名"><a href="#查询所有课程成绩小于60分的同学的学号、姓名" class="headerlink" title="查询所有课程成绩小于60分的同学的学号、姓名"></a>查询所有课程成绩小于60分的同学的学号、姓名</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> sno,sname <span class="keyword">from</span> student</span><br><span class="line"><span class="keyword">where</span> sno <span class="keyword">not</span> <span class="keyword">in</span> (<span class="keyword">select</span> <span class="keyword">distinct</span> sno <span class="keyword">from</span> sc <span class="keyword">where</span> score &gt; <span class="number">60</span>)</span><br></pre></td></tr></table></figure>
+<h3 id="查询至少有一门课程与学号为1的同学所学课程相同的同学的学号和姓名"><a href="#查询至少有一门课程与学号为1的同学所学课程相同的同学的学号和姓名" class="headerlink" title="查询至少有一门课程与学号为1的同学所学课程相同的同学的学号和姓名"></a>查询至少有一门课程与学号为1的同学所学课程相同的同学的学号和姓名</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="keyword">distinct</span> a.sno, a.sname</span><br><span class="line"><span class="keyword">from</span> student a, sc b</span><br><span class="line"><span class="keyword">where</span> a.sno &lt;&gt; <span class="number">1</span> <span class="keyword">and</span> a.sno=b.sno <span class="keyword">and</span></span><br><span class="line">b.cno <span class="keyword">in</span> (<span class="keyword">select</span> cno <span class="keyword">from</span> sc <span class="keyword">where</span> sno = <span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+<p>或者</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> s.sno,s.sname</span><br><span class="line"><span class="keyword">from</span> student s,</span><br><span class="line">(<span class="keyword">select</span> sc.sno</span><br><span class="line"><span class="keyword">from</span> sc</span><br><span class="line"><span class="keyword">where</span> sc.cno <span class="keyword">in</span> (<span class="keyword">select</span> sc1.cno <span class="keyword">from</span> sc sc1 <span class="keyword">where</span> sc1.sno=<span class="number">1</span>) <span class="keyword">and</span> sc.sno&lt;&gt;<span class="number">1</span></span><br><span class="line"><span class="keyword">group</span> <span class="keyword">by</span> sc.sno) r1</span><br><span class="line"><span class="keyword">where</span> r1.sno=s.sno</span><br></pre></td></tr></table></figure>
+<h3 id="把“sc”表中“王五”所教课的成绩都更改为此课程的平均成绩"><a href="#把“sc”表中“王五”所教课的成绩都更改为此课程的平均成绩" class="headerlink" title="把“sc”表中“王五”所教课的成绩都更改为此课程的平均成绩"></a>把“sc”表中“王五”所教课的成绩都更改为此课程的平均成绩</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">update sc set score &#x3D; (select avg(sc_2.score) from sc sc_2 where sc_2.cno&#x3D;sc.cno)</span><br><span class="line">from course,teacher where course.cno&#x3D;sc.cno and course.tno&#x3D;teacher.tno andteacher.tname&#x3D;&#39;王五&#39;</span><br></pre></td></tr></table></figure>
+<h3 id="查询和编号为2的同学学习的课程完全相同的其他同学学号和姓名"><a href="#查询和编号为2的同学学习的课程完全相同的其他同学学号和姓名" class="headerlink" title="查询和编号为2的同学学习的课程完全相同的其他同学学号和姓名"></a>查询和编号为2的同学学习的课程完全相同的其他同学学号和姓名</h3><p>这一题分两步查：<br>1、</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> sno</span><br><span class="line"><span class="keyword">from</span> sc</span><br><span class="line"><span class="keyword">where</span> sno &lt;&gt; <span class="number">2</span></span><br><span class="line"><span class="keyword">group</span> <span class="keyword">by</span> sno</span><br><span class="line"><span class="keyword">having</span> <span class="keyword">sum</span>(cno) = (<span class="keyword">select</span> <span class="keyword">sum</span>(cno) <span class="keyword">from</span> sc <span class="keyword">where</span> sno = <span class="number">2</span>)</span><br></pre></td></tr></table></figure>
+<p>2、</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> b.sno, b.sname</span><br><span class="line"><span class="keyword">from</span> sc a, student b</span><br><span class="line"><span class="keyword">where</span> b.sno &lt;&gt; <span class="number">2</span> <span class="keyword">and</span> a.sno = b.sno</span><br><span class="line"><span class="keyword">group</span> <span class="keyword">by</span> b.sno, b.sname</span><br><span class="line"><span class="keyword">having</span> <span class="keyword">sum</span>(cno) = (<span class="keyword">select</span> <span class="keyword">sum</span>(cno) <span class="keyword">from</span> sc <span class="keyword">where</span> sno = <span class="number">2</span>)</span><br></pre></td></tr></table></figure>
+<h3 id="删除学习“王五”老师课的sc表记录"><a href="#删除学习“王五”老师课的sc表记录" class="headerlink" title="删除学习“王五”老师课的sc表记录"></a>删除学习“王五”老师课的sc表记录</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">delete</span> sc <span class="keyword">from</span> course, teacher</span><br><span class="line"><span class="keyword">where</span> course.cno = sc.cno <span class="keyword">and</span> course.tno = teacher.tno <span class="keyword">and</span> tname = <span class="string">&#x27;王五&#x27;</span></span><br></pre></td></tr></table></figure>
+<h3 id="向sc表中插入一些记录，这些记录要求符合以下条件："><a href="#向sc表中插入一些记录，这些记录要求符合以下条件：" class="headerlink" title="向sc表中插入一些记录，这些记录要求符合以下条件："></a>向sc表中插入一些记录，这些记录要求符合以下条件：</h3><p>将没有课程3成绩同学的该成绩补齐, 其成绩取所有学生的课程2的平均成绩</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">insert</span> sc <span class="keyword">select</span> sno , (<span class="keyword">select</span> <span class="keyword">avg</span>(score) <span class="keyword">from</span> sc <span class="keyword">where</span> cno = <span class="number">2</span>)</span><br><span class="line"><span class="keyword">from</span> student</span><br><span class="line"><span class="keyword">where</span> sno <span class="keyword">not</span> <span class="keyword">in</span> (<span class="keyword">select</span> sno <span class="keyword">from</span> sc <span class="keyword">where</span> cno = <span class="number">3</span>)</span><br></pre></td></tr></table></figure>
+<h3 id="按平均分从高到低显示所有学生的如下统计报表："><a href="#按平均分从高到低显示所有学生的如下统计报表：" class="headerlink" title="按平均分从高到低显示所有学生的如下统计报表："></a>按平均分从高到低显示所有学生的如下统计报表：</h3><p>— 学号,企业管理,马克思,UML,数据库,物理,课程数,平均分</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> sno <span class="keyword">as</span> 学号</span><br><span class="line">,<span class="keyword">max</span>(<span class="keyword">case</span> <span class="keyword">when</span> cno = <span class="number">1</span> <span class="keyword">then</span> score <span class="keyword">end</span>) <span class="keyword">AS</span> 企业管理</span><br><span class="line">,<span class="keyword">max</span>(<span class="keyword">case</span> <span class="keyword">when</span> cno = <span class="number">2</span> <span class="keyword">then</span> score <span class="keyword">end</span>) <span class="keyword">AS</span> 马克思</span><br><span class="line">,<span class="keyword">max</span>(<span class="keyword">case</span> <span class="keyword">when</span> cno = <span class="number">3</span> <span class="keyword">then</span> score <span class="keyword">end</span>) <span class="keyword">AS</span> UML</span><br><span class="line">,<span class="keyword">max</span>(<span class="keyword">case</span> <span class="keyword">when</span> cno = <span class="number">4</span> <span class="keyword">then</span> score <span class="keyword">end</span>) <span class="keyword">AS</span> 数据库</span><br><span class="line">,<span class="keyword">max</span>(<span class="keyword">case</span> <span class="keyword">when</span> cno = <span class="number">5</span> <span class="keyword">then</span> score <span class="keyword">end</span>) <span class="keyword">AS</span> 物理</span><br><span class="line">,<span class="keyword">count</span>(cno) <span class="keyword">AS</span> 课程数</span><br><span class="line">,<span class="keyword">avg</span>(score) <span class="keyword">AS</span> 平均分</span><br><span class="line"><span class="keyword">FROM</span> sc</span><br><span class="line"><span class="keyword">GROUP</span> <span class="keyword">by</span> sno</span><br><span class="line"><span class="keyword">ORDER</span> <span class="keyword">by</span> <span class="keyword">avg</span>(score) <span class="keyword">DESC</span></span><br></pre></td></tr></table></figure>
+<h3 id="查询各科成绩最高分和最低分"><a href="#查询各科成绩最高分和最低分" class="headerlink" title="查询各科成绩最高分和最低分"></a>查询各科成绩最高分和最低分</h3><p>以如下形式显示：课程号，最高分，最低分</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> cno <span class="keyword">as</span> 课程号, <span class="keyword">max</span>(score) <span class="keyword">as</span> 最高分, <span class="keyword">min</span>(score) 最低分</span><br><span class="line"><span class="keyword">from</span> sc <span class="keyword">group</span> <span class="keyword">by</span> cno</span><br></pre></td></tr></table></figure>
+<p>或者</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span>  course.cno <span class="keyword">as</span> <span class="string">&#x27;课程号&#x27;</span></span><br><span class="line">,<span class="keyword">MAX</span>(score) <span class="keyword">as</span> <span class="string">&#x27;最高分&#x27;</span></span><br><span class="line">,<span class="keyword">MIN</span>(score) <span class="keyword">as</span> <span class="string">&#x27;最低分&#x27;</span></span><br><span class="line"><span class="keyword">from</span> sc,course</span><br><span class="line"><span class="keyword">where</span> sc.cno=course.cno</span><br><span class="line"><span class="keyword">group</span> <span class="keyword">by</span> course.cno</span><br></pre></td></tr></table></figure>
+<h3 id="按各科平均成绩从低到高和及格率的百分数从高到低顺序"><a href="#按各科平均成绩从低到高和及格率的百分数从高到低顺序" class="headerlink" title="按各科平均成绩从低到高和及格率的百分数从高到低顺序"></a>按各科平均成绩从低到高和及格率的百分数从高到低顺序</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> t.cno <span class="keyword">AS</span> 课程号,</span><br><span class="line"><span class="keyword">max</span>(course.cname)<span class="keyword">AS</span> 课程名,</span><br><span class="line"><span class="keyword">isnull</span>(<span class="keyword">AVG</span>(score),<span class="number">0</span>) <span class="keyword">AS</span> 平均成绩,</span><br><span class="line"><span class="number">100</span> * <span class="keyword">SUM</span>(<span class="keyword">CASE</span> <span class="keyword">WHEN</span> <span class="keyword">isnull</span>(score,<span class="number">0</span>)&gt;=<span class="number">60</span> <span class="keyword">THEN</span> <span class="number">1</span> <span class="keyword">ELSE</span> <span class="number">0</span> <span class="keyword">END</span>)/<span class="keyword">count</span>(<span class="number">1</span>) <span class="keyword">AS</span> 及格率</span><br><span class="line"><span class="keyword">FROM</span> sc t, course</span><br><span class="line"><span class="keyword">where</span> t.cno = course.cno</span><br><span class="line"><span class="keyword">GROUP</span> <span class="keyword">BY</span> t.cno</span><br><span class="line"><span class="keyword">ORDER</span> <span class="keyword">BY</span> 及格率 <span class="keyword">desc</span></span><br></pre></td></tr></table></figure>
+<h3 id="查询如下课程平均成绩和及格率的百分数-用”1行”显示"><a href="#查询如下课程平均成绩和及格率的百分数-用”1行”显示" class="headerlink" title="查询如下课程平均成绩和及格率的百分数(用”1行”显示):"></a>查询如下课程平均成绩和及格率的百分数(用”1行”显示):</h3><p>企业管理（001），马克思（002），UML （003），数据库（004）</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span></span><br><span class="line"><span class="keyword">avg</span>(<span class="keyword">case</span> <span class="keyword">when</span> cno = <span class="number">1</span> <span class="keyword">then</span> score <span class="keyword">end</span>) <span class="keyword">as</span> 平均分<span class="number">1</span>,</span><br><span class="line"><span class="keyword">avg</span>(<span class="keyword">case</span> <span class="keyword">when</span> cno = <span class="number">2</span> <span class="keyword">then</span> score <span class="keyword">end</span>) <span class="keyword">as</span> 平均分<span class="number">2</span>,</span><br><span class="line"><span class="keyword">avg</span>(<span class="keyword">case</span> <span class="keyword">when</span> cno = <span class="number">3</span> <span class="keyword">then</span> score <span class="keyword">end</span>) <span class="keyword">as</span> 平均分<span class="number">3</span>,</span><br><span class="line"><span class="keyword">avg</span>(<span class="keyword">case</span> <span class="keyword">when</span> cno = <span class="number">4</span> <span class="keyword">then</span> score <span class="keyword">end</span>) <span class="keyword">as</span> 平均分<span class="number">4</span>,</span><br><span class="line"><span class="number">100</span> * <span class="keyword">sum</span>(<span class="keyword">case</span> <span class="keyword">when</span> cno = <span class="number">1</span> <span class="keyword">and</span> score &gt; <span class="number">60</span> <span class="keyword">then</span> <span class="number">1</span> <span class="keyword">else</span> <span class="number">0</span> <span class="keyword">end</span>) / <span class="keyword">sum</span>(casewhen cno = <span class="number">1</span> <span class="keyword">then</span> <span class="number">1</span> <span class="keyword">else</span> <span class="number">0</span> <span class="keyword">end</span>) <span class="keyword">as</span> 及格率<span class="number">1</span>,</span><br><span class="line"><span class="number">100</span> * <span class="keyword">sum</span>(<span class="keyword">case</span> <span class="keyword">when</span> cno = <span class="number">2</span> <span class="keyword">and</span> score &gt; <span class="number">60</span> <span class="keyword">then</span> <span class="number">1</span> <span class="keyword">else</span> <span class="number">0</span> <span class="keyword">end</span>) / <span class="keyword">sum</span>(casewhen cno = <span class="number">2</span> <span class="keyword">then</span> <span class="number">1</span> <span class="keyword">else</span> <span class="number">0</span> <span class="keyword">end</span>) <span class="keyword">as</span> 及格率<span class="number">2</span>,</span><br><span class="line"><span class="number">100</span> * <span class="keyword">sum</span>(<span class="keyword">case</span> <span class="keyword">when</span> cno = <span class="number">3</span> <span class="keyword">and</span> score &gt; <span class="number">60</span> <span class="keyword">then</span> <span class="number">1</span> <span class="keyword">else</span> <span class="number">0</span> <span class="keyword">end</span>) / <span class="keyword">sum</span>(casewhen cno = <span class="number">3</span> <span class="keyword">then</span> <span class="number">1</span> <span class="keyword">else</span> <span class="number">0</span> <span class="keyword">end</span>) <span class="keyword">as</span> 及格率<span class="number">3</span>,</span><br><span class="line"><span class="number">100</span> * <span class="keyword">sum</span>(<span class="keyword">case</span> <span class="keyword">when</span> cno = <span class="number">4</span> <span class="keyword">and</span> score &gt; <span class="number">60</span> <span class="keyword">then</span> <span class="number">1</span> <span class="keyword">else</span> <span class="number">0</span> <span class="keyword">end</span>) / <span class="keyword">sum</span>(casewhen cno = <span class="number">4</span> <span class="keyword">then</span> <span class="number">1</span> <span class="keyword">else</span> <span class="number">0</span> <span class="keyword">end</span>) <span class="keyword">as</span> 及格率<span class="number">4</span></span><br><span class="line"><span class="keyword">from</span> sc</span><br></pre></td></tr></table></figure>
+<h3 id="查询不同老师所教不同课程平均分-从高到低显示"><a href="#查询不同老师所教不同课程平均分-从高到低显示" class="headerlink" title="查询不同老师所教不同课程平均分, 从高到低显示"></a>查询不同老师所教不同课程平均分, 从高到低显示</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="keyword">max</span>(c.tname) <span class="keyword">as</span> 教师, <span class="keyword">max</span>(b.cname) 课程, <span class="keyword">avg</span>(a.score) 平均分</span><br><span class="line"><span class="keyword">from</span> sc a, course b, teacher c</span><br><span class="line"><span class="keyword">where</span> a.cno = b.cno <span class="keyword">and</span> b.tno = c.tno</span><br><span class="line"><span class="keyword">group</span> <span class="keyword">by</span> a.cno</span><br><span class="line"><span class="keyword">order</span> <span class="keyword">by</span> 平均分 <span class="keyword">desc</span></span><br></pre></td></tr></table></figure>
+<p>或者</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> r.tname <span class="keyword">as</span> <span class="string">&#x27;教师&#x27;</span>,r.rname <span class="keyword">as</span> <span class="string">&#x27;课程&#x27;</span> , <span class="keyword">AVG</span>(score) <span class="keyword">as</span> <span class="string">&#x27;平均分&#x27;</span></span><br><span class="line"><span class="keyword">from</span> sc,</span><br><span class="line">(<span class="keyword">select</span>  t.tname,c.cno <span class="keyword">as</span> rcso,c.cname <span class="keyword">as</span> rname</span><br><span class="line"><span class="keyword">from</span> teacher t ,course c</span><br><span class="line"><span class="keyword">where</span> t.tno=c.tno)r</span><br><span class="line"><span class="keyword">where</span> sc.cno=r.rcso</span><br><span class="line"><span class="keyword">group</span> <span class="keyword">by</span> sc.cno,r.tname,r.rname</span><br><span class="line"><span class="keyword">order</span> <span class="keyword">by</span> <span class="keyword">AVG</span>(score) <span class="keyword">desc</span></span><br></pre></td></tr></table></figure>
+<h3 id="查询如下课程成绩均在第3名到第6名之间的学生的成绩："><a href="#查询如下课程成绩均在第3名到第6名之间的学生的成绩：" class="headerlink" title="查询如下课程成绩均在第3名到第6名之间的学生的成绩："></a>查询如下课程成绩均在第3名到第6名之间的学生的成绩：</h3><p>— [学生ID],[学生姓名],企业管理,马克思,UML,数据库,平均成绩</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> top <span class="number">6</span> <span class="keyword">max</span>(a.sno) 学号, <span class="keyword">max</span>(b.sname) 姓名,</span><br><span class="line"><span class="keyword">max</span>(<span class="keyword">case</span> <span class="keyword">when</span> cno = <span class="number">1</span> <span class="keyword">then</span> score <span class="keyword">end</span>) <span class="keyword">as</span> 企业管理,</span><br><span class="line"><span class="keyword">max</span>(<span class="keyword">case</span> <span class="keyword">when</span> cno = <span class="number">2</span> <span class="keyword">then</span> score <span class="keyword">end</span>) <span class="keyword">as</span> 马克思,</span><br><span class="line"><span class="keyword">max</span>(<span class="keyword">case</span> <span class="keyword">when</span> cno = <span class="number">3</span> <span class="keyword">then</span> score <span class="keyword">end</span>) <span class="keyword">as</span> UML,</span><br><span class="line"><span class="keyword">max</span>(<span class="keyword">case</span> <span class="keyword">when</span> cno = <span class="number">4</span> <span class="keyword">then</span> score <span class="keyword">end</span>) <span class="keyword">as</span> 数据库,</span><br><span class="line"><span class="keyword">avg</span>(score) <span class="keyword">as</span> 平均分</span><br><span class="line"><span class="keyword">from</span> sc a, student b</span><br><span class="line"><span class="keyword">where</span> a.sno <span class="keyword">not</span> <span class="keyword">in</span></span><br><span class="line"></span><br><span class="line">(<span class="keyword">select</span> top <span class="number">2</span> sno <span class="keyword">from</span> sc <span class="keyword">where</span> cno = <span class="number">1</span> <span class="keyword">order</span> <span class="keyword">by</span> score <span class="keyword">desc</span>)</span><br><span class="line"><span class="keyword">and</span> a.sno <span class="keyword">not</span> <span class="keyword">in</span> (<span class="keyword">select</span> top <span class="number">2</span> sno <span class="keyword">from</span> sc <span class="keyword">where</span> cno = <span class="number">2</span> <span class="keyword">order</span> <span class="keyword">by</span> scoredesc)</span><br><span class="line"><span class="keyword">and</span> a.sno <span class="keyword">not</span> <span class="keyword">in</span> (<span class="keyword">select</span> top <span class="number">2</span> sno <span class="keyword">from</span> sc <span class="keyword">where</span> cno = <span class="number">3</span> <span class="keyword">order</span> <span class="keyword">by</span> scoredesc)</span><br><span class="line"><span class="keyword">and</span> a.sno <span class="keyword">not</span> <span class="keyword">in</span> (<span class="keyword">select</span> top <span class="number">2</span> sno <span class="keyword">from</span> sc <span class="keyword">where</span> cno = <span class="number">4</span> <span class="keyword">order</span> <span class="keyword">by</span> scoredesc)</span><br><span class="line"><span class="keyword">and</span> a.sno = b.sno</span><br><span class="line"><span class="keyword">group</span> <span class="keyword">by</span> a.sno</span><br></pre></td></tr></table></figure>  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/java/">java</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://github.com/dxysun/2018/07/16/javaForInterviewSQL/" data-title="java面试题之数据库篇 | 迎着朝阳的博客" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2018/07/16/javaForInterviewMutil/" title="java面试题之多线程篇">
+  <strong>上一篇：</strong><br/>
+  <span>
+  java面试题之多线程篇</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/07/16/javaForInterviewFramework/"  title="java面试题之框架篇">
+ <strong>下一篇：</strong><br/> 
+ <span>java面试题之框架篇
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9F%A5%E8%AF%A2%E8%AF%BE%E7%A8%8B1%E7%9A%84%E6%88%90%E7%BB%A9%E6%AF%94%E8%AF%BE%E7%A8%8B2%E7%9A%84%E6%88%90%E7%BB%A9%E9%AB%98%E7%9A%84%E6%89%80%E6%9C%89%E5%AD%A6%E7%94%9F%E7%9A%84%E5%AD%A6%E5%8F%B7"><span class="toc-number">1.</span> <span class="toc-text">查询课程1的成绩比课程2的成绩高的所有学生的学号</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9F%A5%E8%AF%A2%E5%B9%B3%E5%9D%87%E6%88%90%E7%BB%A9%E5%A4%A7%E4%BA%8E60%E5%88%86%E7%9A%84%E5%90%8C%E5%AD%A6%E7%9A%84%E5%AD%A6%E5%8F%B7%E5%92%8C%E5%B9%B3%E5%9D%87%E6%88%90%E7%BB%A9"><span class="toc-number">2.</span> <span class="toc-text">查询平均成绩大于60分的同学的学号和平均成绩</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9F%A5%E8%AF%A2%E6%89%80%E6%9C%89%E5%90%8C%E5%AD%A6%E7%9A%84%E5%AD%A6%E5%8F%B7%E3%80%81%E5%A7%93%E5%90%8D%E3%80%81%E9%80%89%E8%AF%BE%E6%95%B0%E3%80%81%E6%80%BB%E6%88%90%E7%BB%A9"><span class="toc-number">3.</span> <span class="toc-text">查询所有同学的学号、姓名、选课数、总成绩</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9F%A5%E8%AF%A2%E5%A7%93%E2%80%9C%E5%BC%A0%E2%80%9D%E7%9A%84%E8%80%81%E5%B8%88%E7%9A%84%E4%B8%AA%E6%95%B0"><span class="toc-number">4.</span> <span class="toc-text">查询姓“张”的老师的个数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9F%A5%E8%AF%A2%E6%B2%A1%E5%AD%A6%E8%BF%87%E2%80%9C%E5%BC%A0%E4%B8%89%E2%80%9D%E8%80%81%E5%B8%88%E8%AF%BE%E7%9A%84%E5%90%8C%E5%AD%A6%E7%9A%84%E5%AD%A6%E5%8F%B7%E3%80%81%E5%A7%93%E5%90%8D"><span class="toc-number">5.</span> <span class="toc-text">查询没学过“张三”老师课的同学的学号、姓名</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9F%A5%E8%AF%A2%E5%90%8C%E6%97%B6%E5%AD%A6%E8%BF%87%E8%AF%BE%E7%A8%8B1%E5%92%8C%E8%AF%BE%E7%A8%8B2%E7%9A%84%E5%90%8C%E5%AD%A6%E7%9A%84%E5%AD%A6%E5%8F%B7%E3%80%81%E5%A7%93%E5%90%8D"><span class="toc-number">6.</span> <span class="toc-text">查询同时学过课程1和课程2的同学的学号、姓名</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9F%A5%E8%AF%A2%E5%AD%A6%E8%BF%87%E2%80%9C%E6%9D%8E%E5%9B%9B%E2%80%9D%E8%80%81%E5%B8%88%E6%89%80%E6%95%99%E6%89%80%E6%9C%89%E8%AF%BE%E7%A8%8B%E7%9A%84%E6%89%80%E6%9C%89%E5%90%8C%E5%AD%A6%E7%9A%84%E5%AD%A6%E5%8F%B7%E3%80%81%E5%A7%93%E5%90%8D"><span class="toc-number">7.</span> <span class="toc-text">查询学过“李四”老师所教所有课程的所有同学的学号、姓名</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9F%A5%E8%AF%A2%E8%AF%BE%E7%A8%8B%E7%BC%96%E5%8F%B71%E7%9A%84%E6%88%90%E7%BB%A9%E6%AF%94%E8%AF%BE%E7%A8%8B%E7%BC%96%E5%8F%B72%E7%9A%84%E6%88%90%E7%BB%A9%E9%AB%98%E7%9A%84%E6%89%80%E6%9C%89%E5%90%8C%E5%AD%A6%E7%9A%84%E5%AD%A6%E5%8F%B7%E3%80%81%E5%A7%93%E5%90%8D"><span class="toc-number">8.</span> <span class="toc-text">查询课程编号1的成绩比课程编号2的成绩高的所有同学的学号、姓名</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9F%A5%E8%AF%A2%E6%89%80%E6%9C%89%E8%AF%BE%E7%A8%8B%E6%88%90%E7%BB%A9%E5%B0%8F%E4%BA%8E60%E5%88%86%E7%9A%84%E5%90%8C%E5%AD%A6%E7%9A%84%E5%AD%A6%E5%8F%B7%E3%80%81%E5%A7%93%E5%90%8D"><span class="toc-number">9.</span> <span class="toc-text">查询所有课程成绩小于60分的同学的学号、姓名</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9F%A5%E8%AF%A2%E8%87%B3%E5%B0%91%E6%9C%89%E4%B8%80%E9%97%A8%E8%AF%BE%E7%A8%8B%E4%B8%8E%E5%AD%A6%E5%8F%B7%E4%B8%BA1%E7%9A%84%E5%90%8C%E5%AD%A6%E6%89%80%E5%AD%A6%E8%AF%BE%E7%A8%8B%E7%9B%B8%E5%90%8C%E7%9A%84%E5%90%8C%E5%AD%A6%E7%9A%84%E5%AD%A6%E5%8F%B7%E5%92%8C%E5%A7%93%E5%90%8D"><span class="toc-number">10.</span> <span class="toc-text">查询至少有一门课程与学号为1的同学所学课程相同的同学的学号和姓名</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8A%8A%E2%80%9Csc%E2%80%9D%E8%A1%A8%E4%B8%AD%E2%80%9C%E7%8E%8B%E4%BA%94%E2%80%9D%E6%89%80%E6%95%99%E8%AF%BE%E7%9A%84%E6%88%90%E7%BB%A9%E9%83%BD%E6%9B%B4%E6%94%B9%E4%B8%BA%E6%AD%A4%E8%AF%BE%E7%A8%8B%E7%9A%84%E5%B9%B3%E5%9D%87%E6%88%90%E7%BB%A9"><span class="toc-number">11.</span> <span class="toc-text">把“sc”表中“王五”所教课的成绩都更改为此课程的平均成绩</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9F%A5%E8%AF%A2%E5%92%8C%E7%BC%96%E5%8F%B7%E4%B8%BA2%E7%9A%84%E5%90%8C%E5%AD%A6%E5%AD%A6%E4%B9%A0%E7%9A%84%E8%AF%BE%E7%A8%8B%E5%AE%8C%E5%85%A8%E7%9B%B8%E5%90%8C%E7%9A%84%E5%85%B6%E4%BB%96%E5%90%8C%E5%AD%A6%E5%AD%A6%E5%8F%B7%E5%92%8C%E5%A7%93%E5%90%8D"><span class="toc-number">12.</span> <span class="toc-text">查询和编号为2的同学学习的课程完全相同的其他同学学号和姓名</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%A0%E9%99%A4%E5%AD%A6%E4%B9%A0%E2%80%9C%E7%8E%8B%E4%BA%94%E2%80%9D%E8%80%81%E5%B8%88%E8%AF%BE%E7%9A%84sc%E8%A1%A8%E8%AE%B0%E5%BD%95"><span class="toc-number">13.</span> <span class="toc-text">删除学习“王五”老师课的sc表记录</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%90%91sc%E8%A1%A8%E4%B8%AD%E6%8F%92%E5%85%A5%E4%B8%80%E4%BA%9B%E8%AE%B0%E5%BD%95%EF%BC%8C%E8%BF%99%E4%BA%9B%E8%AE%B0%E5%BD%95%E8%A6%81%E6%B1%82%E7%AC%A6%E5%90%88%E4%BB%A5%E4%B8%8B%E6%9D%A1%E4%BB%B6%EF%BC%9A"><span class="toc-number">14.</span> <span class="toc-text">向sc表中插入一些记录，这些记录要求符合以下条件：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8C%89%E5%B9%B3%E5%9D%87%E5%88%86%E4%BB%8E%E9%AB%98%E5%88%B0%E4%BD%8E%E6%98%BE%E7%A4%BA%E6%89%80%E6%9C%89%E5%AD%A6%E7%94%9F%E7%9A%84%E5%A6%82%E4%B8%8B%E7%BB%9F%E8%AE%A1%E6%8A%A5%E8%A1%A8%EF%BC%9A"><span class="toc-number">15.</span> <span class="toc-text">按平均分从高到低显示所有学生的如下统计报表：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9F%A5%E8%AF%A2%E5%90%84%E7%A7%91%E6%88%90%E7%BB%A9%E6%9C%80%E9%AB%98%E5%88%86%E5%92%8C%E6%9C%80%E4%BD%8E%E5%88%86"><span class="toc-number">16.</span> <span class="toc-text">查询各科成绩最高分和最低分</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8C%89%E5%90%84%E7%A7%91%E5%B9%B3%E5%9D%87%E6%88%90%E7%BB%A9%E4%BB%8E%E4%BD%8E%E5%88%B0%E9%AB%98%E5%92%8C%E5%8F%8A%E6%A0%BC%E7%8E%87%E7%9A%84%E7%99%BE%E5%88%86%E6%95%B0%E4%BB%8E%E9%AB%98%E5%88%B0%E4%BD%8E%E9%A1%BA%E5%BA%8F"><span class="toc-number">17.</span> <span class="toc-text">按各科平均成绩从低到高和及格率的百分数从高到低顺序</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9F%A5%E8%AF%A2%E5%A6%82%E4%B8%8B%E8%AF%BE%E7%A8%8B%E5%B9%B3%E5%9D%87%E6%88%90%E7%BB%A9%E5%92%8C%E5%8F%8A%E6%A0%BC%E7%8E%87%E7%9A%84%E7%99%BE%E5%88%86%E6%95%B0-%E7%94%A8%E2%80%9D1%E8%A1%8C%E2%80%9D%E6%98%BE%E7%A4%BA"><span class="toc-number">18.</span> <span class="toc-text">查询如下课程平均成绩和及格率的百分数(用”1行”显示):</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9F%A5%E8%AF%A2%E4%B8%8D%E5%90%8C%E8%80%81%E5%B8%88%E6%89%80%E6%95%99%E4%B8%8D%E5%90%8C%E8%AF%BE%E7%A8%8B%E5%B9%B3%E5%9D%87%E5%88%86-%E4%BB%8E%E9%AB%98%E5%88%B0%E4%BD%8E%E6%98%BE%E7%A4%BA"><span class="toc-number">19.</span> <span class="toc-text">查询不同老师所教不同课程平均分, 从高到低显示</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9F%A5%E8%AF%A2%E5%A6%82%E4%B8%8B%E8%AF%BE%E7%A8%8B%E6%88%90%E7%BB%A9%E5%9D%87%E5%9C%A8%E7%AC%AC3%E5%90%8D%E5%88%B0%E7%AC%AC6%E5%90%8D%E4%B9%8B%E9%97%B4%E7%9A%84%E5%AD%A6%E7%94%9F%E7%9A%84%E6%88%90%E7%BB%A9%EF%BC%9A"><span class="toc-number">20.</span> <span class="toc-text">查询如下课程成绩均在第3名到第6名之间的学生的成绩：</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+
+  
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">Categories</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/spring官方文档/" title="spring官方文档">spring官方文档<sup>8</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>54</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/linux/" title="linux">linux<sup>34</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/centos/" title="centos">centos<sup>19</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/springboot/" title="springboot">springboot<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/ubuntu/" title="ubuntu">ubuntu<sup>9</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/hadoop/" title="hadoop">hadoop<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/spring/" title="spring">spring<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/nginx/" title="nginx">nginx<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/spark/" title="spark">spark<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/mybatis/" title="mybatis">mybatis<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/mysql/" title="mysql">mysql<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/算法/" title="算法">算法<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/git/" title="git">git<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/maven/" title="maven">maven<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/hdfs/" title="hdfs">hdfs<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/dubbo/" title="dubbo">dubbo<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/kafka/" title="kafka">kafka<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Hbase/" title="Hbase">Hbase<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/sql/" title="sql">sql<sup>2</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="http://majorkevin.xyz/blog/" target="_blank" title="朋友的博客">朋友的博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+  <div class="weiboshow">
+  <p class="asidetitle">Weibo</p>
+    <iframe width="100%" height="119" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=119&fansRow=2&ptype=1&speed=0&skin=9&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=&verifier=&dpc=1"></iframe>
+</div>
+
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> Hello ,I&#39;m dxysun. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2020 
+		
+		<a href="/about" target="_blank" title="dxysun">dxysun</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?e6d1f421bbc9962127a50488f9ed37d1";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

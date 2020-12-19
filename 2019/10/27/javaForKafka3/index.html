@@ -1,0 +1,640 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>kafka学习笔记（三） | 迎着朝阳的博客</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="dxysun">
+    
+
+    
+    <meta name="description" content="kafka学习笔记（三）">
+<meta property="og:type" content="article">
+<meta property="og:title" content="kafka学习笔记（三）">
+<meta property="og:url" content="https://github.com/dxysun/2019/10/27/javaForKafka3/index.html">
+<meta property="og:site_name" content="迎着朝阳的博客">
+<meta property="og:description" content="kafka学习笔记（三）">
+<meta property="og:locale">
+<meta property="og:image" content="https://blog-dxysun.nos-eastchina1.126.net/kafka-log-compress.png">
+<meta property="og:image" content="https://blog-dxysun.nos-eastchina1.126.net/copy.png">
+<meta property="og:image" content="https://blog-dxysun.nos-eastchina1.126.net/kafka-copy1.png">
+<meta property="og:image" content="https://blog-dxysun.nos-eastchina1.126.net/kafka-fecth.png">
+<meta property="og:image" content="https://blog-dxysun.nos-eastchina1.126.net/kafka-fecth1.png">
+<meta property="og:image" content="https://blog-dxysun.nos-eastchina1.126.net/kafka-fecth2.png">
+<meta property="og:image" content="https://blog-dxysun.nos-eastchina1.126.net/kafka-fecth3.png">
+<meta property="og:image" content="https://blog-dxysun.nos-eastchina1.126.net/kafka-fecth4.png">
+<meta property="og:image" content="https://blog-dxysun.nos-eastchina1.126.net/kafka-fecth5.png">
+<meta property="article:published_time" content="2019-10-27T11:37:22.000Z">
+<meta property="article:modified_time" content="2019-10-27T13:12:08.000Z">
+<meta property="article:author" content="dxysun">
+<meta property="article:tag" content="java">
+<meta property="article:tag" content="kafka">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blog-dxysun.nos-eastchina1.126.net/kafka-log-compress.png">
+
+    
+    <link rel="alternative" href="/atom.xml" title="迎着朝阳的博客" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    
+<link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/%02.css">
+<link rel="stylesheet" href="/.css">
+
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="迎着朝阳的博客" title="迎着朝阳的博客"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="迎着朝阳的博客">迎着朝阳的博客</a></h1>
+				<h2 class="blog-motto"></h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">主页</a></li>
+					
+						<li><a href="/archives">归档</a></li>
+					
+						<li><a href="/about">关于</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:github.com/dxysun">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2019/10/27/javaForKafka3/" title="kafka学习笔记（三）" itemprop="url">kafka学习笔记（三）</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="dxysun" target="_blank" itemprop="author">dxysun</a>
+		
+  <p class="article-time">
+    <time datetime="2019-10-27T11:37:22.000Z" itemprop="datePublished"> Published 2019-10-27</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%97%A5%E5%BF%97%E7%9A%84%E6%B8%85%E9%99%A4%E7%AD%96%E7%95%A5%E4%BB%A5%E5%8F%8A%E5%8E%8B%E7%BC%A9%E7%AD%96%E7%95%A5"><span class="toc-number">1.</span> <span class="toc-text">日志的清除策略以及压缩策略</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%97%A5%E5%BF%97%E6%B8%85%E9%99%A4%E7%AD%96%E7%95%A5"><span class="toc-number">1.1.</span> <span class="toc-text">日志清除策略</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%97%A5%E5%BF%97%E5%8E%8B%E7%BC%A9%E7%AD%96%E7%95%A5"><span class="toc-number">1.2.</span> <span class="toc-text">日志压缩策略</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#partition-%E7%9A%84%E9%AB%98%E5%8F%AF%E7%94%A8%E5%89%AF%E6%9C%AC%E6%9C%BA%E5%88%B6"><span class="toc-number">2.</span> <span class="toc-text">partition 的高可用副本机制</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%AF%E6%9C%AC"><span class="toc-number">2.1.</span> <span class="toc-text">副本</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%AF%E6%9C%AC%E5%88%86%E9%85%8D%E7%AE%97%E6%B3%95"><span class="toc-number">2.2.</span> <span class="toc-text">副本分配算法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#kafka-%E5%89%AF%E6%9C%AC%E6%9C%BA%E5%88%B6%E4%B8%AD%E7%9A%84%E6%A6%82%E5%BF%B5"><span class="toc-number">2.3.</span> <span class="toc-text">kafka 副本机制中的概念</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%AF%E6%9C%AC%E5%8D%8F%E5%90%8C%E6%9C%BA%E5%88%B6"><span class="toc-number">2.4.</span> <span class="toc-text">副本协同机制</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ISR"><span class="toc-number">2.5.</span> <span class="toc-text">ISR</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#HW-amp-LEO"><span class="toc-number">2.6.</span> <span class="toc-text">HW&amp;LEO</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E7%9A%84%E5%90%8C%E6%AD%A5%E8%BF%87%E7%A8%8B"><span class="toc-number">2.7.</span> <span class="toc-text">数据的同步过程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ISR-%E7%9A%84%E8%AE%BE%E8%AE%A1%E5%8E%9F%E7%90%86"><span class="toc-number">2.8.</span> <span class="toc-text">ISR 的设计原理</span></a></li></ol></li></ol>
+		
+		</div>
+		
+		<p>kafka学习笔记（三）</p>
+<a id="more"></a>
+
+<h1 id="日志的清除策略以及压缩策略"><a href="#日志的清除策略以及压缩策略" class="headerlink" title="日志的清除策略以及压缩策略"></a>日志的清除策略以及压缩策略</h1><h2 id="日志清除策略"><a href="#日志清除策略" class="headerlink" title="日志清除策略"></a>日志清除策略</h2><p>日志的分段存储，一方面能够减少单个文件内容的大小，另一方面，方便 kafka 进行日志清理。日志的清理策略有两个</p>
+<ol>
+<li>根据消息的保留时间，当消息在 kafka 中保存的时间超过了指定的时间，就会触发清理过程</li>
+<li>根据 topic 存储的数据大小，当 topic 所占的日志文件大小大于一定的阀值，则可以开始删除最旧的消息。kafka会启动一个后台线程，定期检查是否存在可以删除的消息<blockquote>
+<p>通过<code>log.retention.bytes</code>和<code>log.retention.hours</code>这两个参数来设置，当其中任意一个达到要求，都会执行删除。默认的保留时间是：7 天</p>
+</blockquote>
+</li>
+</ol>
+<h2 id="日志压缩策略"><a href="#日志压缩策略" class="headerlink" title="日志压缩策略"></a>日志压缩策略</h2><p>Kafka 还提供了”日志压缩（Log Compaction）”功能，通过这个功能可以有效的减少日志文件的大小，缓解磁盘紧张的情况，在很多实际场景中，消息的key和value的值之间的对应关系是不断变化的，就像数据库中的数据会不断被修改一样，消费者只关心 key 对应的最新的 value。因此，我们可以开启 kafka 的日志压缩功能，服务端会在后台启动启动Cleaner 线程池，定期将相同的 key 进行合并，只保留最新的 value 值。<br>日志的压缩原理如图所示<br><img src="https://blog-dxysun.nos-eastchina1.126.net/kafka-log-compress.png" alt="log"></p>
+<h1 id="partition-的高可用副本机制"><a href="#partition-的高可用副本机制" class="headerlink" title="partition 的高可用副本机制"></a>partition 的高可用副本机制</h1><p>Kafka的每个topic都可以分为多个Partition，并且多个 partition 会均匀分布在集群的各个节点下。虽然这种方式能够有效的对数据进行分片，但是对于每个partition来说，都是单点的，当其中一个 partition 不可用的时候，那么这部分消息就没办法消费。所以 kafka 为了提高 partition 的可靠性而提供了副本的概念（Replica）,通过副本机制来实现冗余备份。</p>
+<h2 id="副本"><a href="#副本" class="headerlink" title="副本"></a>副本</h2><p>Kafka对消息进行了冗余备份，每个Partiton可以有多个副本，每个副本中包含的消息是一样的。每个分区至少有一个副本，当分区只有一个副本时，就只有Leader副本，没有Fellower副本。<br>每个分区的副本集合中，都会选举出一个副本作为Leader副本，所有的读写请求都是由选举出的Leader副本进行处理，其他都是Follower副本，Follower副本仅仅是从Leader副本处把数据拉取到本地之后，副本集会<br>存在一主多从的关系。<br>同步更新到自己的Log中。<br><img src="https://blog-dxysun.nos-eastchina1.126.net/copy.png" alt="copy"><br>一般情况下，同一个分区的多个副本会被均匀分配到集群中的不同broker 上，当leader 副本所在的 broker 出现故障后，可以重新选举新的 leader 副本继续对外提供服务。通过这样的副本机制来提高 kafka 集群的可用性。</p>
+<h2 id="副本分配算法"><a href="#副本分配算法" class="headerlink" title="副本分配算法"></a>副本分配算法</h2><p>将所有N个Broker和待分配的i个Partition排序。将第i个Partition分配到第(i mod n)个Broker上。将第i个Partition的第j个副本分配到第((i + j) mod n)个Broker 上。</p>
+<h2 id="kafka-副本机制中的概念"><a href="#kafka-副本机制中的概念" class="headerlink" title="kafka 副本机制中的概念"></a>kafka 副本机制中的概念</h2><p>Kafka 分区下有可能有很多个副本(replica)用于实现冗余，从而进一步实现高可用。副本根据角色的不同可分为 3 类：<br>leader 副本：响应 clients 端读写请求的副本。<br>follower 副本：被动地备份 leader 副本中的数据，不能响应 clients 端读写请求。<br>ISR 副本：包含了 leader 副本和所有与 leader 副本保持同步的 follower 副本。</p>
+<p>如何判定是否与 leader 同步，与此紧密相关是每个 Kafka 副本对象的两个重要的属性：LEO 和 HW 。注意是所有的副本，而不只是 leader 副本。</p>
+<p>LEO：即日志末端位移(log end offset)，记录了该副本底层日志(log)中下一条消息的位移值。注意是下一条消息！也就是说，如果 LEO=10，那么表示该副本保存了10条消息，位移值范围是[0, 9]。另外，leader LEO 和 follower LEO 的更新是有区别的。</p>
+<p>HW：水位值，对于同一个副本对象而言，其HW 值不会大于LEO值。小于等于 HW 值的所有消息都被认为是”已备份”的（replicated）。同理，leader副本和follower副本的 HW更新也是有区别的</p>
+<h2 id="副本协同机制"><a href="#副本协同机制" class="headerlink" title="副本协同机制"></a>副本协同机制</h2><p>消息的读写操作都只会由leader节点来接收和处理，follower副本只负责同步数据以及当leader副本所在的broker挂了以后，会从follower副本中选取新的leader。<br><img src="https://blog-dxysun.nos-eastchina1.126.net/kafka-copy1.png" alt="copy"></p>
+<p>写请求首先由 Leader 副本处理，之后 follower 副本会从leader上拉取写入的消息，这个过程会有一定的延迟，导致follower副本中保存的消息略少于 leader 副本，但是只要没有超出阈值都可以容忍。但是如果一个 follower副本出现异常，比如宕机、网络断开等原因长时间没有同步到消息，那这个时候，leader 就会把它踢出去。kafka 通过ISR集合来维护一个分区副本信息。</p>
+<h2 id="ISR"><a href="#ISR" class="headerlink" title="ISR"></a>ISR</h2><p>ISR 表示目前”可用且消息量与leader相差不多的副本集合，这是整个副本集合的一个子集”。具体来说，ISR 集合中的副本必须满足两个条件</p>
+<ol>
+<li>副本所在节点必须维持着与 zookeeper 的连接</li>
+<li>副本最后一条消息的 offset 与 leader 副本的最后一条消息的offset之间的差值不能超过指定的阈值(replica.lag.time.max.ms)<br>replica.lag.time.max.ms：如果该 follower 在此时间间隔内一直没有追上过leader的所有消息，则该follower就会被剔除ISR列表</li>
+</ol>
+<p>ISR 数 据 保 存 在 Zookeeper 的<code>/brokers/topics/&lt;topic&gt;/partitions/&lt;partitionId&gt;/state</code>节点中</p>
+<h2 id="HW-amp-LEO"><a href="#HW-amp-LEO" class="headerlink" title="HW&amp;LEO"></a>HW&amp;LEO</h2><p>关于follower副本同步的过程中，还有两个关键的概念，HW(HighWatermark)和 LEO(Log End Offset). 这两个参数跟ISR集合紧密关联。<br>HW标记了一个特殊的 offset，当消费者处理消息的时候，只能拉去到 HW 之前的消息，HW之后的消息对消费者来说是不可见的。<br>也就是说，取 partition 对应ISR中最小的LEO作为HW，consumer 最多只能消费到HW 所在的位置。每个replica都有 HW，leader 和 follower 各自维护更新自己的 HW 的状态。一条消息只有被ISR里的所有Follower都从Leader复制过去才会被认为已提交。这样就避免了部分数据被写进了Leader，还没来得及被任何 Follower 复制就宕机了，而造成数据丢失（Consumer 无法消费这些数据）。而对于Producer而言，它可以选择是否等待消息commit，这可以通过 acks 来设置。这种机制确保了只要ISR有一个或以上的 Follower，一条被 commit 的消息就不会丢失。</p>
+<h2 id="数据的同步过程"><a href="#数据的同步过程" class="headerlink" title="数据的同步过程"></a>数据的同步过程</h2><p>数据的同步过程需要解决</p>
+<ol>
+<li>怎么传播消息</li>
+<li>在向消息发送端返回ack之前需要保证多少个Replica已经接收到这个消息</li>
+</ol>
+<p>数据的处理过程<br>Producer 在发布消息到某个Partition时，先通过ZooKeeper 找到该 Partition 的 Leader[get/brokers/topics/<topic>/partitions/2/state]，然后无论该Topic 的 Replication Factor 为多少（也即该 Partition 有多少个 Replica），Producer 只将该消息发送到该 Partition 的Leader。Leader 会将该消息写入其本地 Log。每个 Follower都从 Leader pull 数据。这种方式上，Follower 存储的数据顺序与 Leader 保持一致。Follower 在收到该消息并写入其 Log 后，向Leader发送 ACK。一旦Leader收到了ISR中的所有Replica的ACK，该消息就被认为已经commit了，Leader 将增加 HW(HighWatermark)并且向 Producer 发送ACK。</p>
+<p>初始状态<br>初始状态下，leader 和 follower 的 HW 和 LEO 都是 0，leader 副本会保存 remote LEO，表示所有 follower LEO，也会被初始化为 0，这个时候，producer 没有发送消息。<br>follower 会不断地个 leader 发送 fetch 请求，但是因为没有数据，这个请求会被 leader 寄存，当在指定的时间之后会强制完成请求，这个时间配置是(replica.fetch.wait.max.ms)，如果在指定时间内 producer有消息发送过来，那么 kafka 会唤醒 fetch 请求，让 leader继续处理。<br><img src="https://blog-dxysun.nos-eastchina1.126.net/kafka-fecth.png" alt="fecth"></p>
+<p>这里会分两种情况，第一种是 leader 处理完 producer 请求之后，follower 发送一个 fetch 请求过来<br>第二种是follower 阻塞在 leader 指定时间之内，leader 副本收到 producer 的请求。<br>这两种情况下处理方式是不一样的。</p>
+<p>第一种情况，follower 的 fetch 请求是当 leader 处理消息以后执行的 </p>
+<p>生产者发送一条消息<br>leader 处理完 producer 请求之后，follower 发送一个 fetch 请求过来。状态图如下<br><img src="https://blog-dxysun.nos-eastchina1.126.net/kafka-fecth1.png" alt="fecth1"><br>leader 副本收到请求以后，会做几件事情</p>
+<ol>
+<li>把消息追加到 log 文件，同时更新 leader 副本的 LEO</li>
+<li>尝试更新 leader HW 值。这个时候由于 follower 副本还没有发送 fetch 请求，那么 leader 的 remote LEO 仍然是0。leader 会比较自己的 LEO 以及 remote LEO 的值发现最小值是 0，与 HW 的值相同，所以不会更新 HW。</li>
+</ol>
+<p>follower fetch 消息<br><img src="https://blog-dxysun.nos-eastchina1.126.net/kafka-fecth2.png" alt="fecth"><br>follower 发送 fetch 请求，leader 副本的处理逻辑是:</p>
+<ol>
+<li>读取 log 数据、更新 remote LEO=0(follower 还没有写入这条消息，这个值是根据 follower 的 fetch 请求中的offset 来确定的)</li>
+<li>尝试更新 HW，因为这个时候 LEO 和 remoteLEO 还是不一致，所以仍然是 HW=0</li>
+<li>把消息内容和当前分区的 HW 值发送给 follower 副本</li>
+</ol>
+<p>follower 副本收到 response 以后</p>
+<ol>
+<li>将消息写入到本地 log，同时更新 follower 的 LEO 为 1</li>
+<li>更新 follower HW，本地的 LEO 和 leader 返回的 HW 进行比较取小的值，所以仍然是 0</li>
+</ol>
+<p>第一次交互结束以后，HW 仍然还是 0，这个值会在下一次follower 发起 fetch 请求时被更新</p>
+<p><img src="https://blog-dxysun.nos-eastchina1.126.net/kafka-fecth3.png" alt="fecth3"><br>follower 发第二次 fetch 请求，leader 收到请求以后</p>
+<ol>
+<li>读取 log 数据</li>
+<li>更新 remote LEO=1， 因为这次 fetch 携带的 offset 是</li>
+<li>更新当前分区的 HW，这个时候 leader LEO 和 remote LEO 都是 1，所以 HW 的值也更新为 1</li>
+<li>把数据和当前分区的 HW 值返回给 follower 副本，这个时候如果没有数据，则返回为空</li>
+</ol>
+<p>follower 副本收到 response 以后</p>
+<ol>
+<li>如果有数据则写本地日志，则更新 LEO</li>
+<li>更新 follower 的 HW 值到目前为止，数据的同步就完成了，意味着消费端能够消费 offset=0 这条消息。</li>
+</ol>
+<p>follower 的 fetch 请求是直接从阻塞过程中触发<br>如之前前面，由于 leader 副本暂时没有数据过来，所以follower 的 fetch 会被阻塞，直到等待超时或者 leader 接收到新的数据。当 leader 收到请求以后会唤醒处于阻塞的fetch请求。处理过程基本上和前面说的一致</p>
+<ol>
+<li>leader 将消息写入本地日志，更新 Leader 的 LEO</li>
+<li>唤醒 follower 的 fetch 请求</li>
+<li>更新 HW</li>
+</ol>
+<p>kafka 使用 HW 和 LEO 的方式来实现副本数据的同步，本身是一个好的设计，但是在这个地方会存在一个数据丢失的问题，当然这个丢失只出现在特定的背景下。</p>
+<p>数据丢失的问题<br>前提：min.insync.replicas=1 的时候。<br>设定 ISR 中的最小副本数是多少，默认值为 1, 当且仅当 acks 参数设置为-1 （表示需要所有副本确认）时，此参数才生效。<br>表达的含义是，至少需要多少个副本同步才能表示消息是提交的<br>所以，当 min.insync.replicas=1 的时候一旦消息被写入 leader 端 log 即被认为是”已提交”，而延迟一轮 FETCH RPC 更新HW值的设计使得 follower HW值是异步延迟更新的，倘若在这个过程中 leader 发生变更，<br>那么成为新 leader 的 follower 的 HW 值就有可能是过期的，使得 clients 端认为是成功提交的消息被删除。<br><img src="https://blog-dxysun.nos-eastchina1.126.net/kafka-fecth4.png" alt="fecth4"></p>
+<p>数据丢失的解决方案<br>在 kafka0.11.0.0 版本以后，提供了一个新的解决方案，使用 leader epoch 来解决这个问题，leader epoch 实际上是一对值(epoch,offset), epoch 表示 leader 的版本号，从 0 开始，当 leader 变更过 1 次时 epoch 就会+1，而 offset 则对应于该 epoch 版本的 leader 写入第一条消息的位移。比如说(0,0);(1,50); 表示第一个 leader 从 offset=0 开始写消息，一共写了 50 条，第二个 leader 版本号是 1，从 50 条处开<br>始写消息。这个信息保存在对应分区的本地磁盘文件中，文件名为： /kafka-log/topic/leader-epochcheckpoint</p>
+<p>leader broker 中会保存这样的一个缓存，并定期地写入到一个 checkpoint 文件中。当 leader 写 log 时它会尝试更新整个缓存——如果这个leader 首次写消息，则会在缓存中增加一个条目；否则就不做更新。而每次副本重新成为 leader 时会查询这部分缓存，获取出对应 leader 版本的 offset<br><img src="https://blog-dxysun.nos-eastchina1.126.net/kafka-fecth5.png" alt="fecth5"></p>
+<p>如何处理所有的 Replica 不工作的情况<br>在 ISR 中至少有一个 follower 时，Kafka 可以确保已经 commit 的数据不丢失，但如果某个 Partition 的所有 Replica 都宕机了，就无法保证数据不丢失了。</p>
+<ol>
+<li>等待 ISR 中的任一个 Replica”活”过来，并且选它作为 Leader</li>
+<li>选择第一个”活”过来的 Replica（不一定是 ISR 中的）作为 Leader</li>
+</ol>
+<p>这就需要在可用性和一致性当中作出一个简单的折衷。如果一定要等待 ISR 中的 Replica”活”过来，那不可用的时间就可能会相对较长。而且如果 ISR 中的所有 Replica 都无法”活”过来了，或者数据都丢失了，这个 Partition 将永远不可用。选择第一个”活”过来的 Replica 作为 Leader，而这个 Replica 不是 ISR 中的 Replica，那即使它并不保证已经包含了所有已 commit 的消息，它也会成为 Leader 而作为consumer 的数据源（前文有说明，所有读写都由 Leader完成）。</p>
+<h2 id="ISR-的设计原理"><a href="#ISR-的设计原理" class="headerlink" title="ISR 的设计原理"></a>ISR 的设计原理</h2><p>在所有的分布式存储中，冗余备份是一种常见的设计方式，而常用的模式有同步复制和异步复制，按照 kafka 这个副本模型来说如果采用同步复制，那么需要要求所有能工作的 Follower 副<br>本都复制完，这条消息才会被认为提交成功，一旦有一个follower 副本出现故障，就会导致 HW 无法完成递增，消息就无法提交，消费者就获取不到消息。这种情况下，故障的Follower 副本会拖慢整个系统的性能，设置导致系统不可用如果采用异步复制，leader 副本收到生产者推送的消息后，就认为次消息提交成功。follower 副本则异步从 leader 副本同步。这种设计虽然避免了同步复制的问题，但是假设所有follower 副本的同步速度都比较慢他们保存的消息量远远落后于 leader 副本。而此时 leader 副本所在的 broker 突然宕机，则会重新选举新的 leader 副本，而新的 leader 副本中没有原来 leader 副本的消息。这就出现了消息的丢失。<br>kafka 权衡了同步和异步的两种策略，采用 ISR 集合，巧妙解决了两种方案的缺陷：当 follower 副本延迟过高，leader 副本则会把该 follower 副本提出 ISR 集合，消息依然可以快速提交。当 leader 副本所在的 broker 突然宕机，会优先将 ISR 集合中follower 副本选举为 leader，新 leader 副本包含了 HW 之前的全部消息，这样就避免了消息的丢失。</p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/java/">java</a><a href="/tags/kafka/">kafka</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://github.com/dxysun/2019/10/27/javaForKafka3/" data-title="kafka学习笔记（三） | 迎着朝阳的博客" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2019/12/29/gitForMergeCommit/" title="git将几个commit点合并成一个commit点">
+  <strong>上一篇：</strong><br/>
+  <span>
+  git将几个commit点合并成一个commit点</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2019/10/27/javaForKafka2/"  title="kafka学习笔记（二）">
+ <strong>下一篇：</strong><br/> 
+ <span>kafka学习笔记（二）
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%97%A5%E5%BF%97%E7%9A%84%E6%B8%85%E9%99%A4%E7%AD%96%E7%95%A5%E4%BB%A5%E5%8F%8A%E5%8E%8B%E7%BC%A9%E7%AD%96%E7%95%A5"><span class="toc-number">1.</span> <span class="toc-text">日志的清除策略以及压缩策略</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%97%A5%E5%BF%97%E6%B8%85%E9%99%A4%E7%AD%96%E7%95%A5"><span class="toc-number">1.1.</span> <span class="toc-text">日志清除策略</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%97%A5%E5%BF%97%E5%8E%8B%E7%BC%A9%E7%AD%96%E7%95%A5"><span class="toc-number">1.2.</span> <span class="toc-text">日志压缩策略</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#partition-%E7%9A%84%E9%AB%98%E5%8F%AF%E7%94%A8%E5%89%AF%E6%9C%AC%E6%9C%BA%E5%88%B6"><span class="toc-number">2.</span> <span class="toc-text">partition 的高可用副本机制</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%AF%E6%9C%AC"><span class="toc-number">2.1.</span> <span class="toc-text">副本</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%AF%E6%9C%AC%E5%88%86%E9%85%8D%E7%AE%97%E6%B3%95"><span class="toc-number">2.2.</span> <span class="toc-text">副本分配算法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#kafka-%E5%89%AF%E6%9C%AC%E6%9C%BA%E5%88%B6%E4%B8%AD%E7%9A%84%E6%A6%82%E5%BF%B5"><span class="toc-number">2.3.</span> <span class="toc-text">kafka 副本机制中的概念</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%AF%E6%9C%AC%E5%8D%8F%E5%90%8C%E6%9C%BA%E5%88%B6"><span class="toc-number">2.4.</span> <span class="toc-text">副本协同机制</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ISR"><span class="toc-number">2.5.</span> <span class="toc-text">ISR</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#HW-amp-LEO"><span class="toc-number">2.6.</span> <span class="toc-text">HW&amp;LEO</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E7%9A%84%E5%90%8C%E6%AD%A5%E8%BF%87%E7%A8%8B"><span class="toc-number">2.7.</span> <span class="toc-text">数据的同步过程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ISR-%E7%9A%84%E8%AE%BE%E8%AE%A1%E5%8E%9F%E7%90%86"><span class="toc-number">2.8.</span> <span class="toc-text">ISR 的设计原理</span></a></li></ol></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+
+  
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">Categories</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/spring官方文档/" title="spring官方文档">spring官方文档<sup>8</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>54</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/linux/" title="linux">linux<sup>34</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/centos/" title="centos">centos<sup>19</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/springboot/" title="springboot">springboot<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/ubuntu/" title="ubuntu">ubuntu<sup>9</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/hadoop/" title="hadoop">hadoop<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/spring/" title="spring">spring<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/nginx/" title="nginx">nginx<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/spark/" title="spark">spark<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/mybatis/" title="mybatis">mybatis<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/mysql/" title="mysql">mysql<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/算法/" title="算法">算法<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/git/" title="git">git<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/maven/" title="maven">maven<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/hdfs/" title="hdfs">hdfs<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/dubbo/" title="dubbo">dubbo<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/kafka/" title="kafka">kafka<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Hbase/" title="Hbase">Hbase<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/sql/" title="sql">sql<sup>2</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="http://majorkevin.xyz/blog/" target="_blank" title="朋友的博客">朋友的博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+  <div class="weiboshow">
+  <p class="asidetitle">Weibo</p>
+    <iframe width="100%" height="119" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=119&fansRow=2&ptype=1&speed=0&skin=9&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=&verifier=&dpc=1"></iframe>
+</div>
+
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> Hello ,I&#39;m dxysun. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2020 
+		
+		<a href="/about" target="_blank" title="dxysun">dxysun</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?e6d1f421bbc9962127a50488f9ed37d1";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

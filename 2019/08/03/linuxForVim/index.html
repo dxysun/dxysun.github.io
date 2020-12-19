@@ -1,0 +1,596 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>linux命令之vim常用命令 | 迎着朝阳的博客</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="dxysun">
+    
+
+    
+    <meta name="description" content="vim常用命令">
+<meta property="og:type" content="article">
+<meta property="og:title" content="linux命令之vim常用命令">
+<meta property="og:url" content="https://github.com/dxysun/2019/08/03/linuxForVim/index.html">
+<meta property="og:site_name" content="迎着朝阳的博客">
+<meta property="og:description" content="vim常用命令">
+<meta property="og:locale">
+<meta property="og:image" content="https://blog-dxysun.nos-eastchina1.126.net/175824-20161123224659425-328736487.png">
+<meta property="article:published_time" content="2019-08-03T08:47:37.000Z">
+<meta property="article:modified_time" content="2019-09-30T08:54:10.000Z">
+<meta property="article:author" content="dxysun">
+<meta property="article:tag" content="linux">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blog-dxysun.nos-eastchina1.126.net/175824-20161123224659425-328736487.png">
+
+    
+    <link rel="alternative" href="/atom.xml" title="迎着朝阳的博客" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    
+<link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/%02.css">
+<link rel="stylesheet" href="/.css">
+
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="迎着朝阳的博客" title="迎着朝阳的博客"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="迎着朝阳的博客">迎着朝阳的博客</a></h1>
+				<h2 class="blog-motto"></h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">主页</a></li>
+					
+						<li><a href="/archives">归档</a></li>
+					
+						<li><a href="/about">关于</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:github.com/dxysun">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2019/08/03/linuxForVim/" title="linux命令之vim常用命令" itemprop="url">linux命令之vim常用命令</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="dxysun" target="_blank" itemprop="author">dxysun</a>
+		
+  <p class="article-time">
+    <time datetime="2019-08-03T08:47:37.000Z" itemprop="datePublished"> Published 2019-08-03</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#vim-%E9%80%89%E6%8B%A9%E6%96%87%E6%9C%AC%EF%BC%8C%E5%88%A0%E9%99%A4%EF%BC%8C%E5%A4%8D%E5%88%B6%EF%BC%8C%E7%B2%98%E8%B4%B4"><span class="toc-number">1.</span> <span class="toc-text">vim 选择文本，删除，复制，粘贴</span></a></li></ol>
+		
+		</div>
+		
+		<p>vim常用命令</p>
+<a id="more"></a>
+<p>上图<br><img src="https://blog-dxysun.nos-eastchina1.126.net/175824-20161123224659425-328736487.png" alt="vim1"></p>
+<h2 id="vim-选择文本，删除，复制，粘贴"><a href="#vim-选择文本，删除，复制，粘贴" class="headerlink" title="vim 选择文本，删除，复制，粘贴"></a>vim 选择文本，删除，复制，粘贴</h2><p>文本的选择</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">v    从光标当前位置开始，光标所经过的地方会被选中，再按一下v结束。 </span><br><span class="line">V    从光标当前行开始，光标经过的行都会被选中，再按一下Ｖ结束。 </span><br><span class="line">Ctrl + v   从光标当前位置开始，选中光标起点和终点所构成的矩形区域，再按一下Ｃtrl + v结束。 </span><br><span class="line">ggVG 选中全部的文本， 其中gg为跳到行首，V选中整行，G末尾</span><br></pre></td></tr></table></figure>
+<p>选中后就可以用编辑命令对其进行编辑，如 </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">d   删除 </span><br><span class="line">y   复制 （默认是复制到&quot;寄存器） </span><br><span class="line">p  粘贴 （默认从&quot;寄存器取出内容粘贴） </span><br><span class="line">&quot;+y    复制到系统剪贴板，也就是vim的+寄存器 </span><br><span class="line">&quot;+p   从系统剪贴板粘贴 </span><br></pre></td></tr></table></figure>
+<p>选中单词</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">vw   选中当前光标至单词结尾处</span><br><span class="line">viw  选中整个单词，不带结尾空格</span><br><span class="line">vaw  选中整个单词，带结尾空格</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>a会选择一个对象（an object）包括空格在内，而i只会选择一个对象的内部（an inner object）不包含空格。</p>
+</blockquote>
+<p>删除一行</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dd #删除后下面的行会移上来填补空缺。</span><br></pre></td></tr></table></figure>
+<p>删除字符</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">x #删除一个字符</span><br></pre></td></tr></table></figure>
+<p>删除单词</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">dw 删除当前光标至单词结尾处</span><br><span class="line">viwd 删除选中整个单词，不带结尾空格</span><br><span class="line">vaw  删除选中整个单词，带结尾空格</span><br></pre></td></tr></table></figure>
+<p>删除换行符</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">J #把两行合并为一行，也就是说两行之间的换行符被删除了</span><br></pre></td></tr></table></figure>
+<p>撤销</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">u</span><br></pre></td></tr></table></figure>
+<p>重做  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">如果你撤消了多次，你还可以用CTRL-R(重做)来反转撤消的动作。换句话说，它是对撤消的撤消。撤消命令还有另一种形式，&quot;U&quot;命令，它一次撤消对一行的全部操作。第二次使用该命令则会撤消前一个&quot;U&quot;的操作。用&quot;u&quot;和CTRL-R你可以找回任何一个操作状态。</span><br></pre></td></tr></table></figure>
+<p>追加</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">i  #命令可以在当前光标之前插入文本。</span><br><span class="line">a  #命令可以在当前光标之后插入文本。</span><br><span class="line">o  #命令可以在当前行的下面另起一行，并使当前模式转为Insert模式。</span><br><span class="line">O  #命令(注意是大写的字母O)将在当前行的上面另起一行。</span><br></pre></td></tr></table></figure>
+<p>使用命令计数</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">假设你要向上移动9行。这可以用&quot;kkkkkkkkk&quot;或&quot;9k&quot;来完成。事实上，很多命令都可以接受一个数字作为重复执行同一命令的次数。比如刚才的例子，要在行尾追加三个感叹号，当时用的命令是&quot;a!!!&quot;。另一个办法是用&quot;3a!&quot;命令。3说明该命令将被重复执行3次。同样，删除3个字符可以用&quot;3x&quot;。指定的数字要紧挨在它所要修饰的命令前面。</span><br></pre></td></tr></table></figure>
+<p>退出</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ZZ #退出Vim,该命令保存当前文件并退出Vim。</span><br><span class="line">ZQ #退出Vim,该命令不保存当前文件并退出Vim。</span><br></pre></td></tr></table></figure>
+<p>放弃编辑</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">:q! #丢弃所有的修改并退出</span><br><span class="line">:e! #放弃所有修改并重新载入该文件的原始内容</span><br></pre></td></tr></table></figure>
+<p>以Word为单位的移动</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">w #可以将光标向前移动一个word的首字符上；比如&quot;3w&quot;将光标向前移动3个words。&quot;b&quot;命令则将光标向后移动到前一个word的首字符上。</span><br><span class="line">e #会将光标移动到下一个word的最后一个字符。命令&quot;ge&quot;，它将光标移动到前一个word的最后一个字符上。</span><br></pre></td></tr></table></figure>
+<p>移动到行首或行尾</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ #命令将光标移动到当前行行尾。&quot;$&quot;命令还可接受一个计数，如&quot;1$&quot;会将光标移动到当前行行尾，&quot;2$&quot;则会移动到下一行的行尾，如此类推。</span><br><span class="line">^ #命令将光标移动到当前行的第一个非空白字符上。&quot;0&quot;命令则总是把光标移动到当前行的第一个字符上。</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>“0”命令却不能接受类似这样的计数，命令”^”前加上一个计数也没有任何效果。</p>
+</blockquote>
+<p>移动到指定字符上</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fx #在当前行上查找下一个字符x（向右方向），可以带一个命令计数&quot;F&quot;命令向左方向搜索。&quot;tx&quot;命令形同&quot;fx&quot;命令，只不过它不是把光标停留在被搜索字符上，而是在它之前的一个字符上。提示：&quot;t&quot;意为&quot;To&quot;。该命令的反方向版是&quot;Tx&quot;。这4个命令都可以用&quot;;&quot;来重复。以&quot;,&quot;也是重复同样的命令，但是方向与原命令的方向相反。</span><br></pre></td></tr></table></figure>
+<p>以匹配一个括号为目的移动</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">用命令&quot;%&quot;跳转到与当前光标下的括号相匹配的那一个括号上去。如果当前光标在&quot;(&quot;上，它就向前跳转到与它匹配的&quot;)&quot;上，如果当前在&quot;)&quot;上，它就向后自动跳转到匹配的&quot;(&quot;上去.</span><br></pre></td></tr></table></figure>
+<p>移动到指定行</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">用&quot;G&quot;命令指定一个命令计数，这个命令就会把光标定位到由命令计数指定的行上。比如&quot;33G&quot;就会把光标置于第33行上。没有指定命令计数作为参数的话, &quot;G&quot;会把光标定位到最后一行上。&quot;gg&quot;命令是跳转到第一行的快捷的方法。</span><br><span class="line">另一个移动到某行的方法是在命令&quot;%&quot;之前指定一个命令计数比如&quot;50%&quot;将会把光标定位在文件的中间. &quot;90%&quot;跳到接近文件尾的地方。</span><br><span class="line">命令&quot;H&quot;,&quot;M&quot;,&quot;L&quot;,分别将光标跳转到第一行，中间行，结尾行部分。</span><br></pre></td></tr></table></figure>
+
+
+
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/linux/">linux</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://github.com/dxysun/2019/08/03/linuxForVim/" data-title="linux命令之vim常用命令 | 迎着朝阳的博客" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2019/08/31/aliyunForServerReStart/" title="阿里云重启后应用启动记录">
+  <strong>上一篇：</strong><br/>
+  <span>
+  阿里云重启后应用启动记录</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2019/08/03/linuxForLess/"  title="linux命令之less常用命令">
+ <strong>下一篇：</strong><br/> 
+ <span>linux命令之less常用命令
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#vim-%E9%80%89%E6%8B%A9%E6%96%87%E6%9C%AC%EF%BC%8C%E5%88%A0%E9%99%A4%EF%BC%8C%E5%A4%8D%E5%88%B6%EF%BC%8C%E7%B2%98%E8%B4%B4"><span class="toc-number">1.</span> <span class="toc-text">vim 选择文本，删除，复制，粘贴</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+
+  
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">Categories</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/spring官方文档/" title="spring官方文档">spring官方文档<sup>8</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>54</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/linux/" title="linux">linux<sup>34</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/centos/" title="centos">centos<sup>19</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/springboot/" title="springboot">springboot<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/ubuntu/" title="ubuntu">ubuntu<sup>9</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/hadoop/" title="hadoop">hadoop<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/spring/" title="spring">spring<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/nginx/" title="nginx">nginx<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/spark/" title="spark">spark<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/mybatis/" title="mybatis">mybatis<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/mysql/" title="mysql">mysql<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/算法/" title="算法">算法<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/git/" title="git">git<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/maven/" title="maven">maven<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/hdfs/" title="hdfs">hdfs<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/dubbo/" title="dubbo">dubbo<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/kafka/" title="kafka">kafka<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Hbase/" title="Hbase">Hbase<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/sql/" title="sql">sql<sup>2</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="http://majorkevin.xyz/blog/" target="_blank" title="朋友的博客">朋友的博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+  <div class="weiboshow">
+  <p class="asidetitle">Weibo</p>
+    <iframe width="100%" height="119" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=119&fansRow=2&ptype=1&speed=0&skin=9&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=&verifier=&dpc=1"></iframe>
+</div>
+
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> Hello ,I&#39;m dxysun. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2020 
+		
+		<a href="/about" target="_blank" title="dxysun">dxysun</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?e6d1f421bbc9962127a50488f9ed37d1";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

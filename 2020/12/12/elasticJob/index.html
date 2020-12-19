@@ -1,0 +1,770 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>Elastic-Job 架构与整体介绍 | 迎着朝阳的博客</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="dxysun">
+    
+
+    
+    <meta name="description" content="Elastic-Job 是 ddframe 中的 dd-job 作业模块分离出来的作业框架，基于 Quartz 和 Curator 开发，在 2015 年开源。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Elastic-Job 架构与整体介绍">
+<meta property="og:url" content="https://github.com/dxysun/2020/12/12/elasticJob/index.html">
+<meta property="og:site_name" content="迎着朝阳的博客">
+<meta property="og:description" content="Elastic-Job 是 ddframe 中的 dd-job 作业模块分离出来的作业框架，基于 Quartz 和 Curator 开发，在 2015 年开源。">
+<meta property="og:locale">
+<meta property="og:image" content="https://tu.dxysun.com/20201213000839.png">
+<meta property="og:image" content="https://tu.dxysun.com/20201213001106.png">
+<meta property="og:image" content="https://tu.dxysun.com/20201213001745.png">
+<meta property="og:image" content="https://tu.dxysun.com/20201213001944.png">
+<meta property="og:image" content="https://tu.dxysun.com/20201213002218.png">
+<meta property="og:image" content="https://tu.dxysun.com/image.png">
+<meta property="og:image" content="https://tu.dxysun.com/20201213002700.png">
+<meta property="og:image" content="https://tu.dxysun.com/job_exec.jpg">
+<meta property="og:image" content="https://tu.dxysun.com/job.png">
+<meta property="og:image" content="https://tu.dxysun.com/20201213003212.png">
+<meta property="og:image" content="https://tu.dxysun.com/20201213003259.png">
+<meta property="og:image" content="https://tu.dxysun.com/20201213003547.png">
+<meta property="og:image" content="https://tu.dxysun.com/20201213003640.png">
+<meta property="og:image" content="https://tu.dxysun.com/20201213003718.png">
+<meta property="article:published_time" content="2020-12-12T15:57:58.000Z">
+<meta property="article:modified_time" content="2020-12-12T17:28:50.836Z">
+<meta property="article:author" content="dxysun">
+<meta property="article:tag" content="java">
+<meta property="article:tag" content="elastic-job">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://tu.dxysun.com/20201213000839.png">
+
+    
+    <link rel="alternative" href="/atom.xml" title="迎着朝阳的博客" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    
+<link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/%02.css">
+<link rel="stylesheet" href="/.css">
+
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="迎着朝阳的博客" title="迎着朝阳的博客"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="迎着朝阳的博客">迎着朝阳的博客</a></h1>
+				<h2 class="blog-motto"></h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">主页</a></li>
+					
+						<li><a href="/archives">归档</a></li>
+					
+						<li><a href="/about">关于</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:github.com/dxysun">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2020/12/12/elasticJob/" title="Elastic-Job 架构与整体介绍" itemprop="url">Elastic-Job 架构与整体介绍</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="dxysun" target="_blank" itemprop="author">dxysun</a>
+		
+  <p class="article-time">
+    <time datetime="2020-12-12T15:57:58.000Z" itemprop="datePublished"> Published 2020-12-12</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%BA%E6%9C%AC%E4%BB%8B%E7%BB%8D"><span class="toc-number">1.</span> <span class="toc-text">基本介绍</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8A%9F%E8%83%BD%E5%88%97%E8%A1%A8"><span class="toc-number">2.</span> <span class="toc-text">功能列表</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A1%B9%E7%9B%AE%E6%9E%B6%E6%9E%84"><span class="toc-number">3.</span> <span class="toc-text">项目架构</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#ElasticJob-lite"><span class="toc-number">3.1.</span> <span class="toc-text">ElasticJob-lite</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ElasticJob-Cloud"><span class="toc-number">3.2.</span> <span class="toc-text">ElasticJob-Cloud</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B0%83%E5%BA%A6%E6%A8%A1%E5%9E%8B"><span class="toc-number">4.</span> <span class="toc-text">调度模型</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%9B%E7%A8%8B%E5%86%85%E8%B0%83%E5%BA%A6"><span class="toc-number">4.1.</span> <span class="toc-text">进程内调度</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%9B%E7%A8%8B%E7%BA%A7%E8%B0%83%E5%BA%A6"><span class="toc-number">4.2.</span> <span class="toc-text">进程级调度</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%9C%E4%B8%9A%E6%8E%A5%E5%8F%A3"><span class="toc-number">5.</span> <span class="toc-text">作业接口</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%9C%E4%B8%9A%E7%9B%91%E5%90%AC"><span class="toc-number">6.</span> <span class="toc-text">作业监听</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%B8%E8%A7%84%E7%9B%91%E5%90%AC%E5%99%A8"><span class="toc-number">6.1.</span> <span class="toc-text">常规监听器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%86%E5%B8%83%E5%BC%8F%E7%9B%91%E5%90%AC%E5%99%A8"><span class="toc-number">6.2.</span> <span class="toc-text">分布式监听器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#SPI%E5%AE%9E%E7%8E%B0"><span class="toc-number">6.3.</span> <span class="toc-text">SPI实现</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8B%E4%BB%B6%E8%BF%BD%E8%B8%AA"><span class="toc-number">7.</span> <span class="toc-text">事件追踪</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BC%B9%E6%80%A7%E8%B0%83%E5%BA%A6"><span class="toc-number">8.</span> <span class="toc-text">弹性调度</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%86%E7%89%87"><span class="toc-number">8.1.</span> <span class="toc-text">分片</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B5%84%E6%BA%90%E6%9C%80%E5%A4%A7%E9%99%90%E5%BA%A6%E5%88%A9%E7%94%A8"><span class="toc-number">8.2.</span> <span class="toc-text">资源最大限度利用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%AB%98%E5%8F%AF%E7%94%A8"><span class="toc-number">8.3.</span> <span class="toc-text">高可用</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ElasticJob-Lite-%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86"><span class="toc-number">9.</span> <span class="toc-text">ElasticJob-Lite 实现原理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BC%B9%E6%80%A7%E5%88%86%E5%B8%83%E5%BC%8F%E5%AE%9E%E7%8E%B0"><span class="toc-number">9.1.</span> <span class="toc-text">弹性分布式实现</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B3%A8%E5%86%8C%E4%B8%AD%E5%BF%83%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84"><span class="toc-number">10.</span> <span class="toc-text">注册中心数据结构</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%9C%E4%B8%9A%E6%B5%81%E7%A8%8B%E5%9B%BE"><span class="toc-number">11.</span> <span class="toc-text">作业流程图</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%9C%E4%B8%9A%E5%90%AF%E5%8A%A8"><span class="toc-number">11.1.</span> <span class="toc-text">作业启动</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%9C%E4%B8%9A%E6%89%A7%E8%A1%8C"><span class="toc-number">11.2.</span> <span class="toc-text">作业执行</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%B1%E6%95%88%E8%BD%AC%E7%A7%BB"><span class="toc-number">12.</span> <span class="toc-text">失效转移</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%89%A7%E8%A1%8C%E6%9C%BA%E5%88%B6"><span class="toc-number">13.</span> <span class="toc-text">执行机制</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%80%9A%E7%9F%A5%E6%89%A7%E8%A1%8C"><span class="toc-number">13.1.</span> <span class="toc-text">通知执行</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%97%AE%E8%AF%A2%E6%89%A7%E8%A1%8C"><span class="toc-number">13.2.</span> <span class="toc-text">问询执行</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%80%82%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="toc-number">13.3.</span> <span class="toc-text">适用场景</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%94%99%E8%BF%87%E4%BB%BB%E5%8A%A1%E9%87%8D%E6%89%A7%E8%A1%8C"><span class="toc-number">14.</span> <span class="toc-text">错过任务重执行</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A6%82%E5%BF%B5"><span class="toc-number">14.1.</span> <span class="toc-text">概念</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%80%82%E7%94%A8%E5%9C%BA%E6%99%AF-1"><span class="toc-number">14.2.</span> <span class="toc-text">适用场景</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%86%85%E7%BD%AE%E7%AD%96%E7%95%A5"><span class="toc-number">15.</span> <span class="toc-text">内置策略</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%86%E7%89%87%E7%AD%96%E7%95%A5"><span class="toc-number">15.1.</span> <span class="toc-text">分片策略</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BA%BF%E7%A8%8B%E6%B1%A0%E7%AD%96%E7%95%A5"><span class="toc-number">15.2.</span> <span class="toc-text">线程池策略</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#CPU-%E8%B5%84%E6%BA%90%E7%AD%96%E7%95%A5"><span class="toc-number">15.2.1.</span> <span class="toc-text">CPU 资源策略</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8D%95%E7%BA%BF%E7%A8%8B%E7%AD%96%E7%95%A5"><span class="toc-number">15.2.2.</span> <span class="toc-text">单线程策略</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%94%99%E8%AF%AF%E5%A4%84%E7%90%86%E7%AD%96%E7%95%A5"><span class="toc-number">15.3.</span> <span class="toc-text">错误处理策略</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%AE%B0%E5%BD%95%E6%97%A5%E5%BF%97%E7%AD%96%E7%95%A5"><span class="toc-number">15.3.1.</span> <span class="toc-text">记录日志策略</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%8A%9B%E5%87%BA%E5%BC%82%E5%B8%B8%E7%AD%96%E7%95%A5"><span class="toc-number">15.3.2.</span> <span class="toc-text">抛出异常策略</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%BF%BD%E7%95%A5%E5%BC%82%E5%B8%B8%E7%AD%96%E7%95%A5"><span class="toc-number">15.3.3.</span> <span class="toc-text">忽略异常策略</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%82%AE%E4%BB%B6%E9%80%9A%E7%9F%A5%E7%AD%96%E7%95%A5"><span class="toc-number">15.3.4.</span> <span class="toc-text">邮件通知策略</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BC%81%E4%B8%9A%E5%BE%AE%E4%BF%A1%E9%80%9A%E7%9F%A5%E7%AD%96%E7%95%A5"><span class="toc-number">15.3.5.</span> <span class="toc-text">企业微信通知策略</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%92%89%E9%92%89%E9%80%9A%E7%9F%A5%E7%AD%96%E7%95%A5"><span class="toc-number">15.3.6.</span> <span class="toc-text">钉钉通知策略</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%90%E7%BB%B4%E5%B9%B3%E5%8F%B0"><span class="toc-number">16.</span> <span class="toc-text">运维平台</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83"><span class="toc-number">17.</span> <span class="toc-text">参考</span></a></li></ol>
+		
+		</div>
+		
+		<p>Elastic-Job 是 ddframe 中的 dd-job 作业模块分离出来的作业框架，基于 Quartz 和 Curator 开发，在 2015 年开源。</p>
+<a id="more"></a>
+
+
+
+<h2 id="基本介绍"><a href="#基本介绍" class="headerlink" title="基本介绍"></a>基本介绍</h2><p>Elastic-Job提供了一种轻量级，无中心化解决方案。</p>
+<p>没有统一的调度中心。集群的每个节点都是对等的， 节点之间通过注册中心进行分布式协调。E-Job 存在主节点的概念，但是主节点没有调度 的功能，而是用于处理一些集中式任务，如分片，清理运行时信息等。</p>
+<p>Elastic-Job 最开始只有一个 elastic-job-core 的项目，在 2.X 版本以后主要分为 Elastic-Job-Lite 和 Elastic-Job-Cloud 两个子项目。</p>
+<p>其中，Elastic-Job-Lite 定位为轻量 级无中心化解决方案，使用 jar 包的形式提供分布式任务的协调服务。而 Elastic-Job-Cloud 使用 Mesos + Docker 的解决方案，额外提供资源治理、应用分发以及进程隔离等服务(跟 Lite 的区别只是部署方式不同，他们使用相同的 API，只要开发 一次)。</p>
+<h2 id="功能列表"><a href="#功能列表" class="headerlink" title="功能列表"></a>功能列表</h2><ul>
+<li><p>弹性调度</p>
+</li>
+<li><ul>
+<li>支持任务在分布式场景下的分片和高可用</li>
+<li>能够水平扩展任务的吞吐量和执行效率</li>
+<li>任务处理能力随资源配备弹性伸缩</li>
+</ul>
+</li>
+<li><p>资源分配</p>
+</li>
+<li><ul>
+<li>在适合的时间将适合的资源分配给任务并使其生效</li>
+<li>相同任务聚合至相同的执行器统一处理</li>
+<li>动态调配追加资源至新分配的任务</li>
+</ul>
+</li>
+<li><p>作业治理</p>
+</li>
+<li><ul>
+<li>失效转移</li>
+<li>错过作业重新执行</li>
+<li>自诊断修复</li>
+</ul>
+</li>
+<li><p>作业依赖(TODO)</p>
+</li>
+<li><ul>
+<li>基于有向无环图（DAG）的作业间依赖</li>
+<li>基于有向无环图（DAG）的作业分片间依赖</li>
+</ul>
+</li>
+<li><p>作业开放生态</p>
+</li>
+<li><ul>
+<li>可扩展的作业类型统一接口</li>
+<li>丰富的作业类型库，如数据流、脚本、HTTP、文件、大数据等</li>
+<li>易于对接业务作业，能够与 Spring 依赖注入无缝整合</li>
+</ul>
+</li>
+<li><p>可视化管控端</p>
+</li>
+<li><ul>
+<li>作业管控端</li>
+<li>作业执行历史数据追踪</li>
+<li>注册中心管理</li>
+</ul>
+</li>
+</ul>
+<h2 id="项目架构"><a href="#项目架构" class="headerlink" title="项目架构"></a>项目架构</h2><h3 id="ElasticJob-lite"><a href="#ElasticJob-lite" class="headerlink" title="ElasticJob-lite"></a>ElasticJob-lite</h3><p>架构图</p>
+<p><img src="https://tu.dxysun.com/20201213000839.png"></p>
+<h3 id="ElasticJob-Cloud"><a href="#ElasticJob-Cloud" class="headerlink" title="ElasticJob-Cloud"></a>ElasticJob-Cloud</h3><p>采用自研 Mesos Framework 的解决方案，额外提供资源治理、应用分发以及进程隔离等功能。</p>
+<p>架构图 </p>
+<p><img src="https://tu.dxysun.com/20201213001106.png"></p>
+<h2 id="调度模型"><a href="#调度模型" class="headerlink" title="调度模型"></a>调度模型</h2><h3 id="进程内调度"><a href="#进程内调度" class="headerlink" title="进程内调度"></a>进程内调度</h3><p>ElasticJob-Lite 是面向进程内的线程级调度框架。通过它，作业能够透明化的与业务应用系统相结合。 它能够方便的与 Spring 、Dubbo 等 Java 框架配合使用，在作业中可自由使用 Spring 注入的 Bean，如数据源连接池、Dubbo 远程服务等，更加方便的贴合业务开发。</p>
+<h3 id="进程级调度"><a href="#进程级调度" class="headerlink" title="进程级调度"></a>进程级调度</h3><p>ElasticJob-Cloud 拥有进程内调度和进程级别调度两种方式。 由于 ElasticJob-Cloud 能够对作业服务器的资源进行控制，因此其作业类型可划分为常驻任务和瞬时任务。 常驻任务类似于 ElasticJob-Lite，是进程内调度；瞬时任务则完全不同，它充分的利用了资源分配的削峰填谷能力，是进程级的调度，每次任务的会启动全新的进程处理。</p>
+<h2 id="作业接口"><a href="#作业接口" class="headerlink" title="作业接口"></a>作业接口</h2><p>ElasticJob 的作业可划分为基于 class 类型和基于 type 类型两种。</p>
+<p>Class 类型的作业由开发者直接使用，需要由开发者实现该作业接口实现业务逻辑。典型代表：Simple 类型、Dataflow 类型。</p>
+<ul>
+<li><p>Simple 类型，意为简单实现，未经任何封装的类型。需实现 SimpleJob 接口。 该接口仅提供单一方法用于覆盖，此方法将定时执行。 与Quartz原生接口相似，但提供了弹性扩缩容和分片等功能。</p>
+</li>
+<li><p>Dataflow 类型用于处理数据流，必须实现 fetchData()和 processData()的方法，一个用来获取数据，一个用来处理获取到的数据。</p>
+</li>
+</ul>
+<p>Type 类型的作业只需提供类型名称即可，开发者无需实现该作业接口，而是通过外置配置的方式使用。典型代表：Script 类型、HTTP 类型。</p>
+<ul>
+<li><p>Script 类型，支持 shell，python，perl 等所有类型脚本。 可通过属性配置 script.command.line 配置待执行脚本，无需编码。 执行脚本路径可包含参数，参数传递完毕后，作业框架会自动追加最后一个参数为作业运行时信息。</p>
+</li>
+<li><p>HTTP 类型，3.0.0-beta 提供，可通过属性配置http.url,http.method,http.data等配置待请求的http信息。 分片信息以Header形式传递，key为shardingContext，值为json格式。</p>
+</li>
+</ul>
+<h2 id="作业监听"><a href="#作业监听" class="headerlink" title="作业监听"></a>作业监听</h2><h3 id="常规监听器"><a href="#常规监听器" class="headerlink" title="常规监听器"></a>常规监听器</h3><p>例如执行任务处理作业服务器的文件，处理完成后删除文件，可考虑使用每个节点均执行清理任务。 此类型任务实现简单，且无需考虑全局分布式任务是否完成，应尽量使用此类型监听器。</p>
+<p>需要实现ElasticJobListener 接口</p>
+<h3 id="分布式监听器"><a href="#分布式监听器" class="headerlink" title="分布式监听器"></a>分布式监听器</h3><p>例如作业处理数据库数据，处理完成后只需一个节点完成数据清理任务即可。 此类型任务处理复杂，需同步分布式环境下作业的状态同步，提供了超时设置来避免作业不同步导致的死锁，应谨慎使用。</p>
+<p>需要继承AbstractDistributeOnceElasticJobListener 抽象类</p>
+<h3 id="SPI实现"><a href="#SPI实现" class="headerlink" title="SPI实现"></a>SPI实现</h3><p>将JobListener实现添加至infra-common下resources/META-INF/services/org.apache.shardingsphere.elasticjob.infra.listener.ElasticJobListener</p>
+<h2 id="事件追踪"><a href="#事件追踪" class="headerlink" title="事件追踪"></a>事件追踪</h2><p>ElasticJob 提供了事件追踪功能，可通过事件订阅的方式处理调度过程的重要事件，用于查询、统计和监控。 目前提供了基于关系型数据库的事件订阅方式记录事件。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 初始化数据源</span></span><br><span class="line">DataSource dataSource = ...;</span><br><span class="line"><span class="comment">// 定义日志数据库事件溯源配置</span></span><br><span class="line">TracingConfiguration tracingConfig = <span class="keyword">new</span> TracingConfiguration&lt;&gt;(<span class="string">&quot;RDB&quot;</span>, dataSource);</span><br><span class="line"><span class="comment">// 初始化注册中心</span></span><br><span class="line">CoordinatorRegistryCenter regCenter = ...;</span><br><span class="line"><span class="comment">// 初始化作业配置</span></span><br><span class="line">JobConfiguration jobConfig = ...;</span><br><span class="line">jobConfig.getExtraConfigurations().add(tracingConfig);</span><br><span class="line"><span class="keyword">new</span> ScheduleJobBootstrap(regCenter, jobConfig).schedule();</span><br></pre></td></tr></table></figure>
+<p>对应库自动创建 JOB_EXECUTION_LOG 和 JOB_STATUS_TRACE_LOG 两张表以及若干索引。</p>
+<h2 id="弹性调度"><a href="#弹性调度" class="headerlink" title="弹性调度"></a>弹性调度</h2><p>弹性调度是 ElasticJob 最重要的功能，能够让任务通过分片进行水平扩展的任务处理。</p>
+<h3 id="分片"><a href="#分片" class="headerlink" title="分片"></a>分片</h3><p>ElasticJob 中任务分片项的概念，使得任务可以在分布式的环境下运行，每台任务服务器只运行分配给该服务器的分片。 随着服务器的增加或宕机，ElasticJob 会近乎实时的感知服务器数量的变更，从而重新为分布式的任务服务器分配更加合理的任务分片项，使得任务可以随着资源的增加而提升效率。</p>
+<p>任务的分布式执行，需要将一个任务拆分为多个独立的任务项，然后由分布式的服务器分别执行某一个或几个分片项。</p>
+<p>举例说明，如果作业分为 4 片，用两台服务器执行，则每个服务器分到 2 片，分别负责作业的 50% 的负载，如下图所示。</p>
+<p><img src="https://tu.dxysun.com/20201213001745.png"></p>
+<p>ElasticJob 可以设置分片项和自定义分片参数</p>
+<p>个性化参数可以和分片项匹配对应关系，用于将分片项的数字转换为更加可读的业务代码。</p>
+<p>例如：按照地区水平拆分数据库，数据库 A 是北京的数据；数据库 B 是上海的数据；数据库 C 是广州的数据。 如果仅按照分片项配置，开发者需要了解 0 表示北京；1 表示上海；2 表示广州。 合理使用个性化参数可以让代码更可读，如果配置为 0=北京,1=上海,2=广州，那么代码中直接使用北京，上海，广州的枚举值即可完成分片项和业务逻辑的对应关系。</p>
+<h3 id="资源最大限度利用"><a href="#资源最大限度利用" class="headerlink" title="资源最大限度利用"></a>资源最大限度利用</h3><p>ElasticJob 提供最灵活的方式，最大限度的提高执行作业的吞吐量。 当新增加作业服务器时，ElasticJob 会通过注册中心的临时节点的变化感知到新服务器的存在，并在下次任务调度的时候重新分片，新的服务器会承载一部分作业分片，如下图所示。</p>
+<p><img src="https://tu.dxysun.com/20201213001944.png"></p>
+<p>将分片项设置为大于服务器的数量，最好是大于服务器倍数的数量，作业将会合理的利用分布式资源，动态的分配分片项。</p>
+<p>例如：3 台服务器，分成 10 片，则分片项分配结果为服务器 A = 0,1,2；服务器 B = 3,4,5；服务器 C = 6,7,8,9。 如果服务器 C 崩溃，则分片项分配结果为服务器 A = 0,1,2,3,4; 服务器 B = 5,6,7,8,9。 在不丢失分片项的情况下，最大限度的利用现有资源提高吞吐量。</p>
+<h3 id="高可用"><a href="#高可用" class="headerlink" title="高可用"></a>高可用</h3><p>当作业服务器在运行中宕机时，注册中心同样会通过临时节点感知，并将在下次运行时将分片转移至仍存活的服务器，以达到作业高可用的效果。 本次由于服务器宕机而未执行完的作业，则可以通过失效转移的方式继续执行。如下图所示。</p>
+<p><img src="https://tu.dxysun.com/20201213002218.png"></p>
+<h2 id="ElasticJob-Lite-实现原理"><a href="#ElasticJob-Lite-实现原理" class="headerlink" title="ElasticJob-Lite 实现原理"></a>ElasticJob-Lite 实现原理</h2><p>ElasticJob-Lite 并无作业调度中心节点，而是基于部署作业框架的程序在到达相应时间点时各自触发调度。 注册中心仅用于作业注册和监控信息存储。而主作业节点仅用于处理分片和清理等功能。</p>
+<h3 id="弹性分布式实现"><a href="#弹性分布式实现" class="headerlink" title="弹性分布式实现"></a>弹性分布式实现</h3><ul>
+<li>第一台服务器上线触发主服务器选举。主服务器一旦下线，则重新触发选举，选举过程中阻塞，只有主服务器选举完成，才会执行其他任务。</li>
+<li>某作业服务器上线时会自动将服务器信息注册到注册中心，下线时会自动更新服务器状态。</li>
+<li>主节点选举，服务器上下线，分片总数变更均更新重新分片标记。</li>
+<li>定时任务触发时，如需重新分片，则通过主服务器分片，分片过程中阻塞，分片结束后才可执行任务。如分片过程中主服务器下线，则先选举主服务器，再分片。</li>
+<li>通过上一项说明可知，为了维持作业运行时的稳定性，运行过程中只会标记分片状态，不会重新分片。分片仅可能发生在下次任务触发前。</li>
+<li>每次分片都会按服务器IP排序，保证分片结果不会产生较大波动。</li>
+<li>实现失效转移功能，在某台服务器执行完毕后主动抓取未分配的分片，并且在某台服务器下线后主动寻找可用的服务器执行任务。</li>
+</ul>
+<h2 id="注册中心数据结构"><a href="#注册中心数据结构" class="headerlink" title="注册中心数据结构"></a>注册中心数据结构</h2><p>注册中心在定义的命名空间下，创建作业名称节点，用于区分不同作业，所以作业一旦创建则不能修改作业名称，如果修改名称将视为新的作业。 作业名称节点下又包含5个数据子节点，分别是 config, instances, sharding, servers 和 leader。</p>
+<p><img src="https://tu.dxysun.com/image.png" alt="image"></p>
+<p>config 节点：作业配置信息，以 YAML 格式存储</p>
+<p>instances 节点：作业运行实例信息，子节点是当前作业运行实例的主键。 作业运行实例主键由作业运行服务器的 IP 地址和 PID 构成。 作业运行实例主键均为临时节点，当作业实例上线时注册，下线时自动清理。注册中心监控这些节点的变化来协调分布式作业的分片以及高可用。 可在作业运行实例节点写入 TRIGGER 表示该实例立即执行一次。</p>
+<p>sharding 节点：作业分片信息，子节点是分片项序号，从零开始，至分片总数减一。 分片项序号的子节点存储详细信息。每个分片项下的子节点用于控制和记录分片运行状态。 节点详细信息说明：</p>
+<table>
+<thead>
+<tr>
+<th align="left">子节点名</th>
+<th>临时节点</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">instance</td>
+<td>否</td>
+<td>执行该分片项的作业运行实例主键</td>
+</tr>
+<tr>
+<td align="left">running</td>
+<td>是</td>
+<td>分片项正在运行的状态仅配置 monitorExecution 时有效</td>
+</tr>
+<tr>
+<td align="left">failover</td>
+<td>是</td>
+<td>如果该分片项被失效转移分配给其他作业服务器，则此节点值记录执行此分片的作业服务器 IP</td>
+</tr>
+<tr>
+<td align="left">misfire</td>
+<td>否</td>
+<td>是否开启错过任务重新执行</td>
+</tr>
+<tr>
+<td align="left">disabled</td>
+<td>否</td>
+<td>是否禁用此分片项</td>
+</tr>
+</tbody></table>
+<p>servers 节点：作业服务器信息，子节点是作业服务器的 IP 地址。 可在 IP 地址节点写入 DISABLED 表示该服务器禁用。 在新的云原生架构下，servers 节点大幅弱化，仅包含控制服务器是否可以禁用这一功能。 为了更加纯粹的实现作业核心，servers 功能未来可能删除，控制服务器是否禁用的能力应该下放至自动化部署系统。</p>
+<p>leader 节点：作业服务器主节点信息，分为 election，sharding 和 failover 三个子节点。 分别用于主节点选举，分片和失效转移处理。</p>
+<h2 id="作业流程图"><a href="#作业流程图" class="headerlink" title="作业流程图"></a>作业流程图</h2><h3 id="作业启动"><a href="#作业启动" class="headerlink" title="作业启动"></a>作业启动</h3><p><img src="https://tu.dxysun.com/20201213002700.png" alt="1"></p>
+<h3 id="作业执行"><a href="#作业执行" class="headerlink" title="作业执行"></a>作业执行</h3><p><img src="https://tu.dxysun.com/job_exec.jpg" alt="作业执行"></p>
+<h2 id="失效转移"><a href="#失效转移" class="headerlink" title="失效转移"></a>失效转移</h2><p>ElasticJob 不会在本次执行过程中进行重新分片，而是等待下次调度之前才开启重新分片流程。 当作业执行过程中服务器宕机，失效转移允许将该次未完成的任务在另一作业节点上补偿执行。</p>
+<p>失效转移需要与监听作业运行时状态同时开启才可生效。</p>
+<p>失效转移是当前执行作业的临时补偿执行机制，在下次作业运行时，会通过重分片对当前作业分配进行调整。 举例说明，若作业以每小时为间隔执行，每次执行耗时 30 分钟。如下如图所示。</p>
+<p><img src="https://tu.dxysun.com/job.png"></p>
+<p>图中表示作业分别于 12:00，13:00 和 14:00 执行。图中显示的当前时间点为 13:00 的作业执行中。</p>
+<p>如果作业的其中一个分片服务器在 13:10 的时候宕机，那么剩余的 20 分钟应该处理的业务未得到执行，并且需要在 14:00 时才能再次开始执行下一次作业。 也就是说，在不开启失效转移的情况下，位于该分片的作业有 50 分钟空档期。如下如图所示。</p>
+<p><img src="https://tu.dxysun.com/20201213003212.png"></p>
+<p>在开启失效转移功能之后，ElasticJob 的其他服务器能够在感知到宕机的作业服务器之后，补偿执行该分片作业。如下图所示。</p>
+<p><img src="https://tu.dxysun.com/20201213003259.png"></p>
+<p>在资源充足的情况下，作业仍然能够在 13:30 完成执行。</p>
+<h2 id="执行机制"><a href="#执行机制" class="headerlink" title="执行机制"></a>执行机制</h2><p>当作业执行节点宕机时，会触发失效转移流程。ElasticJob 根据触发时的分布式作业执行的不同状况来决定失效转移的执行时机。</p>
+<h3 id="通知执行"><a href="#通知执行" class="headerlink" title="通知执行"></a>通知执行</h3><p>当其他服务器感知到有失效转移的作业需要处理时，且该作业服务器已经完成了本次任务，则会实时的拉取待失效转移的分片项，并开始补偿执行。 也称为实时执行。</p>
+<h3 id="问询执行"><a href="#问询执行" class="headerlink" title="问询执行"></a>问询执行</h3><p>作业服务在本次任务执行结束后，会向注册中心问询待执行的失效转移分片项，如果有，则开始补偿执行。 也称为异步执行。</p>
+<h3 id="适用场景"><a href="#适用场景" class="headerlink" title="适用场景"></a>适用场景</h3><p>开启失效转移功能，ElasticJob 会监控作业每一分片的执行状态，并将其写入注册中心，供其他节点感知。</p>
+<p>在一次运行耗时较长且间隔较长的作业场景，失效转移是提升作业运行实时性的有效手段； 对于间隔较短的作业，会产生大量与注册中心的网络通信，对集群的性能产生影响。 而且间隔较短的作业并未见得关注单次作业的实时性，可以通过下次作业执行的重分片使所有的分片正确执行，因此不建议短间隔作业开启失效转移。</p>
+<p>另外需要注意的是，作业本身的幂等性，是保证失效转移正确性的前提。</p>
+<h2 id="错过任务重执行"><a href="#错过任务重执行" class="headerlink" title="错过任务重执行"></a>错过任务重执行</h2><h3 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h3><p>ElasticJob 不允许作业在同一时间内叠加执行。 当作业的执行时长超过其运行间隔，错过任务重执行能够保证作业在完成上次的任务后继续执行逾期的作业。</p>
+<p>错过任务重执行功能可以使逾期未执行的作业在之前作业执行完成之后立即执行。 举例说明，若作业以每小时为间隔执行，每次执行耗时 30 分钟。如下如图所示。</p>
+<p><img src="https://tu.dxysun.com/20201213003547.png"></p>
+<p>图中表示作业分别于 12:00，13:00 和 14:00 执行。图中显示的当前时间点为 13:00 的作业执行中。</p>
+<p>如果 12：00 开始执行的作业在 13:10 才执行完毕，那么本该由 13:00 触发的作业则错过了触发时间，需要等待至 14:00 的下次作业触发。 如下如图所示。</p>
+<p><img src="https://tu.dxysun.com/20201213003640.png"></p>
+<p>在开启错过任务重执行功能之后，ElasticJob 将会在上次作业执行完毕后，立刻触发执行错过的作业。如下图所示。</p>
+<p><img src="https://tu.dxysun.com/20201213003718.png"></p>
+<p>在 13：00 和 14:00 之间错过的作业将会重新执行。</p>
+<h3 id="适用场景-1"><a href="#适用场景-1" class="headerlink" title="适用场景"></a>适用场景</h3><p>在一次运行耗时较长且间隔较长的作业场景，错过任务重执行是提升作业运行实时性的有效手段； 对于未见得关注单次作业的实时性的短间隔的作业来说，开启错过任务重执行并无必要。</p>
+<h2 id="内置策略"><a href="#内置策略" class="headerlink" title="内置策略"></a>内置策略</h2><h3 id="分片策略"><a href="#分片策略" class="headerlink" title="分片策略"></a>分片策略</h3><p>平均分片策略，根据分片项平均分片</p>
+<p>奇偶分片策略，根据作业名称哈希值的奇偶数决定按照作业服务器 IP 升序或是降序的方式分片</p>
+<p>轮询分片策略，根据作业名称轮询分片</p>
+<h3 id="线程池策略"><a href="#线程池策略" class="headerlink" title="线程池策略"></a>线程池策略</h3><h4 id="CPU-资源策略"><a href="#CPU-资源策略" class="headerlink" title="CPU 资源策略"></a>CPU 资源策略</h4><p>类型：CPU</p>
+<p>根据 CPU 核数 * 2 创建作业处理线程池。</p>
+<h4 id="单线程策略"><a href="#单线程策略" class="headerlink" title="单线程策略"></a>单线程策略</h4><p>类型：SINGLE_THREAD</p>
+<p>使用单线程处理作业。</p>
+<h3 id="错误处理策略"><a href="#错误处理策略" class="headerlink" title="错误处理策略"></a>错误处理策略</h3><h4 id="记录日志策略"><a href="#记录日志策略" class="headerlink" title="记录日志策略"></a>记录日志策略</h4><p>类型：LOG</p>
+<p>默认内置：是</p>
+<p>记录作业异常日志，但不中断作业执行。</p>
+<h4 id="抛出异常策略"><a href="#抛出异常策略" class="headerlink" title="抛出异常策略"></a>抛出异常策略</h4><p>类型：THROW</p>
+<p>默认内置：是</p>
+<p>抛出系统异常并中断作业执行。</p>
+<h4 id="忽略异常策略"><a href="#忽略异常策略" class="headerlink" title="忽略异常策略"></a>忽略异常策略</h4><p>类型：IGNORE</p>
+<p>默认内置：是</p>
+<p>忽略系统异常且不中断作业执行。</p>
+<h4 id="邮件通知策略"><a href="#邮件通知策略" class="headerlink" title="邮件通知策略"></a>邮件通知策略</h4><p>类型：EMAIL</p>
+<p>默认内置：否</p>
+<p>发送邮件消息通知，但不中断作业执行。需添加maven依赖</p>
+<h4 id="企业微信通知策略"><a href="#企业微信通知策略" class="headerlink" title="企业微信通知策略"></a>企业微信通知策略</h4><p>类型：WECHAT</p>
+<p>默认内置：否</p>
+<p>发送企业微信消息通知，但不中断作业执行。需添加maven依赖</p>
+<h4 id="钉钉通知策略"><a href="#钉钉通知策略" class="headerlink" title="钉钉通知策略"></a>钉钉通知策略</h4><p>类型：DINGTALK</p>
+<p>默认内置：否</p>
+<p>发送钉钉消息通知，但不中断作业执行。</p>
+<h2 id="运维平台"><a href="#运维平台" class="headerlink" title="运维平台"></a>运维平台</h2><p><a href="https://github.com/apache/shardingsphere-elasticjob-ui">https://github.com/apache/shardingsphere-elasticjob-ui</a></p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p>官网  <a target="_blank" rel="noopener" href="https://shardingsphere.apache.org/">https://shardingsphere.apache.org</a></p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/java/">java</a><a href="/tags/elastic-job/">elastic-job</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://github.com/dxysun/2020/12/12/elasticJob/" data-title="Elastic-Job 架构与整体介绍 | 迎着朝阳的博客" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2020/12/13/2020/springForMvc/" title="Spring Web MVC">
+  <strong>上一篇：</strong><br/>
+  <span>
+  Spring Web MVC</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2020/02/29/javaForDubboSpi/"  title="Dubbo学习笔记之SPI机制">
+ <strong>下一篇：</strong><br/> 
+ <span>Dubbo学习笔记之SPI机制
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%BA%E6%9C%AC%E4%BB%8B%E7%BB%8D"><span class="toc-number">1.</span> <span class="toc-text">基本介绍</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8A%9F%E8%83%BD%E5%88%97%E8%A1%A8"><span class="toc-number">2.</span> <span class="toc-text">功能列表</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A1%B9%E7%9B%AE%E6%9E%B6%E6%9E%84"><span class="toc-number">3.</span> <span class="toc-text">项目架构</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#ElasticJob-lite"><span class="toc-number">3.1.</span> <span class="toc-text">ElasticJob-lite</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ElasticJob-Cloud"><span class="toc-number">3.2.</span> <span class="toc-text">ElasticJob-Cloud</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B0%83%E5%BA%A6%E6%A8%A1%E5%9E%8B"><span class="toc-number">4.</span> <span class="toc-text">调度模型</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%9B%E7%A8%8B%E5%86%85%E8%B0%83%E5%BA%A6"><span class="toc-number">4.1.</span> <span class="toc-text">进程内调度</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%9B%E7%A8%8B%E7%BA%A7%E8%B0%83%E5%BA%A6"><span class="toc-number">4.2.</span> <span class="toc-text">进程级调度</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%9C%E4%B8%9A%E6%8E%A5%E5%8F%A3"><span class="toc-number">5.</span> <span class="toc-text">作业接口</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%9C%E4%B8%9A%E7%9B%91%E5%90%AC"><span class="toc-number">6.</span> <span class="toc-text">作业监听</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%B8%E8%A7%84%E7%9B%91%E5%90%AC%E5%99%A8"><span class="toc-number">6.1.</span> <span class="toc-text">常规监听器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%86%E5%B8%83%E5%BC%8F%E7%9B%91%E5%90%AC%E5%99%A8"><span class="toc-number">6.2.</span> <span class="toc-text">分布式监听器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#SPI%E5%AE%9E%E7%8E%B0"><span class="toc-number">6.3.</span> <span class="toc-text">SPI实现</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8B%E4%BB%B6%E8%BF%BD%E8%B8%AA"><span class="toc-number">7.</span> <span class="toc-text">事件追踪</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BC%B9%E6%80%A7%E8%B0%83%E5%BA%A6"><span class="toc-number">8.</span> <span class="toc-text">弹性调度</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%86%E7%89%87"><span class="toc-number">8.1.</span> <span class="toc-text">分片</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B5%84%E6%BA%90%E6%9C%80%E5%A4%A7%E9%99%90%E5%BA%A6%E5%88%A9%E7%94%A8"><span class="toc-number">8.2.</span> <span class="toc-text">资源最大限度利用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%AB%98%E5%8F%AF%E7%94%A8"><span class="toc-number">8.3.</span> <span class="toc-text">高可用</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ElasticJob-Lite-%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86"><span class="toc-number">9.</span> <span class="toc-text">ElasticJob-Lite 实现原理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BC%B9%E6%80%A7%E5%88%86%E5%B8%83%E5%BC%8F%E5%AE%9E%E7%8E%B0"><span class="toc-number">9.1.</span> <span class="toc-text">弹性分布式实现</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B3%A8%E5%86%8C%E4%B8%AD%E5%BF%83%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84"><span class="toc-number">10.</span> <span class="toc-text">注册中心数据结构</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%9C%E4%B8%9A%E6%B5%81%E7%A8%8B%E5%9B%BE"><span class="toc-number">11.</span> <span class="toc-text">作业流程图</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%9C%E4%B8%9A%E5%90%AF%E5%8A%A8"><span class="toc-number">11.1.</span> <span class="toc-text">作业启动</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%9C%E4%B8%9A%E6%89%A7%E8%A1%8C"><span class="toc-number">11.2.</span> <span class="toc-text">作业执行</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%B1%E6%95%88%E8%BD%AC%E7%A7%BB"><span class="toc-number">12.</span> <span class="toc-text">失效转移</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%89%A7%E8%A1%8C%E6%9C%BA%E5%88%B6"><span class="toc-number">13.</span> <span class="toc-text">执行机制</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%80%9A%E7%9F%A5%E6%89%A7%E8%A1%8C"><span class="toc-number">13.1.</span> <span class="toc-text">通知执行</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%97%AE%E8%AF%A2%E6%89%A7%E8%A1%8C"><span class="toc-number">13.2.</span> <span class="toc-text">问询执行</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%80%82%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="toc-number">13.3.</span> <span class="toc-text">适用场景</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%94%99%E8%BF%87%E4%BB%BB%E5%8A%A1%E9%87%8D%E6%89%A7%E8%A1%8C"><span class="toc-number">14.</span> <span class="toc-text">错过任务重执行</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A6%82%E5%BF%B5"><span class="toc-number">14.1.</span> <span class="toc-text">概念</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%80%82%E7%94%A8%E5%9C%BA%E6%99%AF-1"><span class="toc-number">14.2.</span> <span class="toc-text">适用场景</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%86%85%E7%BD%AE%E7%AD%96%E7%95%A5"><span class="toc-number">15.</span> <span class="toc-text">内置策略</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%86%E7%89%87%E7%AD%96%E7%95%A5"><span class="toc-number">15.1.</span> <span class="toc-text">分片策略</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BA%BF%E7%A8%8B%E6%B1%A0%E7%AD%96%E7%95%A5"><span class="toc-number">15.2.</span> <span class="toc-text">线程池策略</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#CPU-%E8%B5%84%E6%BA%90%E7%AD%96%E7%95%A5"><span class="toc-number">15.2.1.</span> <span class="toc-text">CPU 资源策略</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8D%95%E7%BA%BF%E7%A8%8B%E7%AD%96%E7%95%A5"><span class="toc-number">15.2.2.</span> <span class="toc-text">单线程策略</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%94%99%E8%AF%AF%E5%A4%84%E7%90%86%E7%AD%96%E7%95%A5"><span class="toc-number">15.3.</span> <span class="toc-text">错误处理策略</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%AE%B0%E5%BD%95%E6%97%A5%E5%BF%97%E7%AD%96%E7%95%A5"><span class="toc-number">15.3.1.</span> <span class="toc-text">记录日志策略</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%8A%9B%E5%87%BA%E5%BC%82%E5%B8%B8%E7%AD%96%E7%95%A5"><span class="toc-number">15.3.2.</span> <span class="toc-text">抛出异常策略</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%BF%BD%E7%95%A5%E5%BC%82%E5%B8%B8%E7%AD%96%E7%95%A5"><span class="toc-number">15.3.3.</span> <span class="toc-text">忽略异常策略</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%82%AE%E4%BB%B6%E9%80%9A%E7%9F%A5%E7%AD%96%E7%95%A5"><span class="toc-number">15.3.4.</span> <span class="toc-text">邮件通知策略</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BC%81%E4%B8%9A%E5%BE%AE%E4%BF%A1%E9%80%9A%E7%9F%A5%E7%AD%96%E7%95%A5"><span class="toc-number">15.3.5.</span> <span class="toc-text">企业微信通知策略</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%92%89%E9%92%89%E9%80%9A%E7%9F%A5%E7%AD%96%E7%95%A5"><span class="toc-number">15.3.6.</span> <span class="toc-text">钉钉通知策略</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%90%E7%BB%B4%E5%B9%B3%E5%8F%B0"><span class="toc-number">16.</span> <span class="toc-text">运维平台</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83"><span class="toc-number">17.</span> <span class="toc-text">参考</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+
+  
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">Categories</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/spring官方文档/" title="spring官方文档">spring官方文档<sup>8</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>54</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/linux/" title="linux">linux<sup>34</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/centos/" title="centos">centos<sup>19</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/springboot/" title="springboot">springboot<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/ubuntu/" title="ubuntu">ubuntu<sup>9</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/hadoop/" title="hadoop">hadoop<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/spring/" title="spring">spring<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/nginx/" title="nginx">nginx<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/spark/" title="spark">spark<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/mybatis/" title="mybatis">mybatis<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/mysql/" title="mysql">mysql<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/算法/" title="算法">算法<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/git/" title="git">git<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/maven/" title="maven">maven<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/hdfs/" title="hdfs">hdfs<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/dubbo/" title="dubbo">dubbo<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/kafka/" title="kafka">kafka<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Hbase/" title="Hbase">Hbase<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/sql/" title="sql">sql<sup>2</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="http://majorkevin.xyz/blog/" target="_blank" title="朋友的博客">朋友的博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+  <div class="weiboshow">
+  <p class="asidetitle">Weibo</p>
+    <iframe width="100%" height="119" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=119&fansRow=2&ptype=1&speed=0&skin=9&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=&verifier=&dpc=1"></iframe>
+</div>
+
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> Hello ,I&#39;m dxysun. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2020 
+		
+		<a href="/about" target="_blank" title="dxysun">dxysun</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?e6d1f421bbc9962127a50488f9ed37d1";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

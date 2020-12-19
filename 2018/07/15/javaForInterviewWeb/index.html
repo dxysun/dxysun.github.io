@@ -1,0 +1,672 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>java面试题之Web篇 | 迎着朝阳的博客</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="dxysun">
+    
+
+    
+    <meta name="description" content="总结一下java面试题-Web篇">
+<meta property="og:type" content="article">
+<meta property="og:title" content="java面试题之Web篇">
+<meta property="og:url" content="https://github.com/dxysun/2018/07/15/javaForInterviewWeb/index.html">
+<meta property="og:site_name" content="迎着朝阳的博客">
+<meta property="og:description" content="总结一下java面试题-Web篇">
+<meta property="og:locale">
+<meta property="article:published_time" content="2018-07-15T14:30:25.000Z">
+<meta property="article:modified_time" content="2018-07-16T14:35:44.000Z">
+<meta property="article:author" content="dxysun">
+<meta name="twitter:card" content="summary">
+
+    
+    <link rel="alternative" href="/atom.xml" title="迎着朝阳的博客" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    
+<link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/%02.css">
+<link rel="stylesheet" href="/.css">
+
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="迎着朝阳的博客" title="迎着朝阳的博客"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="迎着朝阳的博客">迎着朝阳的博客</a></h1>
+				<h2 class="blog-motto"></h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">主页</a></li>
+					
+						<li><a href="/archives">归档</a></li>
+					
+						<li><a href="/about">关于</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:github.com/dxysun">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/07/15/javaForInterviewWeb/" title="java面试题之Web篇" itemprop="url">java面试题之Web篇</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="dxysun" target="_blank" itemprop="author">dxysun</a>
+		
+  <p class="article-time">
+    <time datetime="2018-07-15T14:30:25.000Z" itemprop="datePublished"> Published 2018-07-15</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AF%B4%E4%B8%80%E8%AF%B4Servlet%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F"><span class="toc-number">1.</span> <span class="toc-text">说一说Servlet的生命周期?</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Servlet-API%E4%B8%ADforward-%E4%B8%8Eredirect-%E7%9A%84%E5%8C%BA%E5%88%AB%EF%BC%9F"><span class="toc-number">2.</span> <span class="toc-text">Servlet API中forward()与redirect()的区别？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#request-getAttribute-%E5%92%8C-request-getParameter-%E6%9C%89%E4%BD%95%E5%8C%BA%E5%88%AB"><span class="toc-number">3.</span> <span class="toc-text">request.getAttribute()和 request.getParameter()有何区别?</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#jsp%E9%9D%99%E6%80%81%E5%8C%85%E5%90%AB%E5%92%8C%E5%8A%A8%E6%80%81%E5%8C%85%E5%90%AB%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-number">4.</span> <span class="toc-text">jsp静态包含和动态包含的区别</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#MVC%E7%9A%84%E5%90%84%E4%B8%AA%E9%83%A8%E5%88%86%E9%83%BD%E6%9C%89%E9%82%A3%E4%BA%9B%E6%8A%80%E6%9C%AF%E6%9D%A5%E5%AE%9E%E7%8E%B0-%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0"><span class="toc-number">5.</span> <span class="toc-text">MVC的各个部分都有那些技术来实现?如何实现?</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#jsp%E6%9C%89%E5%93%AA%E4%BA%9B%E5%86%85%E7%BD%AE%E5%AF%B9%E8%B1%A1-%E4%BD%9C%E7%94%A8%E5%88%86%E5%88%AB%E6%98%AF%E4%BB%80%E4%B9%88"><span class="toc-number">6.</span> <span class="toc-text">jsp有哪些内置对象?作用分别是什么?</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Http%E4%B8%AD%EF%BC%8Cget%E5%92%8Cpost%E6%96%B9%E6%B3%95%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-number">7.</span> <span class="toc-text">Http中，get和post方法的区别</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AFcookie%EF%BC%9FSession%E5%92%8Ccookie%E6%9C%89%E4%BB%80%E4%B9%88%E5%8C%BA%E5%88%AB%EF%BC%9F"><span class="toc-number">8.</span> <span class="toc-text">什么是cookie？Session和cookie有什么区别？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#jsp%E5%92%8Cservlet%E7%9A%84%E5%8C%BA%E5%88%AB%E3%80%81%E5%85%B1%E5%90%8C%E7%82%B9%E3%80%81%E5%90%84%E8%87%AA%E5%BA%94%E7%94%A8%E7%9A%84%E8%8C%83%E5%9B%B4%EF%BC%9F"><span class="toc-number">9.</span> <span class="toc-text">jsp和servlet的区别、共同点、各自应用的范围？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#tomcat%E5%AE%B9%E5%99%A8%E6%98%AF%E5%A6%82%E4%BD%95%E5%88%9B%E5%BB%BAservlet%E7%B1%BB%E5%AE%9E%E4%BE%8B%EF%BC%9F%E7%94%A8%E5%88%B0%E4%BA%86%E4%BB%80%E4%B9%88%E5%8E%9F%E7%90%86%EF%BC%9F"><span class="toc-number">10.</span> <span class="toc-text">tomcat容器是如何创建servlet类实例？用到了什么原理？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#JDBC%E8%AE%BF%E9%97%AE%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%AD%A5%E9%AA%A4%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="toc-number">11.</span> <span class="toc-text">JDBC访问数据库的基本步骤是什么？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AF%B4%E8%AF%B4preparedStatement%E5%92%8CStatement%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-number">12.</span> <span class="toc-text">说说preparedStatement和Statement的区别</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AF%B4%E8%AF%B4%E4%BA%8B%E5%8A%A1%E7%9A%84%E6%A6%82%E5%BF%B5%EF%BC%8C%E5%9C%A8JDBC%E7%BC%96%E7%A8%8B%E4%B8%AD%E5%A4%84%E7%90%86%E4%BA%8B%E5%8A%A1%E7%9A%84%E6%AD%A5%E9%AA%A4%E3%80%82"><span class="toc-number">13.</span> <span class="toc-text">说说事务的概念，在JDBC编程中处理事务的步骤。</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93%E8%BF%9E%E6%8E%A5%E6%B1%A0%E7%9A%84%E5%8E%9F%E7%90%86%E3%80%82%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E4%BD%BF%E7%94%A8%E8%BF%9E%E6%8E%A5%E6%B1%A0%E3%80%82"><span class="toc-number">14.</span> <span class="toc-text">数据库连接池的原理。为什么要使用连接池。</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#JDBC%E7%9A%84%E8%84%8F%E8%AF%BB%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F%E5%93%AA%E7%A7%8D%E6%95%B0%E6%8D%AE%E5%BA%93%E9%9A%94%E7%A6%BB%E7%BA%A7%E5%88%AB%E8%83%BD%E9%98%B2%E6%AD%A2%E8%84%8F%E8%AF%BB%EF%BC%9F"><span class="toc-number">15.</span> <span class="toc-text">JDBC的脏读是什么？哪种数据库隔离级别能防止脏读？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E5%B9%BB%E8%AF%BB%EF%BC%8C%E5%93%AA%E7%A7%8D%E9%9A%94%E7%A6%BB%E7%BA%A7%E5%88%AB%E5%8F%AF%E4%BB%A5%E9%98%B2%E6%AD%A2%E5%B9%BB%E8%AF%BB%EF%BC%9F"><span class="toc-number">16.</span> <span class="toc-text">什么是幻读，哪种隔离级别可以防止幻读？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#JDBC%E7%9A%84DriverManager%E6%98%AF%E7%94%A8%E6%9D%A5%E5%81%9A%E4%BB%80%E4%B9%88%E7%9A%84%EF%BC%9F"><span class="toc-number">17.</span> <span class="toc-text">JDBC的DriverManager是用来做什么的？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#execute%EF%BC%8CexecuteQuery%EF%BC%8CexecuteUpdate%E7%9A%84%E5%8C%BA%E5%88%AB%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="toc-number">18.</span> <span class="toc-text">execute，executeQuery，executeUpdate的区别是什么？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#JDBC%E7%9A%84ResultSet%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="toc-number">19.</span> <span class="toc-text">JDBC的ResultSet是什么？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#AJAX%E6%9C%89%E5%93%AA%E4%BA%9B%E6%9C%89%E7%82%B9%E5%92%8C%E7%BC%BA%E7%82%B9%EF%BC%9F"><span class="toc-number">20.</span> <span class="toc-text">AJAX有哪些有点和缺点？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#AJAX%E5%BA%94%E7%94%A8%E5%92%8C%E4%BC%A0%E7%BB%9FWeb%E5%BA%94%E7%94%A8%E6%9C%89%E4%BB%80%E4%B9%88%E4%B8%8D%E5%90%8C%EF%BC%9F"><span class="toc-number">21.</span> <span class="toc-text">AJAX应用和传统Web应用有什么不同？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Ajax%E7%9A%84%E5%AE%9E%E7%8E%B0%E6%B5%81%E7%A8%8B%E6%98%AF%E6%80%8E%E6%A0%B7%E7%9A%84%EF%BC%9F"><span class="toc-number">22.</span> <span class="toc-text">Ajax的实现流程是怎样的？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AE%80%E5%8D%95%E8%AF%B4%E4%B8%80%E4%B8%8B%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9A%84%E4%B8%89%E8%8C%83%E5%BC%8F%EF%BC%9F"><span class="toc-number">23.</span> <span class="toc-text">简单说一下数据库的三范式？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Java%E9%9B%86%E5%90%88%E6%A1%86%E6%9E%B6%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F%E8%AF%B4%E5%87%BA%E4%B8%80%E4%BA%9B%E9%9B%86%E5%90%88%E6%A1%86%E6%9E%B6%E7%9A%84%E4%BC%98%E7%82%B9%EF%BC%9F"><span class="toc-number">24.</span> <span class="toc-text">Java集合框架是什么？说出一些集合框架的优点？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Java%E9%9B%86%E5%90%88%E6%A1%86%E6%9E%B6%E7%9A%84%E5%9F%BA%E7%A1%80%E6%8E%A5%E5%8F%A3%E6%9C%89%E5%93%AA%E4%BA%9B%EF%BC%9F"><span class="toc-number">25.</span> <span class="toc-text">Java集合框架的基础接口有哪些？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%9B%86%E5%90%88%E6%A1%86%E6%9E%B6%E4%B8%AD%E7%9A%84%E6%B3%9B%E5%9E%8B%E6%9C%89%E4%BB%80%E4%B9%88%E4%BC%98%E7%82%B9%EF%BC%9F"><span class="toc-number">26.</span> <span class="toc-text">集合框架中的泛型有什么优点？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Enumeration%E5%92%8CIterator%E6%8E%A5%E5%8F%A3%E7%9A%84%E5%8C%BA%E5%88%AB%EF%BC%9F"><span class="toc-number">27.</span> <span class="toc-text">Enumeration和Iterator接口的区别？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Iterater%E5%92%8CListIterator%E4%B9%8B%E9%97%B4%E6%9C%89%E4%BB%80%E4%B9%88%E5%8C%BA%E5%88%AB%EF%BC%9F"><span class="toc-number">28.</span> <span class="toc-text">Iterater和ListIterator之间有什么区别？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%88%91%E4%BB%AC%E5%A6%82%E4%BD%95%E5%AF%B9%E4%B8%80%E7%BB%84%E5%AF%B9%E8%B1%A1%E8%BF%9B%E8%A1%8C%E6%8E%92%E5%BA%8F%EF%BC%9F"><span class="toc-number">29.</span> <span class="toc-text">我们如何对一组对象进行排序？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%8EJava%E9%9B%86%E5%90%88%E6%A1%86%E6%9E%B6%E7%9B%B8%E5%85%B3%E7%9A%84%E6%9C%89%E5%93%AA%E4%BA%9B%E6%9C%80%E5%A5%BD%E7%9A%84%E5%AE%9E%E8%B7%B5%EF%BC%9F"><span class="toc-number">30.</span> <span class="toc-text">与Java集合框架相关的有哪些最好的实践？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E4%BA%8B%E5%8A%A1%EF%BC%9F"><span class="toc-number">31.</span> <span class="toc-text">什么是事务？,</span></a></li></ol>
+		
+		</div>
+		
+		<p>总结一下java面试题-Web篇</p>
+<a id="more"></a>
+
+<h3 id="说一说Servlet的生命周期"><a href="#说一说Servlet的生命周期" class="headerlink" title="说一说Servlet的生命周期?"></a>说一说Servlet的生命周期?</h3><p>Servlet有良好的生存期的定义，包括加载和实例化、初始化、处理请求以及服务结束。这个生存期由javax.servlet.Servlet接口的init(),service()和destroy方法表达。</p>
+<p>Servlet被服务器实例化后，容器运行其init方法，请求到达时运行其service方法，service方法自动派遣运行与请求对应的doXXX方法（doGet，doPost）等，当服务器决定将实例销毁的时候调用其destroy方法。</p>
+<p>web容器加载servlet，生命周期开始。通过调用servlet的init()方法进行servlet的初始化。通过调用service()方法实现，根据请求的不同调用不同的doXXX()方法。结束服务，web容器调用servlet的destroy()方法。</p>
+<h3 id="Servlet-API中forward-与redirect-的区别？"><a href="#Servlet-API中forward-与redirect-的区别？" class="headerlink" title="Servlet API中forward()与redirect()的区别？"></a>Servlet API中forward()与redirect()的区别？</h3><ol>
+<li>从地址栏显示来说<br>forward是服务器请求资源,服务器直接访问目标地址的URL,把那个URL的响应内容读取过来,然后把这些内容再发给浏览器.浏览器根本不知道服务器发送的内容从哪里来的,所以它的地址栏还是原来的地址.<br>redirect是服务端根据逻辑,发送一个状态码,告诉浏览器重新去请求那个地址.所以地址栏显示的是新的URL.所以redirect等于客户端向服务器端发出两次request，同时也接受两次response。</li>
+<li>从数据共享来说<br>forward:转发页面和转发到的页面可以共享request里面的数据.<br>redirect:不能共享数据.<br>redirect不仅可以重定向到当前应用程序的其他资源,还可以重定向到同一个站点上的其他应用程序中的资源,甚至是使用绝对URL重定向到其他站点的资源.<br>forward方法只能在同一个Web应用程序内的资源之间转发请求.forward 是服务器内部的一种操作.<br>redirect 是服务器通知客户端,让客户端重新发起请求.<br>所以,你可以说 redirect 是一种间接的请求, 但是你不能说”一个请求是属于forward还是redirect”</li>
+<li>从运用地方来说<br>forward:一般用于用户登陆的时候,根据角色转发到相应的模块.<br>redirect:一般用于用户注销登陆时返回主页面和跳转到其它的网站等.</li>
+<li>从效率来说<br>forward:高.<br>redirect:低.</li>
+</ol>
+<h3 id="request-getAttribute-和-request-getParameter-有何区别"><a href="#request-getAttribute-和-request-getParameter-有何区别" class="headerlink" title="request.getAttribute()和 request.getParameter()有何区别?"></a>request.getAttribute()和 request.getParameter()有何区别?</h3><p>1，request.getParameter()取得是通过容器的实现来取得通过类似post，get等方式传入的数据。</p>
+<p>request.setAttribute()和getAttribute()只是在web容器内部流转，仅仅是请求处理阶段。</p>
+<p>2，getAttribute是返回对象,getParameter返回字符串</p>
+<p>3，getAttribute()一向是和setAttribute()一起使用的，只有先用setAttribute()设置之后，才能够通过getAttribute()来获得值，它们传递的是Object类型的数据。而且必须在同一个request对象中使用才有效。,而getParameter()是接收表单的get或者post提交过来的参数</p>
+<h3 id="jsp静态包含和动态包含的区别"><a href="#jsp静态包含和动态包含的区别" class="headerlink" title="jsp静态包含和动态包含的区别"></a>jsp静态包含和动态包含的区别</h3><p>1、&lt;%@include file=”xxx.jsp”%&gt;为jsp中的编译指令，其文件的包含是发生在jsp向servlet转换的时期，而&lt;jsp:include page=”xxx.jsp”&gt;是jsp中的动作指令，其文件的包含是发生在编译时期，也就是将java文件编译为class文件的时期</p>
+<p>2、使用静态包含只会产生一个class文件，而使用动态包含会产生多个class文件</p>
+<p>3、使用静态包含，包含页面和被包含页面的request对象为同一对象，因为静态包含只是将被包含的页面的内容复制到包含的页面中去；而动态包含包含页面和被包含页面不是同一个页面，被包含的页面的request对象可以取到的参数范围要相对大些，不仅可以取到传递到包含页面的参数，同样也能取得在包含页面向下传递的参数</p>
+<h3 id="MVC的各个部分都有那些技术来实现-如何实现"><a href="#MVC的各个部分都有那些技术来实现-如何实现" class="headerlink" title="MVC的各个部分都有那些技术来实现?如何实现?"></a>MVC的各个部分都有那些技术来实现?如何实现?</h3><p>MVC是Model－View－Controller的简写。Model代表的是应用的业务逻辑（通过JavaBean，EJB组件实现），View是应用的表示面（由JSP页面产生），Controller是提供应用的处理过程控制（一般是一个Servlet），通过这种设计模型把应用逻辑，处理过程和显示逻辑分成不同的组件实现。这些组件可以进行交互和重用。</p>
+<h3 id="jsp有哪些内置对象-作用分别是什么"><a href="#jsp有哪些内置对象-作用分别是什么" class="headerlink" title="jsp有哪些内置对象?作用分别是什么?"></a>jsp有哪些内置对象?作用分别是什么?</h3><p>JSP共有以下9个内置的对象：</p>
+<p>1，request 用户端请求，此请求会包含来自GET/POST请求的参数</p>
+<p>2，response 网页传回用户端的回应</p>
+<p>3，session 与请求有关的会话期</p>
+<p>4，pageContext 网页的属性是在这里管理</p>
+<p>5，page JSP网页本身</p>
+<p>6，application servlet正在执行的内容</p>
+<p>7，exception 针对错误网页，未捕捉的例外</p>
+<p>8，out 用来传送回应的输出</p>
+<p>9，config  servlet的构架部件</p>
+<h3 id="Http中，get和post方法的区别"><a href="#Http中，get和post方法的区别" class="headerlink" title="Http中，get和post方法的区别"></a>Http中，get和post方法的区别</h3><p>1，Get是向服务器发索取数据的一种请求，而Post是向服务器提交数据的一种请求</p>
+<p>2，Get是获取信息，而不是修改信息，类似数据库查询功能一样，数据不会被修改</p>
+<p>3，Get请求的参数会跟在url后进行传递，请求的数据会附在URL之后，以?分割URL和传输数据，参数之间以&amp;相连,％XX中的XX为该符号以16进制表示的ASCII，如果数据是英文字母/数字，原样发送，如果是空格，转换为+，如果是中文/其他字符，则直接把字符串用BASE64加密。</p>
+<p>4，Get传输的数据有大小限制，因为GET是通过URL提交数据，那么GET可提交的数据量就跟URL的长度有直接关系了，不同的浏览器对URL的长度的限制是不同的。</p>
+<p>5，GET请求的数据会被浏览器缓存起来，用户名和密码将明文出现在URL上，其他人可以查到历史浏览记录，数据不太安全。</p>
+<p>在服务器端，用Request.QueryString来获取Get方式提交来的数据</p>
+<p>Post请求则作为http消息的实际内容发送给web服务器，数据放置在HTML Header内提交，Post没有限制提交的数据。Post比Get安全，当数据是中文或者不敏感的数据，则用get，因为使用get，参数会显示在地址，对于敏感数据和不是中文字符的数据，则用post。</p>
+<p>6，POST表示可能修改变服务器上的资源的请求，在服务器端，用Post方式提交的数据只能用Request.Form来获取。</p>
+<h3 id="什么是cookie？Session和cookie有什么区别？"><a href="#什么是cookie？Session和cookie有什么区别？" class="headerlink" title="什么是cookie？Session和cookie有什么区别？"></a>什么是cookie？Session和cookie有什么区别？</h3><p>Cookie是会话技术,将用户的信息保存到浏览器的对象.</p>
+<p>区别：</p>
+<p>(1)cookie数据存放在客户的浏览器上，session数据放在服务器上<br>(2)cookie不是很安全，别人可以分析存放在本地的COOKIE并进行COOKIE欺骗,如果主要考虑到安全应当使用session<br>(3)session会在一定时间内保存在服务器上。当访问增多，会比较占用你服务器的性能，如果主要考虑到减轻服务器性能方面，应当使用COOKIE<br>(4)单个cookie在客户端的限制是3K，就是说一个站点在客户端存放的COOKIE不能3K。</p>
+<p>结论：</p>
+<p>将登陆信息等重要信息存放为SESSION;其他信息如果需要保留，可以放在COOKIE中。</p>
+<h3 id="jsp和servlet的区别、共同点、各自应用的范围？"><a href="#jsp和servlet的区别、共同点、各自应用的范围？" class="headerlink" title="jsp和servlet的区别、共同点、各自应用的范围？"></a>jsp和servlet的区别、共同点、各自应用的范围？</h3><p>JSP是Servlet技术的扩展，本质上就是Servlet的简易方式。JSP编译后是“类servlet”。</p>
+<p>Servlet和JSP最主要的不同点在于：Servlet的应用逻辑是在Java文件中，并且完全从表示层中的HTML里分离开来。而JSP的情况是Java和HTML可以组合成一个扩展名为.jsp的文件。</p>
+<p>JSP侧重于视图，Servlet主要用于控制逻辑。在struts框架中,JSP位于MVC设计模式的视图层,而Servlet位于控制层.</p>
+<h3 id="tomcat容器是如何创建servlet类实例？用到了什么原理？"><a href="#tomcat容器是如何创建servlet类实例？用到了什么原理？" class="headerlink" title="tomcat容器是如何创建servlet类实例？用到了什么原理？"></a>tomcat容器是如何创建servlet类实例？用到了什么原理？</h3><p>当容器启动时，会读取在webapps目录下所有的web应用中的web.xml文件，然后对xml文件进行解析，并读取servlet注册信息。然后，将每个应用中注册的servlet类都进行加载，并通过反射的方式实例化。（有时候也是在第一次请求时实例化）<br>在servlet注册时加上<load-on-startup>1</load-on-startup>如果为正数，则在一开始就实例化，如果不写或为负数，则第一次请求实例化。</p>
+<h3 id="JDBC访问数据库的基本步骤是什么？"><a href="#JDBC访问数据库的基本步骤是什么？" class="headerlink" title="JDBC访问数据库的基本步骤是什么？"></a>JDBC访问数据库的基本步骤是什么？</h3><p>1，加载驱动<br>2，通过DriverManager对象获取连接对象Connection<br>3，通过连接对象获取会话<br>4，通过会话进行数据的增删改查，封装对象<br>5，关闭资源</p>
+<h3 id="说说preparedStatement和Statement的区别"><a href="#说说preparedStatement和Statement的区别" class="headerlink" title="说说preparedStatement和Statement的区别"></a>说说preparedStatement和Statement的区别</h3><p>1，效率：预编译会话比普通会话对象，数据库系统不会对相同的sql语句不会再次编译<br>2，安全性：可以有效的避免sql注入攻击！sql注入攻击就是从客户端输入一些非法的特殊字符，而使服务器端在构造sql语句的时候仍然能够正确构造，从而收集程序和服务器的信息和数据。<br>比如：”select * from t_user where userName = ‘“ + userName + “‘ and password =’” + password + “‘“<br>如果用户名和密码输入的是’1’ or ‘1’=’1’ ;  则生产的sql语句是：<br>“select * from t_user where userName = ‘1’ or ‘1’ =’1’  and password =’1’  or ‘1’=’1’  这个语句中的where 部分没有起到对数据筛选的作用。</p>
+<h3 id="说说事务的概念，在JDBC编程中处理事务的步骤。"><a href="#说说事务的概念，在JDBC编程中处理事务的步骤。" class="headerlink" title="说说事务的概念，在JDBC编程中处理事务的步骤。"></a>说说事务的概念，在JDBC编程中处理事务的步骤。</h3><p>1 事务是作为单个逻辑工作单元执行的一系列操作。<br>2，一个逻辑工作单元必须有四个属性，称为原子性、一致性、隔离性和持久性 (ACID) 属性，只有这样才能成为一个事务<br>事务处理步骤：<br>3，conn.setAutoComit(false);设置提交方式为手工提交<br>4，conn.commit()提交事务<br>5，出现异常，回滚 conn.rollback();</p>
+<h3 id="数据库连接池的原理。为什么要使用连接池。"><a href="#数据库连接池的原理。为什么要使用连接池。" class="headerlink" title="数据库连接池的原理。为什么要使用连接池。"></a>数据库连接池的原理。为什么要使用连接池。</h3><p>1，数据库连接是一件费时的操作，连接池可以使多个操作共享一个连接。<br>2，数据库连接池的基本思想就是为数据库连接建立一个“缓冲池”。预先在缓冲池中放入一定数量的连接，当需要建立数据库连接时，只需从“缓冲池”中取出一个，使用完毕之后再放回去。我们可以通过设定连接池最大连接数来防止系统无尽的与数据库连接。更为重要的是我们可以通过连接池的管理机制监视数据库的连接的数量、使用情况，为系统开发，测试及性能调整提供依据。<br>3，使用连接池是为了提高对数据库连接资源的管理</p>
+<h3 id="JDBC的脏读是什么？哪种数据库隔离级别能防止脏读？"><a href="#JDBC的脏读是什么？哪种数据库隔离级别能防止脏读？" class="headerlink" title="JDBC的脏读是什么？哪种数据库隔离级别能防止脏读？"></a>JDBC的脏读是什么？哪种数据库隔离级别能防止脏读？</h3><p>当我们使用事务时，有可能会出现这样的情况，有一行数据刚更新，与此同时另一个查询读到了这个刚更新的值,然后刚更新的数据进行了回滚。这样就导致了脏读，因为更新的数据还没有进行持久化，更新这行数据的业务可能会进行回滚，这样这个数据就是无效的。<br>数据库的TRANSACTIONREADCOMMITTED，TRANSACTIONREPEATABLEREAD，和TRANSACTION_SERIALIZABLE隔离级别可以防止脏读。</p>
+<h3 id="什么是幻读，哪种隔离级别可以防止幻读？"><a href="#什么是幻读，哪种隔离级别可以防止幻读？" class="headerlink" title="什么是幻读，哪种隔离级别可以防止幻读？"></a>什么是幻读，哪种隔离级别可以防止幻读？</h3><p>幻读是指一个事务多次执行一条查询返回的却是不同的值。假设一个事务正根据某个条件进行数据查询，然后另一个事务插入了一行满足这个查询条件的数据。之后这个事务再次执行了这条查询，返回的结果集中会包含刚插入的那条新数据。这行新数据被称为幻行，而这种现象就叫做幻读。</p>
+<p>只有TRANSACTION_SERIALIZABLE隔离级别才能防止产生幻读。</p>
+<h3 id="JDBC的DriverManager是用来做什么的？"><a href="#JDBC的DriverManager是用来做什么的？" class="headerlink" title="JDBC的DriverManager是用来做什么的？"></a>JDBC的DriverManager是用来做什么的？</h3><p>JDBC的DriverManager是一个工厂类，我们通过它来创建数据库连接。当JDBC的Driver类被加载进来时，它会自己注册到DriverManager类里面<br>然后我们会把数据库配置信息传成DriverManager.getConnection()方法，DriverManager会使用注册到它里面的驱动来获取数据库连接，并返回给调用的程序。</p>
+<h3 id="execute，executeQuery，executeUpdate的区别是什么？"><a href="#execute，executeQuery，executeUpdate的区别是什么？" class="headerlink" title="execute，executeQuery，executeUpdate的区别是什么？"></a>execute，executeQuery，executeUpdate的区别是什么？</h3><p>1，Statement的execute(String query)方法用来执行任意的SQL查询，如果查询的结果是一个ResultSet，这个方法就返回true。如果结果不是ResultSet，比如insert或者update查询，它就会返回false。我们可以通过它的getResultSet方法来获取ResultSet，或者通过getUpdateCount()方法来获取更新的记录条数。<br>2，Statement的executeQuery(String query)接口用来执行select查询，并且返回ResultSet。即使查询不到记录返回的ResultSet也不会为null。我们通常使用executeQuery来执行查询语句，这样的话如果传进来的是insert或者update语句的话，它会抛出错误信息为 “executeQuery method can not be used for update”的java.util.SQLException。<br>3，Statement的executeUpdate(String query)方法用来执行insert或者update/delete（DML）语句，或者 什么也不返回，对于DDL语句(数据定义语言，用于定义和管理 SQL 数据库中的所有对象的语言)，返回值是int类型，如果是DML语句的话，它就是更新的条数，如果是DDL的话，就返回0。<br>只有当你不确定是什么语句的时候才应该使用execute()方法，否则应该使用executeQuery或者executeUpdate方法。</p>
+<h3 id="JDBC的ResultSet是什么？"><a href="#JDBC的ResultSet是什么？" class="headerlink" title="JDBC的ResultSet是什么？"></a>JDBC的ResultSet是什么？</h3><p>在查询数据库后会返回一个ResultSet，它就像是查询结果集的一张数据表。<br>ResultSet对象维护了一个游标，指向当前的数据行。开始的时候这个游标指向的是第一行。如果调用了ResultSet的next()方法游标会下移一行，如果没有更多的数据了，next()方法会返回false。可以在for循环中用它来遍历数据集。<br>默认的ResultSet是不能更新的，游标也只能往下移。也就是说你只能从第一行到最后一行遍历一遍。不过也可以创建可以回滚或者可更新的ResultSet</p>
+<p>当生成ResultSet的Statement对象要关闭或者重新执行或是获取下一个ResultSet的时候，ResultSet对象也会自动关闭。<br>可以通过ResultSet的getter方法，传入列名或者从1开始的序号来获取列数据。</p>
+<h3 id="AJAX有哪些有点和缺点？"><a href="#AJAX有哪些有点和缺点？" class="headerlink" title="AJAX有哪些有点和缺点？"></a>AJAX有哪些有点和缺点？</h3><p>优点：</p>
+<p>1、最大的一点是页面无刷新，用户的体验非常好。</p>
+<p>2、使用异步方式与服务器通信，具有更加迅速的响应能力。</p>
+<p>3、可以把以前一些服务器负担的工作转嫁到客户端，利用客户端闲置的能力来处理，减轻服务器和带宽的负担，节约空间和宽带租用成本。并且减轻服务器的负担，ajax的原则是“按需取数据”，可以最大程度的减少冗余请求，和响应对服务器造成的负担。</p>
+<p>4、基于标准化的并被广泛支持的技术，不需要下载插件或者小程序。</p>
+<p>缺点：</p>
+<p>1、ajax不支持浏览器back按钮。</p>
+<p>2、安全问题 AJAX暴露了与服务器交互的细节。</p>
+<p>3、对搜索引擎的支持比较弱。</p>
+<p>4、破坏了程序的异常机制。</p>
+<p>5、不容易调试。</p>
+<h3 id="AJAX应用和传统Web应用有什么不同？"><a href="#AJAX应用和传统Web应用有什么不同？" class="headerlink" title="AJAX应用和传统Web应用有什么不同？"></a>AJAX应用和传统Web应用有什么不同？</h3><p>在传统的Javascript编程中，如果想得到服务器端数据库或文件上的信息，或者发送客户端信息到服务器，需要建立一个HTML form然后GET或者POST数据到服务器端。用户需要点击”Submit”按钮来发送或者接受数据信息，然后等待服务器响应请求，页面重新加载。</p>
+<p>因为服务器每次都会返回一个新的页面， 所以传统的web应用有可能很慢而且用户交互不友好。</p>
+<p>使用AJAX技术， 就可以使Javascript通过XMLHttpRequest对象直接与服务器进行交互。</p>
+<p>通过HTTP Request， 一个web页面可以发送一个请求到web服务器并且接受web服务器返回的信息(不用重新加载页面)，展示给用户的还是同一个页面，用户感觉页面刷新，也看不到到Javascript后台进行的发送请求和接受响应，体验非常好。</p>
+<h3 id="Ajax的实现流程是怎样的？"><a href="#Ajax的实现流程是怎样的？" class="headerlink" title="Ajax的实现流程是怎样的？"></a>Ajax的实现流程是怎样的？</h3><p>(1)创建XMLHttpRequest对象,也就是创建一个异步调用对象.</p>
+<p>(2)创建一个新的HTTP请求,并指定该HTTP请求的方法、URL及验证信息.</p>
+<p>(3)设置响应HTTP请求状态变化的函数.</p>
+<p>(4)发送HTTP请求.</p>
+<p>(5)获取异步调用返回的数据.</p>
+<p>(6)使用JavaScript和DOM实现局部刷新.</p>
+<p>具体一点：</p>
+<p>1，创建XNLHttpRequest对象（不考虑ie）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">XMLHttpRequest request &#x3D; new XMLHttprequest（）；</span><br></pre></td></tr></table></figure>
+<p>2，创建新的Http请求</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">XMLHttprequest.open（method,url,flag,name,password）;</span><br></pre></td></tr></table></figure>
+<p>3，设置响应Http请求变化的函数</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">XMLHttprequest.onreadystatechange&#x3D;getData;</span><br><span class="line"></span><br><span class="line">function getData()&#123;</span><br><span class="line"></span><br><span class="line">if(XMLHttprequest.readyState&#x3D;&#x3D;4)&#123;</span><br><span class="line"></span><br><span class="line">获取数据</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>4，发送http请求</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">XMLHttprequest.send(data)；</span><br></pre></td></tr></table></figure>
+<p>5，获取异步调用返回的对象</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">function(data)&#123;</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F;异步提交后，交互成功，返回的data便是异步调用返回的对象，该对象是一个string类型的</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>6，使用js、DOM实现局部刷新</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">myDiv.innerHTML&#x3D;”这是刷新后的数据”</span><br></pre></td></tr></table></figure>
+<h3 id="简单说一下数据库的三范式？"><a href="#简单说一下数据库的三范式？" class="headerlink" title="简单说一下数据库的三范式？"></a>简单说一下数据库的三范式？</h3><p>第一范式：数据库表的每一个字段都是不可分割的</p>
+<p>第二范式：数据库表中的非主属性只依赖于主键</p>
+<p>第三范式：不存在非主属性对关键字的传递函数依赖关系</p>
+<h3 id="Java集合框架是什么？说出一些集合框架的优点？"><a href="#Java集合框架是什么？说出一些集合框架的优点？" class="headerlink" title="Java集合框架是什么？说出一些集合框架的优点？"></a>Java集合框架是什么？说出一些集合框架的优点？</h3><p>每种编程语言中都有集合，最初的Java版本包含几种集合类：Vector、Stack、HashTable和Array。</p>
+<p>随着集合的广泛使用，Java1.2提出了囊括所有集合接口、实现和算法的集合框架。在保证线程安全的情况下使用泛型和并发集合类，Java已经经历了很久。它还包括在Java并发包中，阻塞接口以及它们的实现。</p>
+<p>集合框架的部分优点如下：</p>
+<p>（1）使用核心集合类降低开发成本，而非实现我们自己的集合类。</p>
+<p>（2）随着使用经过严格测试的集合框架类，代码质量会得到提高。</p>
+<p>（3）通过使用JDK附带的集合类，可以降低代码维护成本。</p>
+<p>（4）复用性和可操作性。</p>
+<h3 id="Java集合框架的基础接口有哪些？"><a href="#Java集合框架的基础接口有哪些？" class="headerlink" title="Java集合框架的基础接口有哪些？"></a>Java集合框架的基础接口有哪些？</h3><p>Collection为集合层级的根接口。一个集合代表一组对象，这些对象即为它的元素。Java平台不提供这个接口任何直接的实现。</p>
+<p>Set是一个不能包含重复元素的集合。这个接口对数学集合抽象进行建模，被用来代表集合，就如一副牌。</p>
+<p>List是一个有序集合，可以包含重复元素。你可以通过它的索引来访问任何元素。List更像长度动态变换的数组。</p>
+<p> Map是一个将key映射到value的对象.一个Map不能包含重复的key：每个key最多只能映射一个value。</p>
+<p>一些其它的接口有Queue、Dequeue、SortedSet、SortedMap和ListIterator。</p>
+<h3 id="集合框架中的泛型有什么优点？"><a href="#集合框架中的泛型有什么优点？" class="headerlink" title="集合框架中的泛型有什么优点？"></a>集合框架中的泛型有什么优点？</h3><p>Java1.5引入了泛型，所有的集合接口和实现都大量地使用它。泛型允许我们为集合提供一个可以容纳的对象类型。</p>
+<p>因此，如果你添加其它类型的任何元素，它会在编译时报错。这避免了在运行时出现ClassCastException，因为你将会在编译时得到报错信息。</p>
+<p>泛型也使得代码整洁，我们不需要使用显式转换和instanceOf操作符。它也给运行时带来好处，因为不会产生类型检查的字节码指令。</p>
+<h3 id="Enumeration和Iterator接口的区别？"><a href="#Enumeration和Iterator接口的区别？" class="headerlink" title="Enumeration和Iterator接口的区别？"></a>Enumeration和Iterator接口的区别？</h3><p>Enumeration的速度是Iterator的两倍，也使用更少的内存。Enumeration是非常基础的，也满足了基础的需要。</p>
+<p>但是，与Enumeration相比，Iterator更加安全，因为当一个集合正在被遍历的时候，它会阻止其它线程去修改集合。</p>
+<p>迭代器取代了Java集合框架中的Enumeration。迭代器允许调用者从集合中移除元素，而Enumeration不能做到。为了使它的功能更加清晰，迭代器方法名已经经过改善。</p>
+<h3 id="Iterater和ListIterator之间有什么区别？"><a href="#Iterater和ListIterator之间有什么区别？" class="headerlink" title="Iterater和ListIterator之间有什么区别？"></a>Iterater和ListIterator之间有什么区别？</h3><p>1，我们可以使用Iterator来遍历Set和List集合，而ListIterator只能遍历List。</p>
+<p>2，Iterator只可以向前遍历，而ListIterator可以双向遍历。</p>
+<p>3，ListIterator从Iterator接口继承，然后添加了一些额外的功能，比如添加一个元素、替换一个元素、获取前面或后面元素的索引位置。</p>
+<h3 id="我们如何对一组对象进行排序？"><a href="#我们如何对一组对象进行排序？" class="headerlink" title="我们如何对一组对象进行排序？"></a>我们如何对一组对象进行排序？</h3><p>如果我们需要对一个对象数组进行排序，我们可以使用Arrays.sort()方法。如果我们需要排序一个对象列表，我们可以使用Collection.sort()方法。</p>
+<p>两个类都有用于自然排序（使用Comparable）或基于标准的排序（使用Comparator）的重载方法sort()。</p>
+<p>Collections内部使用数组排序方法，所有它们两者都有相同的性能，只是Collections需要花时间将列表转换为数组。</p>
+<h3 id="与Java集合框架相关的有哪些最好的实践？"><a href="#与Java集合框架相关的有哪些最好的实践？" class="headerlink" title="与Java集合框架相关的有哪些最好的实践？"></a>与Java集合框架相关的有哪些最好的实践？</h3><p>1，根据需要选择正确的集合类型。比如，如果指定了大小，我们会选用Array而非ArrayList。如果我们想根据插入顺序遍历一个Map，我们需要使用TreeMap。如果我们不想重复，我们应该使用Set。</p>
+<p>2，一些集合类允许指定初始容量，所以如果我们能够估计到存储元素的数量，我们可以使用它，就避免了重新哈希或大小调整。</p>
+<p>3，基于接口编程，而非基于实现编程，它允许我们后来轻易地改变实现。</p>
+<p>4，总是使用类型安全的泛型，避免在运行时出现ClassCastException。</p>
+<p>5，使用JDK提供的不可变类作为Map的key，可以避免自己实现hashCode()和equals()。</p>
+<p>6，尽可能使用Collections工具类，或者获取只读、同步或空的集合，而非编写自己的实现。它将会提供代码重用性，它有着更好的稳定性和可维护性。</p>
+<h3 id="什么是事务？"><a href="#什么是事务？" class="headerlink" title="什么是事务？,"></a>什么是事务？,</h3><p>事务是恢复和并发控制的基本单位</p>
+<p>事务的四个基本特征ACID</p>
+<p>原子性，一致性，隔离性，持久性</p>
+<p>原子性和一致性差不多，意思是要么全部成功，要么就失败</p>
+<p>一致性是说，从一个一致性状态到另一个一致性状态</p>
+<p>隔离性是说一个事务执行的过程中不能被另一个事务干扰</p>
+<p>持久性也就是事务一旦提交，他对数据库中数据的改变就应该是永久的，不能变的</p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://github.com/dxysun/2018/07/15/javaForInterviewWeb/" data-title="java面试题之Web篇 | 迎着朝阳的博客" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2018/07/16/algorithmTwoTreeInterview/" title="算法学习之常见的二叉树算法题">
+  <strong>上一篇：</strong><br/>
+  <span>
+  算法学习之常见的二叉树算法题</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/07/15/javaForInterview/"  title="java面试题之基础篇(一)">
+ <strong>下一篇：</strong><br/> 
+ <span>java面试题之基础篇(一)
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AF%B4%E4%B8%80%E8%AF%B4Servlet%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F"><span class="toc-number">1.</span> <span class="toc-text">说一说Servlet的生命周期?</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Servlet-API%E4%B8%ADforward-%E4%B8%8Eredirect-%E7%9A%84%E5%8C%BA%E5%88%AB%EF%BC%9F"><span class="toc-number">2.</span> <span class="toc-text">Servlet API中forward()与redirect()的区别？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#request-getAttribute-%E5%92%8C-request-getParameter-%E6%9C%89%E4%BD%95%E5%8C%BA%E5%88%AB"><span class="toc-number">3.</span> <span class="toc-text">request.getAttribute()和 request.getParameter()有何区别?</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#jsp%E9%9D%99%E6%80%81%E5%8C%85%E5%90%AB%E5%92%8C%E5%8A%A8%E6%80%81%E5%8C%85%E5%90%AB%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-number">4.</span> <span class="toc-text">jsp静态包含和动态包含的区别</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#MVC%E7%9A%84%E5%90%84%E4%B8%AA%E9%83%A8%E5%88%86%E9%83%BD%E6%9C%89%E9%82%A3%E4%BA%9B%E6%8A%80%E6%9C%AF%E6%9D%A5%E5%AE%9E%E7%8E%B0-%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0"><span class="toc-number">5.</span> <span class="toc-text">MVC的各个部分都有那些技术来实现?如何实现?</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#jsp%E6%9C%89%E5%93%AA%E4%BA%9B%E5%86%85%E7%BD%AE%E5%AF%B9%E8%B1%A1-%E4%BD%9C%E7%94%A8%E5%88%86%E5%88%AB%E6%98%AF%E4%BB%80%E4%B9%88"><span class="toc-number">6.</span> <span class="toc-text">jsp有哪些内置对象?作用分别是什么?</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Http%E4%B8%AD%EF%BC%8Cget%E5%92%8Cpost%E6%96%B9%E6%B3%95%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-number">7.</span> <span class="toc-text">Http中，get和post方法的区别</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AFcookie%EF%BC%9FSession%E5%92%8Ccookie%E6%9C%89%E4%BB%80%E4%B9%88%E5%8C%BA%E5%88%AB%EF%BC%9F"><span class="toc-number">8.</span> <span class="toc-text">什么是cookie？Session和cookie有什么区别？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#jsp%E5%92%8Cservlet%E7%9A%84%E5%8C%BA%E5%88%AB%E3%80%81%E5%85%B1%E5%90%8C%E7%82%B9%E3%80%81%E5%90%84%E8%87%AA%E5%BA%94%E7%94%A8%E7%9A%84%E8%8C%83%E5%9B%B4%EF%BC%9F"><span class="toc-number">9.</span> <span class="toc-text">jsp和servlet的区别、共同点、各自应用的范围？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#tomcat%E5%AE%B9%E5%99%A8%E6%98%AF%E5%A6%82%E4%BD%95%E5%88%9B%E5%BB%BAservlet%E7%B1%BB%E5%AE%9E%E4%BE%8B%EF%BC%9F%E7%94%A8%E5%88%B0%E4%BA%86%E4%BB%80%E4%B9%88%E5%8E%9F%E7%90%86%EF%BC%9F"><span class="toc-number">10.</span> <span class="toc-text">tomcat容器是如何创建servlet类实例？用到了什么原理？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#JDBC%E8%AE%BF%E9%97%AE%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%AD%A5%E9%AA%A4%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="toc-number">11.</span> <span class="toc-text">JDBC访问数据库的基本步骤是什么？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AF%B4%E8%AF%B4preparedStatement%E5%92%8CStatement%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-number">12.</span> <span class="toc-text">说说preparedStatement和Statement的区别</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AF%B4%E8%AF%B4%E4%BA%8B%E5%8A%A1%E7%9A%84%E6%A6%82%E5%BF%B5%EF%BC%8C%E5%9C%A8JDBC%E7%BC%96%E7%A8%8B%E4%B8%AD%E5%A4%84%E7%90%86%E4%BA%8B%E5%8A%A1%E7%9A%84%E6%AD%A5%E9%AA%A4%E3%80%82"><span class="toc-number">13.</span> <span class="toc-text">说说事务的概念，在JDBC编程中处理事务的步骤。</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93%E8%BF%9E%E6%8E%A5%E6%B1%A0%E7%9A%84%E5%8E%9F%E7%90%86%E3%80%82%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E4%BD%BF%E7%94%A8%E8%BF%9E%E6%8E%A5%E6%B1%A0%E3%80%82"><span class="toc-number">14.</span> <span class="toc-text">数据库连接池的原理。为什么要使用连接池。</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#JDBC%E7%9A%84%E8%84%8F%E8%AF%BB%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F%E5%93%AA%E7%A7%8D%E6%95%B0%E6%8D%AE%E5%BA%93%E9%9A%94%E7%A6%BB%E7%BA%A7%E5%88%AB%E8%83%BD%E9%98%B2%E6%AD%A2%E8%84%8F%E8%AF%BB%EF%BC%9F"><span class="toc-number">15.</span> <span class="toc-text">JDBC的脏读是什么？哪种数据库隔离级别能防止脏读？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E5%B9%BB%E8%AF%BB%EF%BC%8C%E5%93%AA%E7%A7%8D%E9%9A%94%E7%A6%BB%E7%BA%A7%E5%88%AB%E5%8F%AF%E4%BB%A5%E9%98%B2%E6%AD%A2%E5%B9%BB%E8%AF%BB%EF%BC%9F"><span class="toc-number">16.</span> <span class="toc-text">什么是幻读，哪种隔离级别可以防止幻读？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#JDBC%E7%9A%84DriverManager%E6%98%AF%E7%94%A8%E6%9D%A5%E5%81%9A%E4%BB%80%E4%B9%88%E7%9A%84%EF%BC%9F"><span class="toc-number">17.</span> <span class="toc-text">JDBC的DriverManager是用来做什么的？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#execute%EF%BC%8CexecuteQuery%EF%BC%8CexecuteUpdate%E7%9A%84%E5%8C%BA%E5%88%AB%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="toc-number">18.</span> <span class="toc-text">execute，executeQuery，executeUpdate的区别是什么？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#JDBC%E7%9A%84ResultSet%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="toc-number">19.</span> <span class="toc-text">JDBC的ResultSet是什么？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#AJAX%E6%9C%89%E5%93%AA%E4%BA%9B%E6%9C%89%E7%82%B9%E5%92%8C%E7%BC%BA%E7%82%B9%EF%BC%9F"><span class="toc-number">20.</span> <span class="toc-text">AJAX有哪些有点和缺点？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#AJAX%E5%BA%94%E7%94%A8%E5%92%8C%E4%BC%A0%E7%BB%9FWeb%E5%BA%94%E7%94%A8%E6%9C%89%E4%BB%80%E4%B9%88%E4%B8%8D%E5%90%8C%EF%BC%9F"><span class="toc-number">21.</span> <span class="toc-text">AJAX应用和传统Web应用有什么不同？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Ajax%E7%9A%84%E5%AE%9E%E7%8E%B0%E6%B5%81%E7%A8%8B%E6%98%AF%E6%80%8E%E6%A0%B7%E7%9A%84%EF%BC%9F"><span class="toc-number">22.</span> <span class="toc-text">Ajax的实现流程是怎样的？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AE%80%E5%8D%95%E8%AF%B4%E4%B8%80%E4%B8%8B%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9A%84%E4%B8%89%E8%8C%83%E5%BC%8F%EF%BC%9F"><span class="toc-number">23.</span> <span class="toc-text">简单说一下数据库的三范式？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Java%E9%9B%86%E5%90%88%E6%A1%86%E6%9E%B6%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F%E8%AF%B4%E5%87%BA%E4%B8%80%E4%BA%9B%E9%9B%86%E5%90%88%E6%A1%86%E6%9E%B6%E7%9A%84%E4%BC%98%E7%82%B9%EF%BC%9F"><span class="toc-number">24.</span> <span class="toc-text">Java集合框架是什么？说出一些集合框架的优点？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Java%E9%9B%86%E5%90%88%E6%A1%86%E6%9E%B6%E7%9A%84%E5%9F%BA%E7%A1%80%E6%8E%A5%E5%8F%A3%E6%9C%89%E5%93%AA%E4%BA%9B%EF%BC%9F"><span class="toc-number">25.</span> <span class="toc-text">Java集合框架的基础接口有哪些？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%9B%86%E5%90%88%E6%A1%86%E6%9E%B6%E4%B8%AD%E7%9A%84%E6%B3%9B%E5%9E%8B%E6%9C%89%E4%BB%80%E4%B9%88%E4%BC%98%E7%82%B9%EF%BC%9F"><span class="toc-number">26.</span> <span class="toc-text">集合框架中的泛型有什么优点？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Enumeration%E5%92%8CIterator%E6%8E%A5%E5%8F%A3%E7%9A%84%E5%8C%BA%E5%88%AB%EF%BC%9F"><span class="toc-number">27.</span> <span class="toc-text">Enumeration和Iterator接口的区别？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Iterater%E5%92%8CListIterator%E4%B9%8B%E9%97%B4%E6%9C%89%E4%BB%80%E4%B9%88%E5%8C%BA%E5%88%AB%EF%BC%9F"><span class="toc-number">28.</span> <span class="toc-text">Iterater和ListIterator之间有什么区别？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%88%91%E4%BB%AC%E5%A6%82%E4%BD%95%E5%AF%B9%E4%B8%80%E7%BB%84%E5%AF%B9%E8%B1%A1%E8%BF%9B%E8%A1%8C%E6%8E%92%E5%BA%8F%EF%BC%9F"><span class="toc-number">29.</span> <span class="toc-text">我们如何对一组对象进行排序？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%8EJava%E9%9B%86%E5%90%88%E6%A1%86%E6%9E%B6%E7%9B%B8%E5%85%B3%E7%9A%84%E6%9C%89%E5%93%AA%E4%BA%9B%E6%9C%80%E5%A5%BD%E7%9A%84%E5%AE%9E%E8%B7%B5%EF%BC%9F"><span class="toc-number">30.</span> <span class="toc-text">与Java集合框架相关的有哪些最好的实践？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E4%BA%8B%E5%8A%A1%EF%BC%9F"><span class="toc-number">31.</span> <span class="toc-text">什么是事务？,</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+
+  
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">Categories</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/spring官方文档/" title="spring官方文档">spring官方文档<sup>8</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>54</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/linux/" title="linux">linux<sup>34</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/centos/" title="centos">centos<sup>19</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/springboot/" title="springboot">springboot<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/ubuntu/" title="ubuntu">ubuntu<sup>9</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/hadoop/" title="hadoop">hadoop<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/spring/" title="spring">spring<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/nginx/" title="nginx">nginx<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/spark/" title="spark">spark<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/mybatis/" title="mybatis">mybatis<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/mysql/" title="mysql">mysql<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/算法/" title="算法">算法<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/git/" title="git">git<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/maven/" title="maven">maven<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/hdfs/" title="hdfs">hdfs<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/dubbo/" title="dubbo">dubbo<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/kafka/" title="kafka">kafka<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Hbase/" title="Hbase">Hbase<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/sql/" title="sql">sql<sup>2</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="http://majorkevin.xyz/blog/" target="_blank" title="朋友的博客">朋友的博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+  <div class="weiboshow">
+  <p class="asidetitle">Weibo</p>
+    <iframe width="100%" height="119" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=119&fansRow=2&ptype=1&speed=0&skin=9&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=&verifier=&dpc=1"></iframe>
+</div>
+
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> Hello ,I&#39;m dxysun. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2020 
+		
+		<a href="/about" target="_blank" title="dxysun">dxysun</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?e6d1f421bbc9962127a50488f9ed37d1";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

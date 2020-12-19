@@ -1,0 +1,668 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>Markdown 使用 Latex 数学公式 | 迎着朝阳的博客</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="dxysun">
+    
+
+    
+    <meta name="description" content="添加公式的方法行内公式 1$行内公式$">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Markdown 使用 Latex 数学公式">
+<meta property="og:url" content="https://github.com/dxysun/2018/11/25/mdForMath/index.html">
+<meta property="og:site_name" content="迎着朝阳的博客">
+<meta property="og:description" content="添加公式的方法行内公式 1$行内公式$">
+<meta property="og:locale">
+<meta property="article:published_time" content="2018-11-25T09:24:43.000Z">
+<meta property="article:modified_time" content="2018-11-25T11:24:50.000Z">
+<meta property="article:author" content="dxysun">
+<meta property="article:tag" content="markdown">
+<meta name="twitter:card" content="summary">
+
+    
+    <link rel="alternative" href="/atom.xml" title="迎着朝阳的博客" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    
+<link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/%02.css">
+<link rel="stylesheet" href="/.css">
+
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="迎着朝阳的博客" title="迎着朝阳的博客"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="迎着朝阳的博客">迎着朝阳的博客</a></h1>
+				<h2 class="blog-motto"></h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">主页</a></li>
+					
+						<li><a href="/archives">归档</a></li>
+					
+						<li><a href="/about">关于</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:github.com/dxysun">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2018/11/25/mdForMath/" title="Markdown 使用 Latex 数学公式" itemprop="url">Markdown 使用 Latex 数学公式</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="dxysun" target="_blank" itemprop="author">dxysun</a>
+		
+  <p class="article-time">
+    <time datetime="2018-11-25T09:24:43.000Z" itemprop="datePublished"> Published 2018-11-25</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%B7%BB%E5%8A%A0%E5%85%AC%E5%BC%8F%E7%9A%84%E6%96%B9%E6%B3%95"><span class="toc-number">1.</span> <span class="toc-text">添加公式的方法</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Latex-%E6%95%B0%E5%AD%A6%E5%85%AC%E5%BC%8F%E8%AF%AD%E6%B3%95"><span class="toc-number">2.</span> <span class="toc-text">Latex 数学公式语法</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%A7%92%E6%A0%87%EF%BC%88%E4%B8%8A%E4%B8%8B%E6%A0%87%EF%BC%89"><span class="toc-number">2.1.</span> <span class="toc-text">角标（上下标）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%86%E5%BC%8F"><span class="toc-number">2.2.</span> <span class="toc-text">分式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A0%B9%E5%BC%8F"><span class="toc-number">2.3.</span> <span class="toc-text">根式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B1%82%E5%92%8C%E4%B8%8E%E7%A7%AF%E5%88%86"><span class="toc-number">2.4.</span> <span class="toc-text">求和与积分</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%8B%E5%88%92%E7%BA%BF%E3%80%81%E4%B8%8A%E5%88%92%E7%BA%BF%E7%AD%89"><span class="toc-number">2.5.</span> <span class="toc-text">下划线、上划线等</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E5%AD%A6%E9%87%8D%E9%9F%B3%E7%AC%A6%E5%8F%B7"><span class="toc-number">2.6.</span> <span class="toc-text">数学重音符号</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B8%8C%E8%85%8A%E5%AD%97%E6%AF%8D"><span class="toc-number">2.7.</span> <span class="toc-text">希腊字母</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8F%82%E8%80%83"><span class="toc-number">3.</span> <span class="toc-text">参考</span></a></li></ol>
+		
+		</div>
+		
+		<h1 id="添加公式的方法"><a href="#添加公式的方法" class="headerlink" title="添加公式的方法"></a>添加公式的方法</h1><p>行内公式</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$行内公式$</span><br></pre></td></tr></table></figure>
+<a id="more"></a>
+<p>行间公式</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$$行间公式$$</span><br></pre></td></tr></table></figure>
+<h1 id="Latex-数学公式语法"><a href="#Latex-数学公式语法" class="headerlink" title="Latex 数学公式语法"></a>Latex 数学公式语法</h1><h2 id="角标（上下标）"><a href="#角标（上下标）" class="headerlink" title="角标（上下标）"></a>角标（上下标）</h2><p>上标命令^{}<br>下标命令_{}</p>
+<p>上下标命令用来放在需要插入上下标的地方，花括弧内为上下标的内容，当角标为单个字符时候，可以不使用花括号；如果角标为多字符或者多层次的时候，必须要使用花括号。</p>
+<p>举例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$$x^2, x_1^2, x^&#123;y^&#123;z^a&#125;&#125;, x^&#123;y_z&#125;$$</span><br><span class="line">$$^&#123;16&#125;O^&#123;2-&#125;_&#123;32&#125;$$</span><br><span class="line">$$x^&#123;(n)&#125;_&#123;22&#125;$$</span><br></pre></td></tr></table></figure>
+<p>$$x^2, x_1^2, x^{y^{z^a}}, x^{y_z}$$</p>
+<p>$$^{16}O^{2-}_{32}$$</p>
+<p>$$x^{(n)}_{22}$$</p>
+<h2 id="分式"><a href="#分式" class="headerlink" title="分式"></a>分式</h2><p>分式命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">\frac&#123;分子&#125;&#123;分母&#125;</span><br></pre></td></tr></table></figure>
+<p>$$\frac{x+y}{y+z}$$</p>
+<p>连分式</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$x_0+\frac&#123;1&#125;&#123;x_1+\frac&#123;1&#125;&#123;x_2+\frac&#123;1&#125;&#123;x_3+\frac&#123;1&#125;&#123;x_4&#125;&#125;&#125;&#125;$</span><br></pre></td></tr></table></figure>
+<p>$$x_0+\frac{1}{x_1+\frac{1}{x_2+\frac{1}{x_3+\frac{1}{x_4}}}}$$</p>
+<h2 id="根式"><a href="#根式" class="headerlink" title="根式"></a>根式</h2><p>二次根式命令</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">\sqrt&#123;表达式&#125;</span><br></pre></td></tr></table></figure>
+<p>如果表达式是个单个字符，则不需要花括号，但需要在字符和sqrt之间加入一个空格</p>
+<p>n次根式命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">\sqrt[n]&#123;表达式&#125;</span><br></pre></td></tr></table></figure>
+<p>被开方表达式字符高度不一致时，根号上面的横线可能不是在同一条直线上；为了使横线在同一条直线上，可以在被开方表达式插入一个只有高度没有宽度的数学支柱\mathstut</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$\sqrt&#123;a&#125;+\sqrt&#123;b&#125;+\sqrt&#123;c&#125;,\qquad \sqrt&#123;\mathstrut a&#125;+\sqrt&#123;\mathstrut b&#125;+\sqrt&#123;\mathstrut c&#125;$ </span><br></pre></td></tr></table></figure>
+<p>$\sqrt{a}+\sqrt{b}+\sqrt{c},\qquad \sqrt{\mathstrut a}+\sqrt{\mathstrut b}+\sqrt{\mathstrut c}$ </p>
+<h2 id="求和与积分"><a href="#求和与积分" class="headerlink" title="求和与积分"></a>求和与积分</h2><p>求和命令</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">\sum_&#123;k&#x3D;1&#125;^n表达式（求和项紧随其后,下同）</span><br></pre></td></tr></table></figure>
+<p>积分命令</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">\int_a^b表达式</span><br></pre></td></tr></table></figure>
+<p>例如：无穷级数<code>$\sum_&#123;k=1&#125;^\infty\frac&#123;x^n&#125;&#123;n!&#125;$</code><br>显示为 $\sum_{k=1}^\infty\frac{x^n}{n!}$<br>可以化为积分<code>$\int_0^\infty e^x$</code><br>显示为 $\int_0^\infty e^x$<br>改变上下限位置的命令：\limits(强制上下限在上下侧) 和 \nolimits(强制上下限在左右侧)</p>
+<p>例如： <code>$\sum\limits_&#123;k=1&#125;^n$ 和 $\sum\nolimits_&#123;k=1&#125;^n$</code></p>
+<p>显示结果为：$\sum\limits_{k=1}^n$ </p>
+<p>$\sum\nolimits_{k=1}^n$</p>
+<h2 id="下划线、上划线等"><a href="#下划线、上划线等" class="headerlink" title="下划线、上划线等"></a>下划线、上划线等</h2><p>上划线命令： <code>\overline&#123;公式&#125;</code><br>下划线命令：<code>\underline&#123;公式&#125;</code><br>例如：<code>$\overline&#123;\overline&#123;a^2&#125;+\underline&#123;ab&#125;+\bar&#123;a&#125;^3&#125;$</code><br>显示为  $\overline{\overline{a^2}+\underline{ab}+\bar{a}^3}$<br>上花括弧命令：<code>\overbrace&#123;公式&#125;&#123;说明&#125;</code><br>下花括弧命令：<code>\underbrace&#123;公式&#125;_&#123;说明&#125;</code><br>例如：<code>$\underbrace&#123;a+\overbrace&#123;b+\dots+b&#125;^&#123;m\mbox&#123; 个&#125;&#125;&#125;_&#123;20\mbox&#123; 个&#125;&#125;$</code><br>显示为 $\underbrace{a+\overbrace{b+\dots+b}^{m\mbox{ 个}}}_{20\mbox{ 个}}$</p>
+<h2 id="数学重音符号"><a href="#数学重音符号" class="headerlink" title="数学重音符号"></a>数学重音符号</h2><p>以a为例，；如果字母i或j带有重音，字母i,y应该替换为\imath、\jmath</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">$$</span><br><span class="line">\hat&#123;a&#125;</span><br><span class="line">\check&#123;a&#125;</span><br><span class="line">\breve&#123;a&#125;</span><br><span class="line">\tilde&#123;a&#125;</span><br><span class="line">\bar&#123;a&#125;</span><br><span class="line">\vec&#123;a&#125;</span><br><span class="line">\acute&#123;a&#125;</span><br><span class="line">\grave&#123;a&#125;</span><br><span class="line">\mathring&#123;a&#125;</span><br><span class="line">\dot&#123;a&#125;</span><br><span class="line">\ddot&#123;a&#125;</span><br><span class="line">$$</span><br></pre></td></tr></table></figure>
+<p>显示结果为：</p>
+<p>$$<br>\hat{a}<br>\check{a}<br>\breve{a}<br>\tilde{a}<br>\bar{a}<br>\vec{a}<br>\acute{a}<br>\grave{a}<br>\mathring{a}<br>\dot{a}<br>\ddot{a}<br>$$</p>
+<h2 id="希腊字母"><a href="#希腊字母" class="headerlink" title="希腊字母"></a>希腊字母</h2><table>
+<thead>
+<tr>
+<th align="left">显示</th>
+<th align="left">命令</th>
+<th align="left">显示</th>
+<th align="left">命令</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">α</td>
+<td align="left">\alpha</td>
+<td align="left">β</td>
+<td align="left">\beta</td>
+</tr>
+<tr>
+<td align="left">γ</td>
+<td align="left">\gamma</td>
+<td align="left">δ</td>
+<td align="left">\delta</td>
+</tr>
+<tr>
+<td align="left">ε</td>
+<td align="left">\epsilon</td>
+<td align="left">ζ</td>
+<td align="left">\zeta</td>
+</tr>
+<tr>
+<td align="left">η</td>
+<td align="left">\eta</td>
+<td align="left">θ</td>
+<td align="left">\theta</td>
+</tr>
+<tr>
+<td align="left">ι</td>
+<td align="left">\iota</td>
+<td align="left">κ</td>
+<td align="left">\kappa</td>
+</tr>
+<tr>
+<td align="left">λ</td>
+<td align="left">\lambda</td>
+<td align="left">μ</td>
+<td align="left">\mu</td>
+</tr>
+<tr>
+<td align="left">ν</td>
+<td align="left">\nu</td>
+<td align="left">ξ</td>
+<td align="left">\xi</td>
+</tr>
+<tr>
+<td align="left">π</td>
+<td align="left">\pi</td>
+<td align="left">ρ</td>
+<td align="left">\rho</td>
+</tr>
+<tr>
+<td align="left">σ</td>
+<td align="left">\sigma</td>
+<td align="left">τ</td>
+<td align="left">\tau</td>
+</tr>
+<tr>
+<td align="left">υ</td>
+<td align="left">\upsilon</td>
+<td align="left">φ</td>
+<td align="left">\phi</td>
+</tr>
+<tr>
+<td align="left">χ</td>
+<td align="left">\chi</td>
+<td align="left">ψ</td>
+<td align="left">\psi</td>
+</tr>
+<tr>
+<td align="left">ω</td>
+<td align="left">\omega</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+</tbody></table>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/peaceWang/p/Markdown-tian-jia-Latex-shu-xue-gong-shi.html">参考1</a><br><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/a0aa94ef8ab2">参考2</a></p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/markdown/">markdown</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="https://github.com/dxysun/2018/11/25/mdForMath/" data-title="Markdown 使用 Latex 数学公式 | 迎着朝阳的博客" data-tsina="" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2019/01/07/pltForNotebook/" title="matplotlib在jupyter notebook下正常显示中文">
+  <strong>上一篇：</strong><br/>
+  <span>
+  matplotlib在jupyter notebook下正常显示中文</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2018/11/23/mlForDecisionTree/"  title="机器学习笔记之决策树">
+ <strong>下一篇：</strong><br/> 
+ <span>机器学习笔记之决策树
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%B7%BB%E5%8A%A0%E5%85%AC%E5%BC%8F%E7%9A%84%E6%96%B9%E6%B3%95"><span class="toc-number">1.</span> <span class="toc-text">添加公式的方法</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Latex-%E6%95%B0%E5%AD%A6%E5%85%AC%E5%BC%8F%E8%AF%AD%E6%B3%95"><span class="toc-number">2.</span> <span class="toc-text">Latex 数学公式语法</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%A7%92%E6%A0%87%EF%BC%88%E4%B8%8A%E4%B8%8B%E6%A0%87%EF%BC%89"><span class="toc-number">2.1.</span> <span class="toc-text">角标（上下标）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%86%E5%BC%8F"><span class="toc-number">2.2.</span> <span class="toc-text">分式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A0%B9%E5%BC%8F"><span class="toc-number">2.3.</span> <span class="toc-text">根式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B1%82%E5%92%8C%E4%B8%8E%E7%A7%AF%E5%88%86"><span class="toc-number">2.4.</span> <span class="toc-text">求和与积分</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%8B%E5%88%92%E7%BA%BF%E3%80%81%E4%B8%8A%E5%88%92%E7%BA%BF%E7%AD%89"><span class="toc-number">2.5.</span> <span class="toc-text">下划线、上划线等</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E5%AD%A6%E9%87%8D%E9%9F%B3%E7%AC%A6%E5%8F%B7"><span class="toc-number">2.6.</span> <span class="toc-text">数学重音符号</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B8%8C%E8%85%8A%E5%AD%97%E6%AF%8D"><span class="toc-number">2.7.</span> <span class="toc-text">希腊字母</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8F%82%E8%80%83"><span class="toc-number">3.</span> <span class="toc-text">参考</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+
+  
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">Categories</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/spring官方文档/" title="spring官方文档">spring官方文档<sup>8</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>54</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/linux/" title="linux">linux<sup>34</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/centos/" title="centos">centos<sup>19</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/springboot/" title="springboot">springboot<sup>16</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/python/" title="python">python<sup>10</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/ubuntu/" title="ubuntu">ubuntu<sup>9</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/hadoop/" title="hadoop">hadoop<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/spring/" title="spring">spring<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/nginx/" title="nginx">nginx<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/spark/" title="spark">spark<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/mybatis/" title="mybatis">mybatis<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/mysql/" title="mysql">mysql<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/算法/" title="算法">算法<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/git/" title="git">git<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/maven/" title="maven">maven<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/hdfs/" title="hdfs">hdfs<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/dubbo/" title="dubbo">dubbo<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/kafka/" title="kafka">kafka<sup>3</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Hbase/" title="Hbase">Hbase<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/sql/" title="sql">sql<sup>2</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="http://majorkevin.xyz/blog/" target="_blank" title="朋友的博客">朋友的博客</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS</a>
+</div>
+
+  <div class="weiboshow">
+  <p class="asidetitle">Weibo</p>
+    <iframe width="100%" height="119" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=119&fansRow=2&ptype=1&speed=0&skin=9&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=&verifier=&dpc=1"></iframe>
+</div>
+
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> Hello ,I&#39;m dxysun. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2020 
+		
+		<a href="/about" target="_blank" title="dxysun">dxysun</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?e6d1f421bbc9962127a50488f9ed37d1";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>
